@@ -6,8 +6,9 @@
 
 class UInputAction;
 class UInputMappingContext;
-struct FInputActionValue
-;
+struct FInputActionValue;
+class AGCharacter;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTG_API UGHeroComponent : public UActorComponent
 {
@@ -17,7 +18,7 @@ public:
 	UGHeroComponent();
 
 	void SetupInputComponent();
-	
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -26,6 +27,7 @@ protected:
 	void Initalize();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Interact();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -36,11 +38,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookInputAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> InteractInputAction;
 protected:
 
 	UPROPERTY(Transient)
 	TWeakObjectPtr<APlayerController> PlayerControllerRef;
 	
 	UPROPERTY(Transient)
-	TWeakObjectPtr<ACharacter> CharacterRef;
+	TWeakObjectPtr<AGCharacter> CharacterRef;
 };

@@ -3,6 +3,8 @@
 // UE 5.
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GInteractionComponent.h"
+#include "Character/GCharacter.h"
 #include "GameFramework/Character.h"
 
 UGHeroComponent::UGHeroComponent()
@@ -27,6 +29,7 @@ void UGHeroComponent::SetupInputComponent()
 		{
 			EnhancedInputComponent->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 			EnhancedInputComponent->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Completed, this, &ThisClass::Interact);
 		}
 	}
 }
@@ -44,7 +47,7 @@ void UGHeroComponent::Initalize()
 	{
 		if (PlayerControllerRef.IsValid())
 		{
-			CharacterRef = PlayerControllerRef->GetCharacter();
+			CharacterRef = Cast<AGCharacter>(PlayerControllerRef->GetCharacter());
 		}
 	}
 }
@@ -70,14 +73,23 @@ void UGHeroComponent::Move(const FInputActionValue& Value)
 
 void UGHeroComponent::Look(const FInputActionValue& Value)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
 	if (PlayerControllerRef.IsValid())
 	{
-		if (CharacterRef.IsValid())
+		FVector2D LookAxisVector = Value.Get<FVector2D>();
+		PlayerControllerRef->AddYawInput(LookAxisVector.X);
+		PlayerControllerRef->AddPitchInput(LookAxisVector.Y);
+	}
+}
+
+void UGHeroComponent::Interact()
+{
+	if (CharacterRef.IsValid())
+	{
+		UGInteractionComponent* InteractionComponent = CharacterRef->GetInteractionComponent();
+		
+		if (IsValid(InteractionComponent))
 		{
-			CharacterRef->AddControllerYawInput(LookAxisVector.X);
-			CharacterRef->AddControllerPitchInput(LookAxisVector.Y);
+			InteractionComponent->Interact();
 		}
 	}
 }
