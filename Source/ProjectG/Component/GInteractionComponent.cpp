@@ -38,10 +38,6 @@ void UGInteractionComponent::TickComponent(float DeltaTime, enum ELevelTick Tick
 	{
 		UpdateFocusTarget();
 	}
-	else
-	{
-		InteractableActor = nullptr;
-	}
 }
 
 void UGInteractionComponent::UpdateFocusTarget()
@@ -64,15 +60,6 @@ void UGInteractionComponent::UpdateFocusTarget()
 	
 	UpdateCandidateScores();
 	InteractableCandidates.Sort(&ThisClass::CompareCandidates);
-	
-	if (InteractableCandidates.IsEmpty() || InteractableCandidates[0].Score <= -FLT_MAX)
-	{
-		InteractableActor = nullptr;
-	}
-	else
-	{
-		InteractableActor = InteractableCandidates[0].Actor;
-	}
 }
 
 void UGInteractionComponent::UpdateCandidateScores()
@@ -124,16 +111,29 @@ float UGInteractionComponent::CalculateScore(const TWeakObjectPtr<AActor>& Candi
 	return ViewDot + DistanceScore;
 }
 
+void UGInteractionComponent::OnInteractStarted()
+{
+	if (InteractableCandidates.IsEmpty() || InteractableCandidates[0].Score <= -FLT_MAX)
+	{
+		InteractableActor = nullptr;
+	}
+	else
+	{
+		IGInteractable* Interactable = Cast<IGInteractable>(InteractableCandidates[0].Actor);
+		if (Interactable->CanInteract(CharacterRef.Get()))
+		{
+			InteractableActor = InteractableCandidates[0].Actor;
+		}
+	}
+}
+
 void UGInteractionComponent::Interact()
 {
 	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 	if (nullptr != Interactable)
 	{
-		if (Interactable->CanInteract(CharacterRef.Get()))
-		{
-			UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
-			Interactable->Interact(CharacterRef.Get());
-		}
+		UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
+		Interactable->Interact(CharacterRef.Get());
 	}
 }
 

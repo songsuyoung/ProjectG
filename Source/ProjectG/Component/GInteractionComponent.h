@@ -31,6 +31,7 @@ class PROJECTG_API UGInteractionComponent : public UActorComponent
 public:	
 	UGInteractionComponent(const FObjectInitializer& ObjectInitializer);
 
+	void OnInteractStarted();
 	void Interact();
 
 protected:

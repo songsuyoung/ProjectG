@@ -35,13 +35,36 @@ EGInteractionState AGInteractableActor::GetInteractionState(AActor* TargetActor)
 
 bool AGInteractableActor::CanInteract(AActor* TargetActor)
 {
+	UWorld* World = GetWorld();
+	check(World);
+	
+	if (StartTimestamp <= 0.f)
+	{
+		StartTimestamp = World->GetTimeSeconds(); // 중단하더라도 이어할 수 있다.
+	}
 	return GetInteractionState(TargetActor) == EGInteractionState::Available;
 }
 
 void AGInteractableActor::Interact(AActor* TargetActor)
 {
-	// 접촉 후 3초 후에 사라진다.
-	SetLifeSpan(3.0f);
+	if (InteractionState == EGInteractionState::Unavailable)
+	{
+		return;
+	}
+	
+	UWorld* World = GetWorld();
+	check(World);
+	
+	float EndTimestamp = World->GetTimeSeconds();
+	float Duration = (EndTimestamp - StartTimestamp);
+	
+	UE_LOG(LogTemp, Log, TEXT("Diff Timestamp %lf"), Duration);
+	if (Duration >= HoldDuration)
+	{
+		// 접촉 후 3초 후에 사라진다.
+		SetLifeSpan(0.5f);
+		InteractionState = EGInteractionState::Unavailable;
+	}
 }
 
 void AGInteractableActor::BeginPlay()

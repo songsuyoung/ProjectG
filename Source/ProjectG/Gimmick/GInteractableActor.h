@@ -31,6 +31,9 @@ protected:
 	int32 Priority;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
+	float HoldDuration;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	TArray<TSoftClassPtr<UGInteractionCondition>> ConditionClassPtrs;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
@@ -42,4 +45,7 @@ protected:
 	
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
+	
+	UPROPERTY(Transient)
+	float StartTimestamp;
 };

@@ -27,7 +27,9 @@ protected:
 	void Initalize();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Interact();
+
+	void OnInteractStarted();
+	void OnInteractTriggered();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
