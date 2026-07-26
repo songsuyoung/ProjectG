@@ -17,7 +17,7 @@ class PROJECTG_API IGInteractable
 
 public:
 	virtual int32 GetPriority() const = 0;
-	virtual EGInteractionState GetInteractionState() const = 0;
-	virtual bool CanInteract(AActor* Instigator) const = 0;
-	virtual void Interact(AActor* Instigator) = 0;
+	virtual EGInteractionState GetInteractionState(AActor* TargetActor) = 0;
+	virtual bool CanInteract(AActor* TargetActor) = 0;
+	virtual void Interact(AActor* TargetActor) = 0;
 };

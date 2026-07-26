@@ -4,6 +4,22 @@
 #include "Components/ActorComponent.h"
 #include "GInteractionComponent.generated.h"
 
+USTRUCT()
+struct FGInteractionCandidate
+{
+	GENERATED_BODY()
+	
+public:
+	UPROPERTY(Transient)
+	TWeakObjectPtr<AActor> Actor;
+	
+	UPROPERTY(Transient)
+	int32 Priority;
+	
+	UPROPERTY(Transient)
+	float Score;
+};
+
 class ACharacter;
 class USphereComponent;
 
@@ -13,7 +29,7 @@ class PROJECTG_API UGInteractionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UGInteractionComponent();
+	UGInteractionComponent(const FObjectInitializer& ObjectInitializer);
 
 	void Interact();
 
@@ -24,8 +40,9 @@ protected:
 protected:
 	
 	void UpdateFocusTarget();
+	void UpdateCandidateScores();
 	float CalculateScore(const TWeakObjectPtr<AActor>& Candidate);
-	
+	static bool CompareCandidates(const FGInteractionCandidate &ACandidate, const FGInteractionCandidate &BCandidate);
 protected:
 	
 	UFUNCTION()
@@ -40,10 +57,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Interaction)
 	float ViewDotThreshold;
 	
-	// 인터랙션 타겟으로 정할 개수
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Interaction)
-	int32 MaxInteractableCandidates;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USphereComponent> InteractionSphereComponent;
 	
@@ -52,7 +65,7 @@ protected:
 	TWeakObjectPtr<ACharacter> CharacterRef;
 	
 	UPROPERTY(Transient)
-	TArray<TWeakObjectPtr<AActor>> InteractableCandidates;
+	TArray<FGInteractionCandidate> InteractableCandidates;
 	
 	UPROPERTY(Transient)
 	TWeakObjectPtr<AActor> InteractableActor;

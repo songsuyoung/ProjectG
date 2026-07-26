@@ -5,6 +5,8 @@
 #include "GCharacter.generated.h"
 
 class UGInteractionComponent;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class PROJECTG_API AGCharacter : public AGBaseCharacter
@@ -14,9 +16,12 @@ class PROJECTG_API AGCharacter : public AGBaseCharacter
 public:
 	AGCharacter();
 	
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	FORCEINLINE class UGInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
+	int32 GetLevel() { return Level; }
+	bool ContainInventory(FName ItemName) { return Inventory.Contains(ItemName); }
+	
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE UGInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	virtual void BeginPlay() override;
 protected:
 
@@ -29,4 +34,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGInteractionComponent> InteractionComponent;
 	
+	UPROPERTY(EditAnywhere, Category = "Temp")
+	int32 Level;
+	
+	UPROPERTY(EditAnywhere, Category = "Temp|Inventory")
+	TArray<FName> Inventory;
 };
