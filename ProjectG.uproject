@@ -12,6 +12,15 @@
 				"Engine",
 				"CoreUObject"
 			]
+		},
+		{
+			"Name": "ProjectGClient",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"UMG",
+				"CoreUObject"
+			]
 		}
 	],
 	"Plugins": [
@@ -21,6 +30,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "CommonUI",
+			"Enabled": true
 		}
 	]
 }

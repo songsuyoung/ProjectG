@@ -9,8 +9,7 @@ AGInteractableActor::AGInteractableActor()
 	: Super()
 	, InteractionState(EGInteractionState::Available)
 {
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
-	RootComponent = MeshComponent;
+	
 }
 
 EGInteractionState AGInteractableActor::GetInteractionState(AActor* TargetActor)
@@ -61,10 +60,15 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 	UE_LOG(LogTemp, Log, TEXT("Diff Timestamp %lf"), Duration);
 	if (Duration >= HoldDuration)
 	{
-		// 접촉 후 3초 후에 사라진다.
-		SetLifeSpan(0.5f);
+		InternalInteract(TargetActor);
 		InteractionState = EGInteractionState::Unavailable;
 	}
+}
+
+void AGInteractableActor::InternalInteract(AActor* TargetActor)
+{
+	// 접촉 후 3초 후에 사라진다.
+	SetLifeSpan(0.5f);
 }
 
 void AGInteractableActor::BeginPlay()

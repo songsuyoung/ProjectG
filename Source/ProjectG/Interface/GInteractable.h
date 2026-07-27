@@ -20,4 +20,5 @@ public:
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) = 0;
 	virtual bool CanInteract(AActor* TargetActor) = 0;
 	virtual void Interact(AActor* TargetActor) = 0;
+	virtual void InternalInteract(AActor* TargetActor) = 0;
 };

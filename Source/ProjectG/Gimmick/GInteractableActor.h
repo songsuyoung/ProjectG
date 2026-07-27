@@ -19,6 +19,7 @@ public:
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) override;
 	virtual bool CanInteract(AActor* TargetActor) override;
 	virtual void Interact(AActor* TargetActor) override;
+	virtual void InternalInteract(AActor* TargetActor) override;
 	
 protected:
 	
@@ -37,7 +38,7 @@ protected:
 	TArray<TSoftClassPtr<UGInteractionCondition>> ConditionClassPtrs;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
-	TObjectPtr<UStaticMeshComponent> MeshComponent;
+	TObjectPtr<UMeshComponent> MeshComponent;
 	
 protected:
 	UPROPERTY(Transient)
