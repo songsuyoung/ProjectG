@@ -8,19 +8,14 @@ void UGPrimaryWidget::NativeConstruct()
 	Super::NativeConstruct();
 	
 	TArray<UWidget*> ChildWidgets = Root->GetAllChildren();
-	
+
 	for (UWidget* ChildWidget : ChildWidgets)
 	{
-		UPanelWidget* Widget = Cast<UPanelWidget>(ChildWidget);
-		
-		if (IsValid(Widget))
+		UGCommonActivatableWidgetStack* WidgetStack = Cast<UGCommonActivatableWidgetStack>(ChildWidget);
+
+		if (IsValid(WidgetStack))
 		{
-			UGCommonActivatableWidgetStack* WidgetStack = Cast<UGCommonActivatableWidgetStack>(Widget->GetChildAt(0));
-			
-			if (IsValid(WidgetStack))
-			{
-				LayerMap.Add(WidgetStack->GetLayerType(), WidgetStack);
-			}
+			LayerMap.Add(WidgetStack->GetLayerType(), WidgetStack);
 		}
 	}
 }

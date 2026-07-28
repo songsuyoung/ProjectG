@@ -10,3 +10,12 @@ enum class EGInteractionState : uint8
 	Pending,
 	Max
 };
+
+UENUM(BlueprintType)
+enum class EGDataTableType : uint8
+{
+	InteractionPrompt,
+	Max,
+};
+
+ENUM_RANGE_BY_COUNT(EGDataTableType, EGDataTableType::Max);

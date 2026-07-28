@@ -13,4 +13,7 @@ public:
 	
 	virtual void Init() { }
 	
+protected:
+	
+	virtual void BeginPlay();
 };

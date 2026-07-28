@@ -16,6 +16,7 @@ class PROJECTG_API IGInteractable
 	GENERATED_BODY()
 
 public:
+	virtual FName GetID() const = 0;
 	virtual int32 GetPriority() const = 0;
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) = 0;
 	virtual bool CanInteract(AActor* TargetActor) = 0;

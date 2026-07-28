@@ -2,8 +2,11 @@
 
 // UE 5.
 #include "Components/SphereComponent.h"
+#include "Data/GGameMacro.h"
+#include "Data/GMessage.h"
 #include "GameFramework/Character.h"
 #include "Interface/GInteractable.h"
+#include "System/GEventManager.h"
 
 UGInteractionComponent::UGInteractionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -60,6 +63,17 @@ void UGInteractionComponent::UpdateFocusTarget()
 	
 	UpdateCandidateScores();
 	InteractableCandidates.Sort(&ThisClass::CompareCandidates);
+	
+	if (false == InteractableCandidates.IsEmpty() && InteractableActor != InteractableCandidates[0].Actor)
+	{
+		IGInteractable* Interactable = Cast<IGInteractable>(InteractableCandidates[0].Actor);
+		
+		if (nullptr != Interactable)
+		{
+			FGInteract Message(EGMessageType::UpdateInterator, Interactable->GetID());
+			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UpdateInterator, Message);	
+		}
+	}
 }
 
 void UGInteractionComponent::UpdateCandidateScores()

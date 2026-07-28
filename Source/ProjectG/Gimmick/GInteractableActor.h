@@ -15,6 +15,7 @@ class PROJECTG_API AGInteractableActor : public AActor, public IGInteractable
 public:	
 	AGInteractableActor();
 	
+	virtual FName GetID() const { return ID; }
 	virtual int32 GetPriority() const override { return Priority; }
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) override;
 	virtual bool CanInteract(AActor* TargetActor) override;
@@ -27,6 +28,9 @@ protected:
 	void RequestAsyncLoad();
 	void OnConditionsLoaded();
 protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Data")
+	FName ID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	int32 Priority;
