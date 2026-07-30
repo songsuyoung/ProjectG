@@ -13,6 +13,7 @@ class PROJECTG_API UGInteractionCondition : public UObject
 public:
 	virtual void Init(IGInteractable* Interact);
 	virtual bool IsSatisfied(AActor* TargetActor) { return true; }
+	virtual void Apply(AActor* TargetActor) {}
 
 protected:
 	TWeakInterfacePtr<IGInteractable> Interactable;

@@ -32,7 +32,8 @@ void AGDoor::BeginPlay()
 
 void AGDoor::InternalInteract(AActor* TargetActor)
 {
-	// 문이 열리는 애니메이션이 동작한다.
+	Super::InternalInteract(TargetActor);
+
 	if (IsValid(TimelineComponent))
 	{
 		TimelineComponent->Play();

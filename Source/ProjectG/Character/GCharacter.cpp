@@ -2,8 +2,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "Component/GInteractionComponent.h"
+#include "Component/GInventoryComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
 
 AGCharacter::AGCharacter()
 {
@@ -17,6 +17,7 @@ AGCharacter::AGCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 	
 	InteractionComponent = CreateDefaultSubobject<UGInteractionComponent>(TEXT("InteractionComponent"));
+	InventoryComponent = CreateDefaultSubobject<UGInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void AGCharacter::BeginPlay()

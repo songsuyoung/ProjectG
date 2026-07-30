@@ -1,0 +1,24 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "GInventoryComponent.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class PROJECTG_API UGInventoryComponent : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	UGInventoryComponent();
+
+	void Acquire(FName ItemName);
+	void UseItem(FName ItemName, int32 Count);
+	bool CanUseItem(FName ItemName, int32 Count);
+	
+protected:
+	
+	UPROPERTY(Transient)
+	TMap<FName, int32> InventorySlots;
+};

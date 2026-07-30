@@ -151,11 +151,11 @@ void UGInteractionComponent::OnInteractStarted()
 		return;
 	}
 	
-	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
+	/*IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 	if (false == Interactable->CanInteract(CharacterRef.Get()))
 	{
 		InteractableActor = nullptr;
-	}
+	}*/
 }
 
 void UGInteractionComponent::Interact()
@@ -163,8 +163,11 @@ void UGInteractionComponent::Interact()
 	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 	if (nullptr != Interactable)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
-		Interactable->Interact(CharacterRef.Get());
+		if (Interactable->CanInteract(CharacterRef.Get()))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
+			Interactable->Interact(CharacterRef.Get());
+		}
 	}
 }
 

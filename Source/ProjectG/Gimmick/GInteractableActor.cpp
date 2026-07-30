@@ -46,11 +46,6 @@ bool AGInteractableActor::CanInteract(AActor* TargetActor)
 
 void AGInteractableActor::Interact(AActor* TargetActor)
 {
-	if (InteractionState == EGInteractionState::Unavailable)
-	{
-		return;
-	}
-	
 	UWorld* World = GetWorld();
 	check(World);
 	
@@ -67,8 +62,10 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 
 void AGInteractableActor::InternalInteract(AActor* TargetActor)
 {
-	// 접촉 후 3초 후에 사라진다.
-	SetLifeSpan(0.5f);
+	for (UGInteractionCondition* Condition : Conditions)
+	{
+		Condition->Apply(TargetActor);
+	}
 }
 
 void AGInteractableActor::BeginPlay()
