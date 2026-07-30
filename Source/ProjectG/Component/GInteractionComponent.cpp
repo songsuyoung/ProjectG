@@ -57,6 +57,11 @@ void UGInteractionComponent::UpdateFocusTarget()
 	
 	if (InteractableCandidates.Num() <= 0)
 	{
+		if (InteractableActor != nullptr)
+		{
+			FGInteract Message(EGMessageType::UndetectInteractor);
+			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UndetectInteractor, Message);
+		}
 		InteractableActor = nullptr;
 		return;
 	}
@@ -64,14 +69,28 @@ void UGInteractionComponent::UpdateFocusTarget()
 	UpdateCandidateScores();
 	InteractableCandidates.Sort(&ThisClass::CompareCandidates);
 	
-	if (false == InteractableCandidates.IsEmpty() && InteractableActor != InteractableCandidates[0].Actor)
+	if (InteractableCandidates.IsEmpty() || InteractableCandidates[0].Score <= -FLT_MAX)
 	{
-		IGInteractable* Interactable = Cast<IGInteractable>(InteractableCandidates[0].Actor);
+		if (InteractableActor != nullptr)
+		{
+			FGInteract Message(EGMessageType::UndetectInteractor);
+			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UndetectInteractor, Message);
+		}
+		
+		InteractableActor = nullptr;
+		return;
+	}
+
+	if (InteractableActor != InteractableCandidates[0].Actor)
+	{
+		InteractableActor = InteractableCandidates[0].Actor;
+		
+		IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 		
 		if (nullptr != Interactable)
 		{
-			FGInteract Message(EGMessageType::UpdateInterator, Interactable->GetID());
-			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UpdateInterator, Message);	
+			FGInteract Message(EGMessageType::DetectInteractor, Interactable->GetID());
+			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::DetectInteractor, Message);	
 		}
 	}
 }
@@ -127,17 +146,15 @@ float UGInteractionComponent::CalculateScore(const TWeakObjectPtr<AActor>& Candi
 
 void UGInteractionComponent::OnInteractStarted()
 {
-	if (InteractableCandidates.IsEmpty() || InteractableCandidates[0].Score <= -FLT_MAX)
+	if ( InteractableActor != InteractableCandidates[0].Actor)
+	{
+		return;
+	}
+	
+	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
+	if (false == Interactable->CanInteract(CharacterRef.Get()))
 	{
 		InteractableActor = nullptr;
-	}
-	else
-	{
-		IGInteractable* Interactable = Cast<IGInteractable>(InteractableCandidates[0].Actor);
-		if (Interactable->CanInteract(CharacterRef.Get()))
-		{
-			InteractableActor = InteractableCandidates[0].Actor;
-		}
 	}
 }
 

@@ -6,7 +6,8 @@
 UENUM()
 enum class EGMessageType
 {
-	UpdateInterator,
+	DetectInteractor,
+	UndetectInteractor,
 };
 
 USTRUCT()
@@ -26,6 +27,7 @@ struct FGInteract : public FGMessage
 	GENERATED_BODY()
 public:
 	FGInteract() { }
+	FGInteract(EGMessageType InType) : FGMessage(InType) { }
 	FGInteract(EGMessageType InType, FName ID) : MessageType(InType), ID(ID) { }
 
 	EGMessageType MessageType;

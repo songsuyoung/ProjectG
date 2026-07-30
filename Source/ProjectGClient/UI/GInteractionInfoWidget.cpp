@@ -23,7 +23,7 @@ void UGInteractionInfoWidget::OnMessage(EGMessageType Type, FGMessage* Message)
 {
 	switch (Type)
 	{
-	case EGMessageType::UpdateInterator:
+	case EGMessageType::DetectInteractor:
 		{
 			FGInteract* MessageData = static_cast<FGInteract*>(Message);
 	
@@ -33,11 +33,17 @@ void UGInteractionInfoWidget::OnMessage(EGMessageType Type, FGMessage* Message)
 			}
 		}
 		break;
+	case EGMessageType::UndetectInteractor:
+		{
+			SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 }
 
 void UGInteractionInfoWidget::UpdateUI(FName ID)
 {
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	
 	// 데이터 테이블에서 ID에 맞는 데이터를 찾고
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	
