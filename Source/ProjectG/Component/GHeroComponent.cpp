@@ -31,7 +31,7 @@ void UGHeroComponent::SetupInputComponent()
 			EnhancedInputComponent->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 			
 			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Started, this, &ThisClass::OnInteractStarted);
-			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnInteractTriggered);
+			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Completed, this, &ThisClass::OnInteractEnded);
 		}
 	}
 }
@@ -96,15 +96,15 @@ void UGHeroComponent::OnInteractStarted()
 	}
 }
 
-void UGHeroComponent::OnInteractTriggered()
+void UGHeroComponent::OnInteractEnded()
 {
 	if (CharacterRef.IsValid())
 	{
 		UGInteractionComponent* InteractionComponent = CharacterRef->GetInteractionComponent();
-		
+
 		if (IsValid(InteractionComponent))
 		{
-			InteractionComponent->Interact();
+			InteractionComponent->OnInteractEnded();
 		}
 	}
 }

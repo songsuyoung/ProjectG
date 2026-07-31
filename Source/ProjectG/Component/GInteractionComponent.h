@@ -32,6 +32,7 @@ public:
 	UGInteractionComponent(const FObjectInitializer& ObjectInitializer);
 
 	void OnInteractStarted();
+	void OnInteractEnded();
 	void Interact();
 
 protected:

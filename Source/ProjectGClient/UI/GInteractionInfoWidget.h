@@ -6,6 +6,7 @@
 #include "GInteractionInfoWidget.generated.h"
 
 class UTextBlock;
+class UProgressBar;
 enum class EGMessageType;
 struct FGMessage;
 
@@ -15,17 +16,27 @@ class PROJECTGCLIENT_API UGInteractionInfoWidget : public UCommonUserWidget, pub
 	GENERATED_BODY()
 
 public:
-	
-	virtual void NativeConstruct();
-	virtual void NativeDestruct();
+
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	virtual void OnMessage(EGMessageType Type, FGMessage* Message = nullptr) override;
 
 protected:
-	
+
 	void UpdateUI(FName ID);
-	
+
 protected:
-	
+
 	UPROPERTY(Transient, meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> TextBlock_Info;
+
+	UPROPERTY(Transient, meta = (BindWidgetOptional))
+	TObjectPtr<UProgressBar> ProgressBar_Hold;
+
+private:
+
+	bool bIsHolding = false;
+	float HoldDuration = 0.f;
+	float HoldElapsed = 0.f;
 };

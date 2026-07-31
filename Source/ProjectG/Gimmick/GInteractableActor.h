@@ -17,7 +17,9 @@ public:
 	
 	virtual FName GetID() const { return ID; }
 	virtual int32 GetPriority() const override { return Priority; }
+	virtual float GetHoldDuration() const override { return HoldDuration; }
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) override;
+	virtual void OnInteractStarted(AActor* TargetActor) override;
 	virtual bool CanInteract(AActor* TargetActor) override;
 	virtual void Interact(AActor* TargetActor) override;
 	virtual void InternalInteract(AActor* TargetActor) override;

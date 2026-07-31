@@ -32,19 +32,15 @@ EGInteractionState AGInteractableActor::GetInteractionState(AActor* TargetActor)
 	return InteractionState;
 }
 
-bool AGInteractableActor::CanInteract(AActor* TargetActor)
+void AGInteractableActor::OnInteractStarted(AActor* TargetActor)
 {
 	UWorld* World = GetWorld();
 	check(World);
-	
-	if (StartTimestamp <= 0.f)
-	{
-		StartTimestamp = World->GetTimeSeconds(); // 중단하더라도 이어할 수 있다.
-	}
-	return GetInteractionState(TargetActor) == EGInteractionState::Available;
+
+	StartTimestamp = World->GetTimeSeconds();
 }
 
-void AGInteractableActor::Interact(AActor* TargetActor)
+bool AGInteractableActor::CanInteract(AActor* TargetActor)
 {
 	UWorld* World = GetWorld();
 	check(World);
@@ -52,12 +48,13 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 	float EndTimestamp = World->GetTimeSeconds();
 	float Duration = (EndTimestamp - StartTimestamp);
 	
-	UE_LOG(LogTemp, Log, TEXT("Diff Timestamp %lf"), Duration);
-	if (Duration >= HoldDuration)
-	{
-		InternalInteract(TargetActor);
-		InteractionState = EGInteractionState::Unavailable;
-	}
+	return Duration >= HoldDuration && GetInteractionState(TargetActor) == EGInteractionState::Available;
+}
+
+void AGInteractableActor::Interact(AActor* TargetActor)
+{
+	InternalInteract(TargetActor);
+	InteractionState = EGInteractionState::Unavailable;
 }
 
 void AGInteractableActor::InternalInteract(AActor* TargetActor)

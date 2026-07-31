@@ -8,6 +8,8 @@ enum class EGMessageType
 {
 	DetectInteractor,
 	UndetectInteractor,
+	InteractStarted,
+	InteractEnded,
 };
 
 USTRUCT()
@@ -28,8 +30,18 @@ struct FGInteract : public FGMessage
 public:
 	FGInteract() { }
 	FGInteract(EGMessageType InType) : FGMessage(InType) { }
-	FGInteract(EGMessageType InType, FName ID) : MessageType(InType), ID(ID) { }
+	FGInteract(EGMessageType InType, FName ID) : FGMessage(InType), ID(ID) { }
 
-	EGMessageType MessageType;
 	FName ID;
+};
+
+USTRUCT()
+struct FGInteractHold : public FGMessage
+{
+	GENERATED_BODY()
+public:
+	FGInteractHold() { }
+	FGInteractHold(EGMessageType InType, float InHoldDuration) : FGMessage(InType), HoldDuration(InHoldDuration) { }
+
+	float HoldDuration = 0.f;
 };

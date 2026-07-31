@@ -29,7 +29,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	void OnInteractStarted();
-	void OnInteractTriggered();
+	void OnInteractEnded();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))

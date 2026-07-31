@@ -4,6 +4,7 @@
 #include "Components/SphereComponent.h"
 #include "Data/GGameMacro.h"
 #include "Data/GMessage.h"
+#include "Data/GGameEnums.h"
 #include "GameFramework/Character.h"
 #include "Interface/GInteractable.h"
 #include "System/GEventManager.h"
@@ -146,29 +147,34 @@ float UGInteractionComponent::CalculateScore(const TWeakObjectPtr<AActor>& Candi
 
 void UGInteractionComponent::OnInteractStarted()
 {
-	if ( InteractableActor != InteractableCandidates[0].Actor)
+	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
+	if (nullptr != Interactable)
 	{
-		return;
+		Interactable->OnInteractStarted(CharacterRef.Get());
+
+		FGInteractHold Message(EGMessageType::InteractStarted, Interactable->GetHoldDuration());
+		GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::InteractStarted, Message);
 	}
-	
-	/*IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
-	if (false == Interactable->CanInteract(CharacterRef.Get()))
-	{
-		InteractableActor = nullptr;
-	}*/
 }
 
-void UGInteractionComponent::Interact()
+void UGInteractionComponent::OnInteractEnded()
 {
 	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 	if (nullptr != Interactable)
 	{
+		FGInteractHold Message(EGMessageType::InteractEnded, 0.f);
+		GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::InteractEnded, Message);
+
 		if (Interactable->CanInteract(CharacterRef.Get()))
 		{
 			UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
 			Interactable->Interact(CharacterRef.Get());
 		}
 	}
+}
+
+void UGInteractionComponent::Interact()
+{
 }
 
 void UGInteractionComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,bool bFromSweep, const FHitResult& SweepResult)
