@@ -195,6 +195,11 @@ void UGInteractionComponent::RunActionPipeline(TArray<UGInteractionAction*>& InA
 		return;
 	}
 
+	if (false == CharacterRef.IsValid())
+	{
+		return;
+	}
+
 	APlayerController* PC = Cast<APlayerController>(CharacterRef->GetController());
 	if (nullptr != PC)
 	{
