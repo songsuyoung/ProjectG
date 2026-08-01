@@ -22,18 +22,22 @@ public:
 
 class ACharacter;
 class USphereComponent;
+class UGInteractionAction;
+class UGInteractionActionPipeline;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTG_API UGInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UGInteractionComponent(const FObjectInitializer& ObjectInitializer);
 
 	void OnInteractStarted();
 	void OnInteractEnded();
 	void Interact();
+
+	void RunActionPipeline(TArray<UGInteractionAction*>& InActions, AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted);
 
 protected:
 	virtual void InitializeComponent() override;
@@ -44,7 +48,10 @@ protected:
 	void UpdateFocusTarget();
 	void UpdateCandidateScores();
 	float CalculateScore(const TWeakObjectPtr<AActor>& Candidate);
-	static bool CompareCandidates(const FGInteractionCandidate &ACandidate, const FGInteractionCandidate &BCandidate);
+	static bool CompareCandidates(const FGInteractionCandidate& ACandidate, const FGInteractionCandidate& BCandidate);
+
+	void OnPipelineCompleted();
+
 protected:
 	
 	UFUNCTION()
@@ -71,4 +78,7 @@ protected:
 	
 	UPROPERTY(Transient)
 	TWeakObjectPtr<AActor> InteractableActor;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UGInteractionActionPipeline> ActionPipeline;
 };
