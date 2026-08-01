@@ -6,8 +6,11 @@
 #include "Data/GMessage.h"
 #include "Data/GGameEnums.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PlayerController.h"
 #include "Interface/GInteractable.h"
 #include "System/GEventManager.h"
+#include "Component/GInteractionActionPipeline.h"
+#include "Data/Interact/GInteractionAction.h"
 
 UGInteractionComponent::UGInteractionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -16,9 +19,11 @@ UGInteractionComponent::UGInteractionComponent(const FObjectInitializer& ObjectI
 	InteractionSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphereComponent"));
 	InteractionSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &UGInteractionComponent::OnSphereBeginOverlap);
 	InteractionSphereComponent->OnComponentEndOverlap.AddDynamic(this, &UGInteractionComponent::OnSphereEndOverlap);
-	
+
+	ActionPipeline = CreateDefaultSubobject<UGInteractionActionPipeline>(TEXT("ActionPipeline"));
+
 	bWantsInitializeComponent = true;
-	
+
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -37,7 +42,13 @@ void UGInteractionComponent::InitializeComponent()
 void UGInteractionComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
+	if (IsValid(ActionPipeline) && ActionPipeline->IsRunning())
+	{
+		ActionPipeline->Tick(DeltaTime);
+		return;
+	}
+
 	if (false == InteractableCandidates.IsEmpty())
 	{
 		UpdateFocusTarget();
@@ -175,6 +186,42 @@ void UGInteractionComponent::OnInteractEnded()
 
 void UGInteractionComponent::Interact()
 {
+}
+
+void UGInteractionComponent::RunActionPipeline(TArray<UGInteractionAction*>& InActions, AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted)
+{
+	if (false == IsValid(ActionPipeline))
+	{
+		return;
+	}
+
+	APlayerController* PC = Cast<APlayerController>(CharacterRef->GetController());
+	if (nullptr != PC)
+	{
+		PC->SetIgnoreMoveInput(true);
+	}
+
+	FSimpleDelegate Combined = FSimpleDelegate::CreateLambda([this, InOnCompleted]()
+	{
+		OnPipelineCompleted();
+		InOnCompleted.ExecuteIfBound();
+	});
+
+	ActionPipeline->Run(InActions, InOwnerActor, InTargetActor, Combined);
+}
+
+void UGInteractionComponent::OnPipelineCompleted()
+{
+	if (false == CharacterRef.IsValid())
+	{
+		return;
+	}
+
+	APlayerController* PC = Cast<APlayerController>(CharacterRef->GetController());
+	if (nullptr != PC)
+	{
+		PC->ResetIgnoreMoveInput();
+	}
 }
 
 void UGInteractionComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,bool bFromSweep, const FHitResult& SweepResult)
