@@ -13,6 +13,7 @@ AGInteractableActor::AGInteractableActor()
 	, InteractionState(EGInteractionState::Available)
 {
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
+	InteractPoint->SetupAttachment(GetRootComponent());
 }
 
 EGInteractionState AGInteractableActor::GetInteractionState(AActor* TargetActor)
