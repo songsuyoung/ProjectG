@@ -6,8 +6,7 @@
 #include "GInteractableActor.generated.h"
 
 class UGInteractionCondition;
-class UGInteractionAction;
-class UGInteractionActionPipeline;
+class UGInteractionActionComponent;
 class USphereComponent;
 class UAnimMontage;
 class AGCharacter;
@@ -35,11 +34,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 	void RequestAsyncLoad();
 	void OnConditionsLoaded();
-	void RequestAsyncLoadActions();
-	void OnActionsLoaded();
 	void OnInteractionCompleted();
 
 protected:
@@ -54,21 +50,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	TArray<TSoftClassPtr<UGInteractionCondition>> ConditionClassPtrs;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
-	TArray<TSoftClassPtr<UGInteractionAction>> ActionClassPtrs;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	TSoftObjectPtr<UAnimMontage> InteractMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	FName InteractNotifyName;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
 	TObjectPtr<UMeshComponent> MeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	TObjectPtr<USceneComponent> InteractPoint;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced)
+	TObjectPtr<UGInteractionActionComponent> Pipeline;
 
 protected:
 	UPROPERTY(Transient)
@@ -78,13 +74,7 @@ protected:
 	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
 
 	UPROPERTY(Transient)
-	TArray<TObjectPtr<UGInteractionAction>> Actions;
-
-	UPROPERTY(Transient)
 	float StartTimestamp;
-
-	UPROPERTY(Transient)
-	TObjectPtr<UGInteractionActionPipeline> Pipeline;
 
 	UPROPERTY(Transient)
 	TWeakObjectPtr<AGCharacter> InteractingCharacter;

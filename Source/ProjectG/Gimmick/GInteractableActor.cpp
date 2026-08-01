@@ -1,9 +1,8 @@
 #include "Gimmick/GInteractableActor.h"
 
 #include "Character/GCharacter.h"
-#include "Component/GInteractionActionPipeline.h"
+#include "Component/GInteractionActionComponent.h"
 #include "Data/GGameEnums.h"
-#include "Data/Interact/GInteractionAction.h"
 #include "Data/Interact/GInteractionCondition.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
@@ -13,9 +12,10 @@ AGInteractableActor::AGInteractableActor()
 	: Super()
 	, InteractionState(EGInteractionState::Available)
 {
-	PrimaryActorTick.bCanEverTick = true;
-	Pipeline = CreateDefaultSubobject<UGInteractionActionPipeline>(TEXT("ActionPipeline"));
-
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMeshComponent"));
+	RootComponent = MeshComponent;
+	
+	Pipeline = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("ActionPipeline"));
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
 	InteractPoint->SetupAttachment(GetRootComponent());
 }
@@ -81,7 +81,8 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 	}
 
 	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateUObject(this, &ThisClass::OnInteractionCompleted);
-	Pipeline->Run(Actions, this, TargetActor, OnCompleted);
+	Pipeline->Run(this, TargetActor, OnCompleted);
+	
 }
 
 void AGInteractableActor::InternalInteract(AActor* TargetActor)
@@ -125,23 +126,13 @@ UAnimMontage* AGInteractableActor::GetInteractMontage() const
 void AGInteractableActor::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (IsValid(Pipeline))
+	{
+		Pipeline->Init();
+	}
+
 	RequestAsyncLoad();
-	RequestAsyncLoadActions();
-}
-
-void AGInteractableActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (false == IsValid(Pipeline))
-	{
-		return;
-	}
-
-	if (Pipeline->IsRunning())
-	{
-		Pipeline->Tick(DeltaTime);
-	}
 }
 
 void AGInteractableActor::RequestAsyncLoad()
@@ -180,37 +171,3 @@ void AGInteractableActor::OnConditionsLoaded()
 	}
 }
 
-void AGInteractableActor::RequestAsyncLoadActions()
-{
-	TArray<FSoftObjectPath> SoftPaths;
-	for (const TSoftClassPtr<UGInteractionAction>& ActionPtr : ActionClassPtrs)
-	{
-		SoftPaths.Add(ActionPtr.ToSoftObjectPath());
-	}
-
-	if (SoftPaths.IsEmpty() || false == Actions.IsEmpty())
-	{
-		return;
-	}
-
-	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
-	StreamableManager.RequestAsyncLoad(SoftPaths, FStreamableDelegate::CreateUObject(this, &ThisClass::OnActionsLoaded));
-}
-
-void AGInteractableActor::OnActionsLoaded()
-{
-	for (const TSoftClassPtr<UGInteractionAction>& ActionClassPtr : ActionClassPtrs)
-	{
-		UClass* ActionClass = ActionClassPtr.Get();
-		if (nullptr == ActionClass)
-		{
-			continue;
-		}
-
-		UGInteractionAction* NewAction = NewObject<UGInteractionAction>(this, ActionClass);
-		if (IsValid(NewAction))
-		{
-			Actions.Add(NewAction);
-		}
-	}
-}

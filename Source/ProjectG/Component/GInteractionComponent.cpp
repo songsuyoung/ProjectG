@@ -38,19 +38,23 @@ void UGInteractionComponent::TickComponent(float DeltaTime, enum ELevelTick Tick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (false == InteractableCandidates.IsEmpty())
-	{
-		UpdateFocusTarget();
-	}
+	UpdateFocusTarget();
 }
 
 void UGInteractionComponent::UpdateFocusTarget()
 {
-	// 무효화된 액터가 있는지 확인한다.
-	// 다른 플레이어에 의해 삭제되었을 수도 있음.
+	// 무효화된 액터 또는 Unavailable 상태인 액터를 제거한다.
 	for (int32 Index = InteractableCandidates.Num() - 1; Index >= 0; --Index)
 	{
-		if (false == InteractableCandidates[Index].Actor.IsValid())
+		const TWeakObjectPtr<AActor>& Actor = InteractableCandidates[Index].Actor;
+		if (false == Actor.IsValid())
+		{
+			InteractableCandidates.RemoveAtSwap(Index);
+			continue;
+		}
+
+		IGInteractable* Interactable = Cast<IGInteractable>(Actor.Get());
+		if (nullptr != Interactable && Interactable->GetInteractionState(CharacterRef.Get()) == EGInteractionState::Unavailable)
 		{
 			InteractableCandidates.RemoveAtSwap(Index);
 		}
@@ -100,7 +104,7 @@ void UGInteractionComponent::UpdateCandidateScores()
 {
 	for (FGInteractionCandidate& Candidate : InteractableCandidates)
 	{
-		const IGInteractable* Interactable = Cast<IGInteractable>(Candidate.Actor);
+		IGInteractable* Interactable = Cast<IGInteractable>(Candidate.Actor);
 		if (nullptr == Interactable)
 		{
 			continue;
@@ -167,20 +171,20 @@ void UGInteractionComponent::OnInteractEnded()
 
 		if (Interactable->CanInteract(CharacterRef.Get()))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Interact! TargetActor = %s"), *InteractableActor->GetActorLabel());
 			Interactable->Interact(CharacterRef.Get());
 		}
 	}
-}
-
-void UGInteractionComponent::Interact()
-{
 }
 
 void UGInteractionComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	IGInteractable* Candidate = Cast<IGInteractable>(OtherActor);
 	if (nullptr == Candidate)
+	{
+		return;
+	}
+
+	if (Candidate->GetInteractionState(CharacterRef.Get()) == EGInteractionState::Unavailable)
 	{
 		return;
 	}

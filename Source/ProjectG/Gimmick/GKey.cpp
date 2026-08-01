@@ -6,7 +6,6 @@
 AGKey::AGKey()
 	: Super()
 {
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 }
 
 void AGKey::InternalInteract(AActor* TargetActor)
@@ -25,5 +24,5 @@ void AGKey::InternalInteract(AActor* TargetActor)
 		}
 	}
 	
-	SetLifeSpan(0.5f);
+	SetLifeSpan(0.3f);
 }

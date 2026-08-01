@@ -6,10 +6,16 @@
 bool UGInteractionCondition_ItemRequirement::IsSatisfied(AActor* TargetActor)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
-	if (!IsValid(Character)) return false;
+	if (false == IsValid(Character))
+	{
+		return false;
+	}
 
 	UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
-	if (!IsValid(InventoryComponent)) return false;
+	if (false == IsValid(InventoryComponent))
+	{
+		return false;
+	}
 
 	return InventoryComponent->CanUseItem(Item.ItemID, Item.Count);
 }
@@ -17,10 +23,16 @@ bool UGInteractionCondition_ItemRequirement::IsSatisfied(AActor* TargetActor)
 void UGInteractionCondition_ItemRequirement::Apply(AActor* TargetActor)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
-	if (!IsValid(Character)) return;
+	if (false == IsValid(Character))
+	{
+		return;
+	}
 
 	UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
-	if (!IsValid(InventoryComponent)) return;
+	if (false == IsValid(InventoryComponent))
+	{
+		return;
+	}
 
 	InventoryComponent->UseItem(Item.ItemID, Item.Count);
 }

@@ -33,7 +33,6 @@ public:
 
 	void OnInteractStarted();
 	void OnInteractEnded();
-	void Interact();
 
 protected:
 	virtual void InitializeComponent() override;

@@ -1,5 +1,4 @@
-// Source/ProjectG/Data/Interact/GInteractionAction_PlayMontage.cpp
-#include "Data/Interact/GInteractionAction_PlayMontage.h"
+#include "Action/GInteractionAction_PlayMontage.h"
 
 #include "Animation/AnimInstance.h"
 #include "Gimmick/GInteractableActor.h"
