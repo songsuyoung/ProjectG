@@ -24,10 +24,8 @@ private:
     UPROPERTY(Transient)
     TArray<TObjectPtr<UGInteractionAction>> Actions;
 
-    UPROPERTY(Transient)
     TWeakObjectPtr<AActor> OwnerActorRef;
 
-    UPROPERTY(Transient)
     TWeakObjectPtr<AActor> TargetActorRef;
 
     FSimpleDelegate OnAllCompleted;

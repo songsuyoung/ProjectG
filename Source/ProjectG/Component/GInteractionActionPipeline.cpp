@@ -43,6 +43,11 @@ void UGInteractionActionPipeline::RunNextAction()
     }
 
     UGInteractionAction* Action = Actions[CurrentIndex++];
+    if (nullptr == Action)
+    {
+        RunNextAction();
+        return;
+    }
     Action->OnCompleted.BindUObject(this, &ThisClass::RunNextAction);
     Action->Execute(OwnerActorRef.Get(), TargetActorRef.Get());
 }
