@@ -7,8 +7,10 @@
 
 class UGInteractionCondition;
 class UGInteractionAction;
+class UGInteractionActionPipeline;
 class USphereComponent;
 class UAnimMontage;
+class AGCharacter;
 
 UCLASS()
 class PROJECTG_API AGInteractableActor : public AActor, public IGInteractable
@@ -33,6 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	void RequestAsyncLoad();
 	void OnConditionsLoaded();
 	void RequestAsyncLoadActions();
@@ -79,4 +82,10 @@ protected:
 
 	UPROPERTY(Transient)
 	float StartTimestamp;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UGInteractionActionPipeline> Pipeline;
+
+	UPROPERTY(Transient)
+	TWeakObjectPtr<AGCharacter> InteractingCharacter;
 };
