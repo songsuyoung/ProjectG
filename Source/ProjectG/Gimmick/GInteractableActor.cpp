@@ -1,17 +1,21 @@
 #include "Gimmick/GInteractableActor.h"
 
 #include "Character/GCharacter.h"
-#include "Component/GInteractionComponent.h"
+#include "Component/GInteractionActionPipeline.h"
 #include "Data/GGameEnums.h"
 #include "Data/Interact/GInteractionAction.h"
 #include "Data/Interact/GInteractionCondition.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
+#include "GameFramework/PlayerController.h"
 
 AGInteractableActor::AGInteractableActor()
 	: Super()
 	, InteractionState(EGInteractionState::Available)
 {
+	PrimaryActorTick.bCanEverTick = true;
+	Pipeline = CreateDefaultSubobject<UGInteractionActionPipeline>(TEXT("ActionPipeline"));
+
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
 	InteractPoint->SetupAttachment(GetRootComponent());
 }
@@ -63,14 +67,21 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 		return;
 	}
 
-	UGInteractionComponent* InteractionComp = Character->GetInteractionComponent();
-	if (false == IsValid(InteractionComp))
+	if (false == IsValid(Pipeline))
 	{
 		return;
 	}
 
+	InteractingCharacter = Character;
+
+	APlayerController* PC = Cast<APlayerController>(Character->GetController());
+	if (nullptr != PC)
+	{
+		PC->SetIgnoreMoveInput(true);
+	}
+
 	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateUObject(this, &ThisClass::OnInteractionCompleted);
-	InteractionComp->RunActionPipeline(Actions, this, TargetActor, OnCompleted);
+	Pipeline->Run(Actions, this, TargetActor, OnCompleted);
 }
 
 void AGInteractableActor::InternalInteract(AActor* TargetActor)
@@ -84,6 +95,16 @@ void AGInteractableActor::InternalInteract(AActor* TargetActor)
 void AGInteractableActor::OnInteractionCompleted()
 {
 	InteractionState = EGInteractionState::Unavailable;
+
+	if (InteractingCharacter.IsValid())
+	{
+		APlayerController* PC = Cast<APlayerController>(InteractingCharacter->GetController());
+		if (nullptr != PC)
+		{
+			PC->ResetIgnoreMoveInput();
+		}
+		InteractingCharacter = nullptr;
+	}
 }
 
 FTransform AGInteractableActor::GetInteractPointTransform() const
@@ -106,6 +127,21 @@ void AGInteractableActor::BeginPlay()
 	Super::BeginPlay();
 	RequestAsyncLoad();
 	RequestAsyncLoadActions();
+}
+
+void AGInteractableActor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (false == IsValid(Pipeline))
+	{
+		return;
+	}
+
+	if (Pipeline->IsRunning())
+	{
+		Pipeline->Tick(DeltaTime);
+	}
 }
 
 void AGInteractableActor::RequestAsyncLoad()
