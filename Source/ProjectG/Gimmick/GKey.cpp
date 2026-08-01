@@ -1,6 +1,5 @@
 #include "Gimmick/GKey.h"
 
-#include "ContentBrowserDataSource.h"
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
 
@@ -26,5 +25,5 @@ void AGKey::InternalInteract(AActor* TargetActor)
 		}
 	}
 	
-	SetLifeSpan(3.0f);
+	SetLifeSpan(0.5f);
 }
