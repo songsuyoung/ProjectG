@@ -24,7 +24,7 @@ public:
 	virtual void NativeDestruct() override;
 protected:
 
-	virtual void OnMessage(EGMessageType Type, FGMessage* Message = nullptr) override;
+	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
 
 protected:
 	
