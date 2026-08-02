@@ -1,0 +1,112 @@
+#include "UI/GInventoryWidget.h"
+
+#include "Base/GTileView.h"
+#include "Data/GGameEnums.h"
+#include "Data/GGameMacro.h"
+#include "Data/GItemRow.h"
+#include "Data/GMessage.h"
+#include "System/GDataManager.h"
+#include "System/GEventManager.h"
+#include "UI/GInventoryEntry.h"
+
+void UGInventoryWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if (false == IsValid(TileView_Inventory))
+	{
+		return;
+	}
+
+	Entries.Reset();
+
+	for (int32 i = 0; i < InitialSlotCount; i++)
+	{
+		UGItemEmptyEntry* EmptyEntry = NewObject<UGItemEmptyEntry>(this);
+		Entries.Add(EmptyEntry);
+	}
+
+	TileView_Inventory->SetListItems(Entries);
+	GEVENT_MESSAGE_ADD(this, this);
+}
+
+void UGInventoryWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+	GEVENT_MESSAGE_REMOVE(this, this);
+}
+
+void UGInventoryWidget::OnMessage(EGMessageType Type, FGMessage* Message)
+{
+	FGItemMessage* ItemMessage = static_cast<FGItemMessage*>(Message);
+
+	if (nullptr == ItemMessage)
+	{
+		return;
+	}
+	
+	switch (Type)
+	{
+	case EGMessageType::ItemAcquired:
+		AddInventoryUI(ItemMessage->ItemID, ItemMessage->ItemCount);
+		break;
+	case EGMessageType::ItemRemoved:
+		UseInventoryUI(ItemMessage->ItemID, ItemMessage->ItemCount);
+		break;
+	}
+}
+
+void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
+{
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	if (false == IsValid(DataManager))
+	{
+		return;
+	}
+
+	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, ItemID);
+	if (nullptr == ItemRow)
+	{
+		return;
+	}
+
+	for (int32 i = 0; i < Entries.Num(); i++)
+	{
+		if (Entries[i]->GetClass() != UGItemEmptyEntry::StaticClass())
+		{
+			continue;
+		}
+
+		UGItemEntry* NewEntry = NewObject<UGItemEntry>(this);
+		NewEntry->ItemID = ItemID;
+		NewEntry->IconImage = ItemRow->IconImage;
+		NewEntry->Count = ItemCount;
+
+		Entries[i] = NewEntry;
+		TileView_Inventory->SetListItems(Entries);
+		return;
+	}
+}
+
+void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
+{
+	for (int32 i = 0; i < Entries.Num(); i++)
+	{
+		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[i]);
+		if (false == IsValid(Entry) || Entry->ItemID != ItemID)
+		{
+			continue;
+		}
+
+		Entry->Count = ItemCount;
+
+		if (ItemCount <= 0)
+		{
+			TileView_Inventory->RemoveItem(Entries[i]);
+			return;
+		}
+
+		TileView_Inventory->RequestRefresh();
+		return;
+	}
+}
