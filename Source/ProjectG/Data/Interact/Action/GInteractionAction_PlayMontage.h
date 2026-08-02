@@ -15,7 +15,7 @@ class PROJECTG_API UGInteractionAction_PlayMontage : public UGInteractionAction
 public:
     virtual void Execute(AActor* OwnerActor, AActor* TargetActor) override;
 
-private:
+protected:
     UFUNCTION()
     void OnNotifyBegin(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointPayload);
 
@@ -25,11 +25,14 @@ private:
     void UnbindDelegates();
 
 protected:
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Animation")
+    FName NotifyName;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Animation")
+    TObjectPtr<UAnimMontage> Montage;
+    
+protected:
     UPROPERTY(Transient)
     TWeakObjectPtr<UAnimInstance> AnimInstanceRef;
-
-    UPROPERTY(Transient)
-    TWeakObjectPtr<UAnimMontage> MontageRef;
-
-    FName WaitNotifyName = NAME_None;
 };
