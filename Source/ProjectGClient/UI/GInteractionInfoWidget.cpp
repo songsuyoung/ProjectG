@@ -3,6 +3,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
 #include "Data/GInteractionPromptRow.h"
 #include "Data/GMessage.h"
 #include "System/GDataManager.h"
@@ -11,13 +12,14 @@
 void UGInteractionInfoWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	GEVENT_MESSAGE_ADD(this, this);
+	// Event.Interact 부모 태그로 등록 → 하위 Detect/Undetect/Started/Ended 모두 수신
+	GEVENT_ADD(this, GGameplayTags::EventTag_Interact, this);
 }
 
 void UGInteractionInfoWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
-	GEVENT_MESSAGE_REMOVE(this, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Interact, this);
 }
 
 void UGInteractionInfoWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -35,65 +37,54 @@ void UGInteractionInfoWidget::NativeTick(const FGeometry& MyGeometry, float InDe
 	}
 }
 
-void UGInteractionInfoWidget::OnMessage(EGMessageType Type, FGMessage* Message)
+void UGInteractionInfoWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
-	switch (Type)
+	if (Tag == GGameplayTags::EventTag_Interact_Detect)
 	{
-	case EGMessageType::DetectInteractor:
+		FGInteract* MessageData = static_cast<FGInteract*>(Message);
+		if (nullptr != MessageData)
 		{
-			FGInteract* MessageData = static_cast<FGInteract*>(Message);
-
-			if (nullptr != MessageData)
-			{
-				UpdateUI(MessageData->ID);
-			}
+			UpdateUI(MessageData->ID);
 		}
-		break;
-	case EGMessageType::UndetectInteractor:
+	}
+	else if (Tag == GGameplayTags::EventTag_Interact_Undetect)
+	{
+		SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else if (Tag == GGameplayTags::EventTag_Interact_Started)
+	{
+		FGInteractHold* MessageData = static_cast<FGInteractHold*>(Message);
+		if (nullptr != MessageData)
 		{
-			SetVisibility(ESlateVisibility::Collapsed);
-		}
-		break;
-	case EGMessageType::InteractStarted:
-		{
-			FGInteractHold* MessageData = static_cast<FGInteractHold*>(Message);
-
-			if (nullptr != MessageData)
-			{
-				bIsHolding = true;
-				HoldDuration = MessageData->HoldDuration;
-				HoldElapsed = 0.f;
-			}
-		}
-		break;
-	case EGMessageType::InteractEnded:
-		{
-			bIsHolding = false;
+			bIsHolding = true;
+			HoldDuration = MessageData->HoldDuration;
 			HoldElapsed = 0.f;
-
-			if (IsValid(ProgressBar_Hold))
-			{
-				ProgressBar_Hold->SetPercent(0.f);
-			}
 		}
-		break;
+	}
+	else if (Tag == GGameplayTags::EventTag_Interact_Ended)
+	{
+		bIsHolding = false;
+		HoldElapsed = 0.f;
+
+		if (IsValid(ProgressBar_Hold))
+		{
+			ProgressBar_Hold->SetPercent(0.f);
+		}
 	}
 }
 
 void UGInteractionInfoWidget::UpdateUI(FName ID)
 {
 	SetVisibility(ESlateVisibility::HitTestInvisible);
-	
-	// 데이터 테이블에서 ID에 맞는 데이터를 찾고
+
 	UGDataManager* DataManager = UGDataManager::Get(this);
-	
+
 	check(DataManager);
-	
+
 	FGInteractionPromptRow* PromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, ID);
-	
+
 	if (PromptRow != nullptr)
 	{
-		// TextBlock_Info값을 변경한다.
 		if (IsValid(TextBlock_Info))
 		{
 			TextBlock_Info->SetText(PromptRow->PromptText);
