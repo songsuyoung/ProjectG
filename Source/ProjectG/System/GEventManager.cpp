@@ -1,53 +1,53 @@
 #include "GEventManager.h"
 
-// Newly Created Files...
-#include "GEventManager.h"
-
 #include "GGameInstance.h"
 
 UGEventManager* UGEventManager::Get(UObject* Object)
 {
-    // UObject�� World �� ������ ���� �ʴ�.
-    // �׷��⶧���� �ܺ� ���ͷκ��� World�� �����;��Ѵ�.
     UWorld* World = Object->GetWorld();
-
     check(World);
 
     UGGameInstance* GameInstance = Cast<UGGameInstance>(World->GetGameInstance());
-
     check(GameInstance);
 
     return GameInstance->GetEventManager();
 }
 
-void UGEventManager::AddReceiver(IGMessageReceiver* Receiver)
+void UGEventManager::AddReceiver(FGameplayTag Tag, IGMessageReceiver* Receiver)
 {
-    Receivers.AddTail(Receiver);
+    Listeners.FindOrAdd(Tag).AddUnique(Receiver);
 }
 
-void UGEventManager::RemoveReceiver(IGMessageReceiver* Receiver)
+void UGEventManager::RemoveReceiver(FGameplayTag Tag, IGMessageReceiver* Receiver)
 {
-    Receivers.RemoveNode(Receiver);
-}
-
-void UGEventManager::Notify(EGMessageType Type, FGMessage* Message)
-{
-    auto* NextReceiver = Receivers.GetHead();
-
-    while (nullptr != NextReceiver)
+    if (TArray<TWeakInterfacePtr<IGMessageReceiver>>* Array = Listeners.Find(Tag))
     {
-        // GetValue -> UObject�� ����.
-        IGMessageReceiver* Receiver = Cast<IGMessageReceiver>(NextReceiver->GetValue().Get());
+        Array->RemoveSwap(Receiver);
+    }
+}
 
-        if (nullptr == Receiver)
+void UGEventManager::Broadcast(FGameplayTag Tag, FGMessage* Message)
+{
+    // Tag 자신 + 부모 태그들 순회 ( Event.Interact.Detect → Event.Interact → Event)
+    FGameplayTagContainer TagHierarchy = Tag.GetGameplayTagParents();
+
+    for (const FGameplayTag& CurrentTag : TagHierarchy)
+    {
+        TArray<TWeakInterfacePtr<IGMessageReceiver>>* Array = Listeners.Find(CurrentTag);
+        if (nullptr == Array)
         {
-            Receivers.RemoveNode(Receiver);
-            NextReceiver = NextReceiver->GetNextNode();
             continue;
         }
 
-        // �޽��� ȣ��
-        Receiver->OnMessage(Type, Message);
-        NextReceiver = NextReceiver->GetNextNode();
+        for (int32 i = Array->Num() - 1; i >= 0; --i)
+        {
+            IGMessageReceiver* Receiver = Cast<IGMessageReceiver>((*Array)[i].Get());
+            if (nullptr == Receiver)
+            {
+                Array->RemoveAtSwap(i);
+                continue;
+            }
+            Receiver->OnMessage(Tag, Message);
+        }
     }
 }
