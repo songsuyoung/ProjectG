@@ -3,6 +3,7 @@
 #include "Base/GTileView.h"
 #include "Data/GGameEnums.h"
 #include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
 #include "Data/GItemRow.h"
 #include "Data/GMessage.h"
 #include "System/GDataManager.h"
@@ -27,32 +28,32 @@ void UGInventoryWidget::NativeConstruct()
 	}
 
 	TileView_Inventory->SetListItems(Entries);
-	GEVENT_MESSAGE_ADD(this, this);
+
+	// Event.Item 부모 태그로 등록 → Acquired/Removed 모두 수신
+	GEVENT_ADD(this, GGameplayTags::EventTag_Item, this);
 }
 
 void UGInventoryWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
-	GEVENT_MESSAGE_REMOVE(this, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Item, this);
 }
 
-void UGInventoryWidget::OnMessage(EGMessageType Type, FGMessage* Message)
+void UGInventoryWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
 	FGItemMessage* ItemMessage = static_cast<FGItemMessage*>(Message);
-
 	if (nullptr == ItemMessage)
 	{
 		return;
 	}
-	
-	switch (Type)
+
+	if (Tag == GGameplayTags::EventTag_Item_Acquired)
 	{
-	case EGMessageType::ItemAcquired:
 		AddInventoryUI(ItemMessage->ItemID, ItemMessage->ItemCount);
-		break;
-	case EGMessageType::ItemRemoved:
+	}
+	else if (Tag == GGameplayTags::EventTag_Item_Removed)
+	{
 		UseInventoryUI(ItemMessage->ItemID, ItemMessage->ItemCount);
-		break;
 	}
 }
 
