@@ -5,7 +5,10 @@
 #include "EnhancedInputSubsystems.h"
 #include "GInteractionComponent.h"
 #include "Character/GCharacter.h"
+#include "Data/GGameMacro.h"
+#include "Data/GMessage.h"
 #include "GameFramework/Character.h"
+#include "System/GEventManager.h"
 
 UGHeroComponent::UGHeroComponent()
 {
@@ -32,6 +35,9 @@ void UGHeroComponent::SetupInputComponent()
 			
 			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Started, this, &ThisClass::OnInteractStarted);
 			EnhancedInputComponent->BindAction(InteractInputAction, ETriggerEvent::Completed, this, &ThisClass::OnInteractEnded);
+		
+			EnhancedInputComponent->BindAction(InventoryInputAction, ETriggerEvent::Completed, this, &ThisClass::OnInventoryToggle);
+		
 		}
 	}
 }
@@ -107,6 +113,11 @@ void UGHeroComponent::OnInteractEnded()
 			InteractionComponent->OnInteractEnded();
 		}
 	}
+}
+
+void UGHeroComponent::OnInventoryToggle()
+{
+	GEVENT_MESSAGE_NOTIFY(this, EGMessageType::InventoryToggle);
 }
 
 
