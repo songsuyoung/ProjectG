@@ -34,8 +34,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void RequestAsyncLoad();
-	void OnConditionsLoaded();
 	void OnInteractionCompleted();
 
 protected:
@@ -48,9 +46,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	float HoldDuration;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
-	TArray<TSoftClassPtr<UGInteractionCondition>> ConditionClassPtrs;
-	
+	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
+	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	TSoftObjectPtr<UAnimMontage> InteractMontage;
 
@@ -63,15 +61,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	TObjectPtr<USceneComponent> InteractPoint;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced)
-	TObjectPtr<UGInteractionActionComponent> Pipeline;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UGInteractionActionComponent> InteractionActionComponent;
 
 protected:
 	UPROPERTY(Transient)
 	EGInteractionState InteractionState;
-
-	UPROPERTY(Transient)
-	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
 
 	UPROPERTY(Transient)
 	float StartTimestamp;

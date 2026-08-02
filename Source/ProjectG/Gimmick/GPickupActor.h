@@ -2,17 +2,17 @@
 
 #include "CoreMinimal.h"
 #include "GInteractableActor.h"
-#include "GKey.generated.h"
+#include "GPickupActor.generated.h"
 
 UCLASS()
-class PROJECTG_API AGKey : public AGInteractableActor
+class PROJECTG_API AGPickupActor : public AGInteractableActor
 {
 	GENERATED_BODY()
-	
-public:	
-	AGKey();
-	
+
+public:
+	AGPickupActor();
+
 protected:
-	
+
 	virtual void InternalInteract(AActor* TargetActor) override;
 };

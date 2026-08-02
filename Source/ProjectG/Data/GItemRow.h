@@ -1,10 +1,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GInteractionPromptRow.generated.h"
+#include "GItemRow.generated.h"
 
+class UTexture2D;
+class AGInteractableActor;
 USTRUCT(BlueprintType)
-struct FGInteractionPromptRow : public FTableRowBase
+struct FGItemRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -16,10 +18,16 @@ public:
 	FName GetID() { return ID; }
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FText PromptText;
+	FText Name;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName ItemID;
+	FText Desc;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSoftObjectPtr<UTexture2D> IconImage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSoftClassPtr<AGInteractableActor> ItemActor;
 	
 private:
 	

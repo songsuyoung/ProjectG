@@ -1,28 +1,28 @@
-#include "Gimmick/GKey.h"
+#include "Gimmick/GPickupActor.h"
 
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
 
-AGKey::AGKey()
+AGPickupActor::AGPickupActor()
 	: Super()
 {
 }
 
-void AGKey::InternalInteract(AActor* TargetActor)
+void AGPickupActor::InternalInteract(AActor* TargetActor)
 {
 	Super::InternalInteract(TargetActor);
-	
+
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
-	
+
 	if (IsValid(Character))
 	{
 		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
-		
+
 		if (IsValid(InventoryComponent))
 		{
 			InventoryComponent->Acquire(ID);
 		}
 	}
-	
+
 	SetLifeSpan(0.3f);
 }

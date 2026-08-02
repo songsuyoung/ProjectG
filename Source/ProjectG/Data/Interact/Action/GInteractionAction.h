@@ -4,7 +4,7 @@
 #include "UObject/NoExportTypes.h"
 #include "GInteractionAction.generated.h"
 
-UCLASS(Abstract)
+UCLASS(Abstract, EditInlineNew)
 class PROJECTG_API UGInteractionAction : public UObject
 {
     GENERATED_BODY()

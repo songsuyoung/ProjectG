@@ -5,7 +5,7 @@
 #include "Interface/GInteractable.h"
 #include "GInteractionCondition.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, EditInlineNew)
 class PROJECTG_API UGInteractionCondition : public UObject
 {
 	GENERATED_BODY()

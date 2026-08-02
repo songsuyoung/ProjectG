@@ -15,6 +15,7 @@ UENUM(BlueprintType)
 enum class EGDataTableType : uint8
 {
 	InteractionPrompt,
+	Item,
 	Max,
 };
 

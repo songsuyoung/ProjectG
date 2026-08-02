@@ -1,59 +1,11 @@
 #include "GInteractionActionComponent.h"
 
 #include "Data/Interact/Action/GInteractionAction.h"
-#include "Engine/AssetManager.h"
-#include "Engine/StreamableManager.h"
 
 UGInteractionActionComponent::UGInteractionActionComponent(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
     PrimaryComponentTick.bCanEverTick = true;
-}
-
-void UGInteractionActionComponent::Init()
-{
-    Actions.Reset();
-
-    TArray<FSoftObjectPath> SoftPaths;
-    for (const TSoftClassPtr<UGInteractionAction>& ActionPtr : ActionClassPtrs)
-    {
-        SoftPaths.Add(ActionPtr.ToSoftObjectPath());
-    }
-
-    if (SoftPaths.IsEmpty())
-    {
-        return;
-    }
-
-    TWeakObjectPtr<UGInteractionActionComponent> WeakThis = this;
-    FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
-    StreamableManager.RequestAsyncLoad(SoftPaths, FStreamableDelegate::CreateLambda([WeakThis]()
-    {
-        if (false == WeakThis.IsValid())
-        {
-            return;
-        }
-
-        WeakThis->OnActionsLoaded();
-    }));
-}
-
-void UGInteractionActionComponent::OnActionsLoaded()
-{
-    for (const TSoftClassPtr<UGInteractionAction>& ActionClassPtr : ActionClassPtrs)
-    {
-        UClass* ActionClass = ActionClassPtr.Get();
-        if (nullptr == ActionClass)
-        {
-            continue;
-        }
-
-        UGInteractionAction* NewAction = NewObject<UGInteractionAction>(this, ActionClass);
-        if (IsValid(NewAction))
-        {
-            Actions.Add(NewAction);
-        }
-    }
 }
 
 void UGInteractionActionComponent::Run(AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted)
@@ -71,7 +23,7 @@ void UGInteractionActionComponent::TickComponent(float DeltaTime, enum ELevelTic
     FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-    
+
     if (false == bIsRunning)
     {
         return;

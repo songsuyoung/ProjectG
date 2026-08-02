@@ -4,8 +4,6 @@
 #include "Component/GInteractionActionComponent.h"
 #include "Data/GGameEnums.h"
 #include "Data/Interact/GInteractionCondition.h"
-#include "Engine/AssetManager.h"
-#include "Engine/StreamableManager.h"
 #include "GameFramework/PlayerController.h"
 
 AGInteractableActor::AGInteractableActor()
@@ -15,7 +13,7 @@ AGInteractableActor::AGInteractableActor()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMeshComponent"));
 	RootComponent = MeshComponent;
 	
-	Pipeline = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("ActionPipeline"));
+	InteractionActionComponent = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("ActionPipeline"));
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
 	InteractPoint->SetupAttachment(GetRootComponent());
 }
@@ -67,7 +65,7 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 		return;
 	}
 
-	if (false == IsValid(Pipeline))
+	if (false == IsValid(InteractionActionComponent))
 	{
 		return;
 	}
@@ -81,7 +79,7 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 	}
 
 	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateUObject(this, &ThisClass::OnInteractionCompleted);
-	Pipeline->Run(this, TargetActor, OnCompleted);
+	InteractionActionComponent->Run(this, TargetActor, OnCompleted);
 	
 }
 
@@ -126,47 +124,12 @@ UAnimMontage* AGInteractableActor::GetInteractMontage() const
 void AGInteractableActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (IsValid(Pipeline))
+
+	for (UGInteractionCondition* Condition : Conditions)
 	{
-		Pipeline->Init();
-	}
-
-	RequestAsyncLoad();
-}
-
-void AGInteractableActor::RequestAsyncLoad()
-{
-	TArray<FSoftObjectPath> SoftPaths;
-	for (const TSoftClassPtr<UGInteractionCondition>& ConditionPtr : ConditionClassPtrs)
-	{
-		SoftPaths.Add(ConditionPtr.ToSoftObjectPath());
-	}
-
-	if (SoftPaths.IsEmpty() || false == Conditions.IsEmpty())
-	{
-		return;
-	}
-
-	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
-	StreamableManager.RequestAsyncLoad(SoftPaths, FStreamableDelegate::CreateUObject(this, &ThisClass::OnConditionsLoaded));
-}
-
-void AGInteractableActor::OnConditionsLoaded()
-{
-	for (const TSoftClassPtr<UGInteractionCondition>& ConditionClassPtr : ConditionClassPtrs)
-	{
-		UClass* ConditionClass = ConditionClassPtr.Get();
-		if (nullptr == ConditionClass)
+		if (IsValid(Condition))
 		{
-			continue;
-		}
-
-		UGInteractionCondition* NewCondition = NewObject<UGInteractionCondition>(this, ConditionClass);
-		if (IsValid(NewCondition))
-		{
-			NewCondition->Init(this);
-			Conditions.Add(NewCondition);
+			Condition->Init(this);
 		}
 	}
 }

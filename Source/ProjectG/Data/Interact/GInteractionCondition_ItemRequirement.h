@@ -27,6 +27,6 @@ public:
 	virtual void Apply(AActor* TargetActor) override;
 protected:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition | Level")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	FGItemRequirement Item;
 };

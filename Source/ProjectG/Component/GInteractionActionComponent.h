@@ -6,31 +6,26 @@
 
 class UGInteractionAction;
 
-UCLASS(Blueprintable, EditInlineNew)
+UCLASS(Blueprintable)
 class PROJECTG_API UGInteractionActionComponent : public UActorComponent
 {
     GENERATED_BODY()
 
 public:
     UGInteractionActionComponent(const FObjectInitializer& ObjectInitializer);
-    
-    void Init();
+
     void Run(AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted);
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     bool IsRunning() const { return bIsRunning; }
 
 private:
-    void OnActionsLoaded();
     void RunNextAction();
 
-protected:    
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
-    TArray<TSoftClassPtr<UGInteractionAction>> ActionClassPtrs;
-
 protected:
-    UPROPERTY(Transient)
+    UPROPERTY(EditAnywhere, Instanced, Category = "Interaction|Actions")
     TArray<TObjectPtr<UGInteractionAction>> Actions;
 
+protected:
     UPROPERTY(Transient)
     TWeakObjectPtr<AActor> OwnerActorRef;
 
