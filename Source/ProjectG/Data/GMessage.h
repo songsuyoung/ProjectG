@@ -10,6 +10,11 @@ enum class EGMessageType
 	UndetectInteractor,
 	InteractStarted,
 	InteractEnded,
+
+	ItemAcquired,
+	ItemRemoved,
+
+	InventoryToggle
 };
 
 USTRUCT()
@@ -44,4 +49,17 @@ public:
 	FGInteractHold(EGMessageType InType, float InHoldDuration) : FGMessage(InType), HoldDuration(InHoldDuration) { }
 
 	float HoldDuration = 0.f;
+};
+
+USTRUCT()
+struct FGItemMessage : public FGMessage
+{
+	GENERATED_BODY()
+public:
+	
+	FGItemMessage() { }
+	FGItemMessage(EGMessageType InType, FName ItemID, int32 ItemCount) : FGMessage(InType), ItemID(ItemID), ItemCount(ItemCount) { }
+	
+	FName ItemID;
+	int32 ItemCount;
 };
