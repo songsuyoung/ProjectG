@@ -7,8 +7,6 @@
 
 class UTextBlock;
 class UProgressBar;
-enum class EGMessageType;
-struct FGMessage;
 
 UCLASS()
 class PROJECTGCLIENT_API UGInteractionInfoWidget : public UCommonUserWidget, public IGMessageReceiver
@@ -20,7 +18,7 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	virtual void OnMessage(EGMessageType Type, FGMessage* Message = nullptr) override;
+	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
 
 protected:
 
