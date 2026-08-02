@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "GameplayTagContainer.h"
 #include "GMessageReceiver.generated.h"
 
-enum class EGMessageType;
 struct FGMessage;
+
 UINTERFACE(MinimalAPI)
 class UGMessageReceiver : public UInterface
 {
@@ -19,5 +20,5 @@ class PROJECTG_API IGMessageReceiver
 
 public:
 
-	virtual void OnMessage(EGMessageType Type, FGMessage* Message = nullptr) = 0;
+	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) = 0;
 };
