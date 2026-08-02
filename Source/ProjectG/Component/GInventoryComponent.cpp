@@ -1,21 +1,23 @@
 #include "Component/GInventoryComponent.h"
 
+#include "Data/GGameMacro.h"
 #include "Data/GInteractionPromptRow.h"
 #include "Data/GItemRow.h"
+#include "Data/GMessage.h"
 #include "System/GDataManager.h"
+#include "System/GEventManager.h"
 
 UGInventoryComponent::UGInventoryComponent()
 {
 
 }
 
-void UGInventoryComponent::Acquire(FName ItemName)
+void UGInventoryComponent::Acquire(FName PromptID)
 {
-	// 실제로는 데이터 테이블에 있는 데이터 인지를 확인한다.
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-	
-	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, ItemName);
+
+	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, PromptID);
 	
 	if (nullptr == InteractionPromptRow)
 	{
@@ -28,9 +30,12 @@ void UGInventoryComponent::Acquire(FName ItemName)
 	{
 		return;
 	}
-	auto& ItemValue = InventorySlots.FindOrAdd(ItemRow->GetID());
-	// 데이터가 실제로 있다면 하나 더해준다.
+	FName AcquiredItemID = ItemRow->GetID();
+	auto& ItemValue = InventorySlots.FindOrAdd(AcquiredItemID);
 	ItemValue += 1;
+
+	FGItemMessage Message(EGMessageType::ItemAcquired, AcquiredItemID, ItemValue);
+	GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::ItemAcquired, Message);
 }
 
 void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
@@ -44,6 +49,9 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 	}
 	
 	*ItemCount -= Count;
+
+	FGItemMessage Message(EGMessageType::ItemRemoved, ItemName, *ItemCount);
+	GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::ItemRemoved, Message);
 }
 
 bool UGInventoryComponent::CanUseItem(FName ItemName, int32 Count)
