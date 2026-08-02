@@ -3,6 +3,7 @@
 // UE 5.
 #include "Components/SphereComponent.h"
 #include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
 #include "Data/GMessage.h"
 #include "Data/GGameEnums.h"
 #include "GameFramework/Character.h"
@@ -64,8 +65,7 @@ void UGInteractionComponent::UpdateFocusTarget()
 	{
 		if (nullptr != InteractableActor)
 		{
-			FGInteract Message(EGMessageType::UndetectInteractor);
-			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UndetectInteractor, Message);
+			GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_Interact_Undetect);
 		}
 		InteractableActor = nullptr;
 		return;
@@ -78,8 +78,7 @@ void UGInteractionComponent::UpdateFocusTarget()
 	{
 		if (nullptr != InteractableActor)
 		{
-			FGInteract Message(EGMessageType::UndetectInteractor);
-			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::UndetectInteractor, Message);
+			GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_Interact_Undetect);
 		}
 
 		InteractableActor = nullptr;
@@ -94,8 +93,8 @@ void UGInteractionComponent::UpdateFocusTarget()
 
 		if (nullptr != Interactable)
 		{
-			FGInteract Message(EGMessageType::DetectInteractor, Interactable->GetID());
-			GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::DetectInteractor, Message);
+			FGInteract Message(Interactable->GetID());
+			GEVENT_BROADCAST(this, GGameplayTags::EventTag_Interact_Detect, Message);
 		}
 	}
 }
@@ -156,8 +155,8 @@ void UGInteractionComponent::OnInteractStarted()
 	{
 		Interactable->OnInteractStarted(CharacterRef.Get());
 
-		FGInteractHold Message(EGMessageType::InteractStarted, Interactable->GetHoldDuration());
-		GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::InteractStarted, Message);
+		FGInteractHold Message(Interactable->GetHoldDuration());
+		GEVENT_BROADCAST(this, GGameplayTags::EventTag_Interact_Started, Message);
 	}
 }
 
@@ -166,8 +165,7 @@ void UGInteractionComponent::OnInteractEnded()
 	IGInteractable* Interactable = Cast<IGInteractable>(InteractableActor);
 	if (nullptr != Interactable)
 	{
-		FGInteractHold Message(EGMessageType::InteractEnded, 0.f);
-		GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::InteractEnded, Message);
+		GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_Interact_Ended);
 
 		if (Interactable->CanInteract(CharacterRef.Get()))
 		{
