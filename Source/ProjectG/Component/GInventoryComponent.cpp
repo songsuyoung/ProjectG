@@ -1,6 +1,7 @@
 #include "Component/GInventoryComponent.h"
 
 #include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
 #include "Data/GInteractionPromptRow.h"
 #include "Data/GItemRow.h"
 #include "Data/GMessage.h"
@@ -34,8 +35,8 @@ void UGInventoryComponent::Acquire(FName PromptID)
 	auto& ItemValue = InventorySlots.FindOrAdd(AcquiredItemID);
 	ItemValue += 1;
 
-	FGItemMessage Message(EGMessageType::ItemAcquired, AcquiredItemID, ItemValue);
-	GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::ItemAcquired, Message);
+	FGItemMessage Message(AcquiredItemID, ItemValue);
+	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Acquired, Message);
 }
 
 void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
@@ -50,8 +51,8 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 	
 	*ItemCount -= Count;
 
-	FGItemMessage Message(EGMessageType::ItemRemoved, ItemName, *ItemCount);
-	GEVENT_MESSAGE_NOTIFY_MSG(this, EGMessageType::ItemRemoved, Message);
+	FGItemMessage Message(ItemName, *ItemCount);
+	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Removed, Message);
 }
 
 bool UGInventoryComponent::CanUseItem(FName ItemName, int32 Count)
