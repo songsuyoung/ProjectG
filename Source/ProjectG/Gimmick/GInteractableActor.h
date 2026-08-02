@@ -29,8 +29,6 @@ public:
 	virtual void InternalInteract(AActor* TargetActor) override;
 
 	FTransform GetInteractPointTransform() const;
-	UAnimMontage* GetInteractMontage() const;
-	FName GetInteractNotifyName() const { return InteractNotifyName; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,12 +46,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
 	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
-	TSoftObjectPtr<UAnimMontage> InteractMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
-	FName InteractNotifyName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
 	TObjectPtr<UMeshComponent> MeshComponent;
