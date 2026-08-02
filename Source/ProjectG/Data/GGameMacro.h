@@ -1,14 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 
-#define GEVENT_MESSAGE_NOTIFY(Context, Type) \
-	UGEventManager::Get(Context)->Notify(Type, nullptr); \
-
-#define GEVENT_MESSAGE_NOTIFY_MSG(Context, Type, Msg) \
-	UGEventManager::Get(Context)->Notify(Type, &Msg);
-
-#define GEVENT_MESSAGE_ADD(Context, Receiver)	\
-	UGEventManager::Get(Context)->AddReceiver(Receiver) \
-
-#define GEVENT_MESSAGE_REMOVE(Context, Receiver)	\
-	UGEventManager::Get(Context)->RemoveReceiver(Receiver) \
+#define GEVENT_BROADCAST(Context, Tag, Msg)   UGEventManager::Get(Context)->Broadcast(Tag, &Msg)
+#define GEVENT_BROADCAST_EMPTY(Context, Tag)  UGEventManager::Get(Context)->Broadcast(Tag)
+#define GEVENT_ADD(Context, Tag, Receiver)    UGEventManager::Get(Context)->AddReceiver(Tag, Receiver)
+#define GEVENT_REMOVE(Context, Tag, Receiver) UGEventManager::Get(Context)->RemoveReceiver(Tag, Receiver)
