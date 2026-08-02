@@ -13,7 +13,7 @@ class PROJECTGCLIENT_API UGInventoryWidget : public UGCommonActivatableWidget, p
 	GENERATED_BODY()
 
 public:
-	virtual void OnMessage(EGMessageType Type, FGMessage* Message) override;
+	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
 
 protected:
 	virtual void NativeConstruct() override;
