@@ -6,7 +6,7 @@
 #include "GInteractionComponent.h"
 #include "Character/GCharacter.h"
 #include "Data/GGameMacro.h"
-#include "Data/GMessage.h"
+#include "Data/GGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "System/GEventManager.h"
 
@@ -117,7 +117,7 @@ void UGHeroComponent::OnInteractEnded()
 
 void UGHeroComponent::OnInventoryToggle()
 {
-	GEVENT_MESSAGE_NOTIFY(this, EGMessageType::InventoryToggle);
+	GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_UI_InventoryToggle);
 }
 
 
