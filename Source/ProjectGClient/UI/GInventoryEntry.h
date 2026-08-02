@@ -1,21 +1,52 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Interface/GMessageReceiver.h"
-#include "UI/Base/GCommonActivatableWidget.h"
-#include "GInventoryWidget.generated.h"
+#include "Blueprint/IUserObjectListEntry.h"
+#include "Blueprint/UserWidget.h"
+#include "Engine/StreamableManager.h"
+#include "GInventoryEntry.generated.h"
 
-class UTileView;
+class UImage;
+class UTextBlock;
 UCLASS()
-class PROJECTGCLIENT_API UGInventoryWidget : public UGCommonActivatableWidget, public IGMessageReceiver
+class UGItemEmptyEntry : public UObject
+{
+	GENERATED_BODY()
+};
+
+UCLASS()
+class UGItemEntry : public UGItemEmptyEntry
 {
 	GENERATED_BODY()
 
 public:
-	virtual void OnMessage(EGMessageType Type, FGMessage* Message) override;
-	
+	UPROPERTY(Transient)
+	FName ItemID;
+
+	UPROPERTY(Transient)
+	TSoftObjectPtr<UTexture2D> IconImage;
+
+	UPROPERTY(Transient)
+	int32 Count = 0;
+};
+
+UCLASS()
+class PROJECTGCLIENT_API UGInventoryEntry : public UUserWidget, public IUserObjectListEntry
+{
+	GENERATED_BODY()
+
 protected:
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
+protected:
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UImage> Image_Icon;
 	
 	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UTileView> TileView_Inventory;
+	TObjectPtr<UTextBlock> TextBlock_Count;
+
+private:
+	void OnIconLoaded();
+
+	TSharedPtr<FStreamableHandle> StreamableHandle;
 };
