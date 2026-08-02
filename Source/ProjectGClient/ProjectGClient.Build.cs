@@ -14,6 +14,7 @@ public class ProjectGClient : ModuleRules
             "UMG",
             "Slate",
             "SlateCore",
+            "InputCore",
             "ProjectG",
             "CommonUI",
             "GameplayTags"
