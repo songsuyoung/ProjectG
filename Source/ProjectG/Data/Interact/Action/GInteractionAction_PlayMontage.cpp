@@ -19,14 +19,7 @@ void UGInteractionAction_PlayMontage::Execute(AActor* OwnerActor, AActor* Target
         Finish();
         return;
     }
-
-    UAnimMontage* Montage = Interactable->GetInteractMontage();
-    if (false == IsValid(Montage))
-    {
-        Finish();
-        return;
-    }
-
+    
     UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
     if (false == IsValid(AnimInstance))
     {
@@ -35,12 +28,10 @@ void UGInteractionAction_PlayMontage::Execute(AActor* OwnerActor, AActor* Target
     }
 
     AnimInstanceRef = AnimInstance;
-    MontageRef = Montage;
-    WaitNotifyName = Interactable->GetInteractNotifyName();
 
     Character->PlayAnimMontage(Montage);
 
-    if (false == WaitNotifyName.IsNone())
+    if (false == NotifyName.IsNone())
     {
         AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnNotifyBegin);
     }
@@ -50,9 +41,9 @@ void UGInteractionAction_PlayMontage::Execute(AActor* OwnerActor, AActor* Target
     }
 }
 
-void UGInteractionAction_PlayMontage::OnNotifyBegin(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointPayload)
+void UGInteractionAction_PlayMontage::OnNotifyBegin(FName InNotifyName, const FBranchingPointNotifyPayload& BranchingPointPayload)
 {
-    if (NotifyName != WaitNotifyName)
+    if (NotifyName != InNotifyName)
     {
         return;
     }
@@ -61,9 +52,9 @@ void UGInteractionAction_PlayMontage::OnNotifyBegin(FName NotifyName, const FBra
     Finish();
 }
 
-void UGInteractionAction_PlayMontage::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+void UGInteractionAction_PlayMontage::OnMontageEnded(UAnimMontage* InMontage, bool bInterrupted)
 {
-    if (Montage != MontageRef.Get())
+    if (Montage != InMontage)
     {
         return;
     }
