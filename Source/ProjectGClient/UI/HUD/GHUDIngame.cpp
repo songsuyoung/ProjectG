@@ -1,42 +1,35 @@
 #include "GHUDIngame.h"
 
 #include "Data/GGameMacro.h"
-#include "Data/GMessage.h"
+#include "Data/GGameplayTags.h"
 #include "System/GEventManager.h"
 #include "UI/GInventoryWidget.h"
 
 void UGHUDIngame::NativeConstruct()
 {
 	Super::NativeConstruct();
-	GEVENT_MESSAGE_ADD(this, this);
+	GEVENT_ADD(this, GGameplayTags::EventTag_UI_InventoryToggle, this);
 }
 
 void UGHUDIngame::NativeDestruct()
 {
 	Super::NativeDestruct();
-	GEVENT_MESSAGE_REMOVE(this, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_UI_InventoryToggle, this);
 }
 
-void UGHUDIngame::OnMessage(EGMessageType Type, FGMessage* Message)
+void UGHUDIngame::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
 	bCanShowInventory = !bCanShowInventory;
-	
-	switch (Type)
+
+	if (IsValid(InventoryWidget))
 	{
-	case EGMessageType::InventoryToggle:
+		if (bCanShowInventory)
 		{
-			if (IsValid(InventoryWidget))
-			{
-				if (bCanShowInventory)
-				{
-					InventoryWidget->ActivateWidget();
-				}
-				else
-				{
-					InventoryWidget->DeactivateWidget();
-				}
-			}
+			InventoryWidget->ActivateWidget();
 		}
-		break;
+		else
+		{
+			InventoryWidget->DeactivateWidget();
+		}
 	}
 }
