@@ -1,14 +1,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Interface/GMessageReceiver.h"
-#include "Containers/List.h"
 #include "GEventManager.generated.h"
 
-enum class EGMessageType;
 struct FGMessage;
 
-// EventManager - Subject
 UCLASS()
 class PROJECTG_API UGEventManager : public UObject
 {
@@ -17,11 +15,12 @@ class PROJECTG_API UGEventManager : public UObject
 public:
 
 	static UGEventManager* Get(UObject* Context);
-	
-	void AddReceiver(IGMessageReceiver* Receiver);
-	void RemoveReceiver(IGMessageReceiver* Receiver);
-	void Notify(EGMessageType Type, FGMessage* Message = nullptr);
-protected:
 
-	TDoubleLinkedList<TWeakInterfacePtr<IGMessageReceiver>> Receivers;
+	void AddReceiver(FGameplayTag Tag, IGMessageReceiver* Receiver);
+	void RemoveReceiver(FGameplayTag Tag, IGMessageReceiver* Receiver);
+	void Broadcast(FGameplayTag Tag, FGMessage* Message = nullptr);
+
+private:
+
+	TMap<FGameplayTag, TArray<TWeakInterfacePtr<IGMessageReceiver>>> Listeners;
 };
