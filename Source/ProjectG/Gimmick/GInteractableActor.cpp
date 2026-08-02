@@ -13,7 +13,7 @@ AGInteractableActor::AGInteractableActor()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMeshComponent"));
 	RootComponent = MeshComponent;
 	
-	InteractionActionComponent = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("ActionPipeline"));
+	InteractionActionComponent = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("InteractionActionComponent"));
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
 	InteractPoint->SetupAttachment(GetRootComponent());
 }
@@ -114,11 +114,6 @@ FTransform AGInteractableActor::GetInteractPointTransform() const
 	}
 
 	return InteractPoint->GetComponentTransform();
-}
-
-UAnimMontage* AGInteractableActor::GetInteractMontage() const
-{
-	return InteractMontage.Get();
 }
 
 void AGInteractableActor::BeginPlay()
