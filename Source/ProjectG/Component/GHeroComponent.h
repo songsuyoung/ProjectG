@@ -30,6 +30,8 @@ protected:
 
 	void OnInteractStarted();
 	void OnInteractEnded();
+
+	void OnInventoryToggle();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -43,6 +45,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> InteractInputAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> InventoryInputAction;
 protected:
 
 	UPROPERTY(Transient)
