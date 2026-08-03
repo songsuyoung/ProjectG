@@ -24,7 +24,6 @@ class PROJECTG_API UGInteractionCondition_ItemRequirement : public UGInteraction
 
 public:
 	virtual bool IsSatisfied(AActor* TargetActor) override;
-	virtual void Apply(AActor* TargetActor) override;
 protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")

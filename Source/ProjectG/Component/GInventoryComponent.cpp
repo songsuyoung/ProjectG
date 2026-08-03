@@ -13,6 +13,34 @@ UGInventoryComponent::UGInventoryComponent()
 
 }
 
+bool UGInventoryComponent::CanAcquire(FName InteractionID)
+{
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	check(DataManager);
+
+	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, InteractionID);
+	
+	if (nullptr == InteractionPromptRow)
+	{
+		return false;
+	}
+	
+	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, InteractionPromptRow->ItemID);
+
+	if (nullptr == ItemRow)
+	{
+		return false;
+	}
+	int32* ItemCount = InventorySlots.Find(ItemRow->GetID());
+	
+	if (ItemCount == nullptr)
+	{
+		return true; 
+	}
+	
+	return *ItemCount < ItemRow->MaxCount;
+}
+
 void UGInventoryComponent::Acquire(FName PromptID)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
@@ -31,6 +59,7 @@ void UGInventoryComponent::Acquire(FName PromptID)
 	{
 		return;
 	}
+	
 	FName AcquiredItemID = ItemRow->GetID();
 	auto& ItemValue = InventorySlots.FindOrAdd(AcquiredItemID);
 	ItemValue += 1;

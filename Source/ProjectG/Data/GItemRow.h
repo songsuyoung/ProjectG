@@ -24,6 +24,9 @@ public:
 	FText Desc;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int MaxCount;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSoftObjectPtr<UTexture2D> IconImage;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

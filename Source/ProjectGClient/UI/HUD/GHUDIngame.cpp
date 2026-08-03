@@ -3,21 +3,38 @@
 #include "Data/GGameMacro.h"
 #include "Data/GGameplayTags.h"
 #include "System/GEventManager.h"
+#include "UI/GCraftingWidget.h"
 #include "UI/GInventoryWidget.h"
 
 void UGHUDIngame::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GEVENT_ADD(this, GGameplayTags::EventTag_UI_InventoryToggle, this);
+	GEVENT_ADD(this, GGameplayTags::EventTag_UI_CraftingToggle, this);
 }
 
 void UGHUDIngame::NativeDestruct()
 {
 	Super::NativeDestruct();
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_UI_InventoryToggle, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_UI_CraftingToggle, this);
+
 }
 
 void UGHUDIngame::OnMessage(FGameplayTag Tag, FGMessage* Message)
+{
+	if (Tag == GGameplayTags::EventTag_UI_InventoryToggle)
+	{
+		ToggleInventory();
+	}
+	else if (Tag == GGameplayTags::EventTag_UI_CraftingToggle)
+	{
+		ToggleWorkbench();
+	}
+	
+}
+
+void UGHUDIngame::ToggleInventory()
 {
 	bCanShowInventory = !bCanShowInventory;
 
@@ -32,4 +49,22 @@ void UGHUDIngame::OnMessage(FGameplayTag Tag, FGMessage* Message)
 			InventoryWidget->DeactivateWidget();
 		}
 	}
+}
+
+void UGHUDIngame::ToggleWorkbench()
+{
+	bCanShowWorkbench = !bCanShowWorkbench;
+	
+	if (IsValid(CraftingWidget))
+	{
+		if (CraftingWidget)
+		{
+			CraftingWidget->ActivateWidget();
+		}
+		else
+		{
+			CraftingWidget->DeactivateWidget();
+		}
+	}
+	
 }

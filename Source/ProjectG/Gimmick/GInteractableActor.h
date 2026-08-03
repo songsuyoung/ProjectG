@@ -26,7 +26,7 @@ public:
 	virtual void OnInteractStarted(AActor* TargetActor) override;
 	virtual bool CanInteract(AActor* TargetActor) override;
 	virtual void Interact(AActor* TargetActor) override;
-	virtual void InternalInteract(AActor* TargetActor) override;
+	virtual void InternalInteract(AActor* TargetActor) override {};
 
 	FTransform GetInteractPointTransform() const;
 

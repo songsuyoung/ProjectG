@@ -8,7 +8,7 @@
 #include "GHUDIngame.generated.h"
 
 class UGInventoryWidget;
-
+class UGCraftingWidget;
 UCLASS()
 class PROJECTGCLIENT_API UGHUDIngame : public UGCommonActivatableWidget, public IGMessageReceiver
 {
@@ -25,14 +25,21 @@ public:
 protected:
 
 	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
+	void ToggleInventory();
+	void ToggleWorkbench();
 
 protected:
 	
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UGInventoryWidget> InventoryWidget;
 	
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UGCraftingWidget> CraftingWidget;
 	
 protected:
 	UPROPERTY(Transient)
 	uint8 bCanShowInventory : 1; 
+	
+	UPROPERTY(Transient)
+	uint8 bCanShowWorkbench : 1;
 };

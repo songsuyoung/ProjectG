@@ -24,4 +24,5 @@ namespace GGameplayTags
 
 	// Event tags - UI
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_UI_InventoryToggle);
+	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_UI_CraftingToggle);
 };

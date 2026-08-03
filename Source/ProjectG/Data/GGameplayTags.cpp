@@ -19,5 +19,7 @@ namespace GGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Item_Removed, "Event.Item.Removed", "Item removed from inventory");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_UI_InventoryToggle, "Event.UI.InventoryToggle", "Toggle inventory UI");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_UI_CraftingToggle, "Event.UI.CraftingWidgetToggle", "Toggle Crafting UI");
+	
 }
 

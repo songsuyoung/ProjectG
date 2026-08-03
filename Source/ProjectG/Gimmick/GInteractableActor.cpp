@@ -83,14 +83,6 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 	
 }
 
-void AGInteractableActor::InternalInteract(AActor* TargetActor)
-{
-	for (UGInteractionCondition* Condition : Conditions)
-	{
-		Condition->Apply(TargetActor);
-	}
-}
-
 void AGInteractableActor::OnInteractionCompleted()
 {
 	InteractionState = EGInteractionState::Unavailable;
