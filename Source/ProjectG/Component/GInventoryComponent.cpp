@@ -78,7 +78,7 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 		return;
 	}
 	
-	*ItemCount -= Count;
+	*ItemCount = (Count - 1) > 0? *ItemCount - 1 : 0;
 
 	FGItemMessage Message(ItemName, *ItemCount);
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Removed, Message);
