@@ -13,3 +13,9 @@ void UGCraftingWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
 }
+
+bool UGCraftingWidget::NativeOnHandleBackAction()
+{
+	DeactivateWidget();
+	return Super::NativeOnHandleBackAction();
+}

@@ -18,7 +18,8 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
-
+	virtual bool NativeOnHandleBackAction() override;
+	
 	void AddInventoryUI(FName ItemID, int32 ItemCount);
 	void UseInventoryUI(FName ItemID, int32 ItemCount);
 

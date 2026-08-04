@@ -24,8 +24,11 @@ class PROJECTG_API UGInteractionCondition_ItemRequirement : public UGInteraction
 
 public:
 	virtual bool IsSatisfied(AActor* TargetActor) override;
+
+	FName GetItemID() const { return Item.ItemID; }
+	int32 GetCount() const { return Item.Count; }
+
 protected:
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	FGItemRequirement Item;
 };

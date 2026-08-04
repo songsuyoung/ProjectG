@@ -25,8 +25,6 @@ public:
 protected:
 
 	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
-	void ToggleInventory();
-	void ToggleWorkbench();
 
 protected:
 	
@@ -36,10 +34,4 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UGCraftingWidget> CraftingWidget;
 	
-protected:
-	UPROPERTY(Transient)
-	uint8 bCanShowInventory : 1; 
-	
-	UPROPERTY(Transient)
-	uint8 bCanShowWorkbench : 1;
 };

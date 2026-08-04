@@ -20,6 +20,7 @@ public:
 	AGInteractableActor();
 
 	virtual FName GetID() const { return ID; }
+	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const { return Conditions; }
 	virtual int32 GetPriority() const override { return Priority; }
 	virtual float GetHoldDuration() const override { return HoldDuration; }
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor) override;

@@ -9,6 +9,15 @@ UGCommonActivatableWidget::UGCommonActivatableWidget(const FObjectInitializer& O
 {
 }
 
+UWidget* UGCommonActivatableWidget::NativeGetDesiredFocusTarget() const
+{
+	if (UWidget* FocusTarget = Super::NativeGetDesiredFocusTarget())
+	{
+		return FocusTarget;
+	}
+	return const_cast<UGCommonActivatableWidget*>(this);
+}
+
 TOptional<FUIInputConfig> UGCommonActivatableWidget::GetDesiredInputConfig() const
 {
 	switch (InputConfig)

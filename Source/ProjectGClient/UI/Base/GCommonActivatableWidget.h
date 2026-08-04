@@ -24,7 +24,8 @@ protected:
 	
 	UGCommonActivatableWidget(const FObjectInitializer& ObjectInitializer);
 	
-	virtual TOptional<FUIInputConfig> GetDesiredInputConfig() const;
+	virtual TOptional<FUIInputConfig> GetDesiredInputConfig() const override;
+	virtual UWidget* NativeGetDesiredFocusTarget() const override;
 	
 protected:
 	

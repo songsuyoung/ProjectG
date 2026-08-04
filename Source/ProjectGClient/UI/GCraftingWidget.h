@@ -19,4 +19,5 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
+	virtual bool NativeOnHandleBackAction() override;
 };

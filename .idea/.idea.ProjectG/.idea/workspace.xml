@@ -13,29 +13,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_InteractionPromp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_InteractionPromp.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Item.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Item.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Chest.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Chest.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Key.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Key.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/TestMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/System/BP_CommonUIInputActionDataBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/System/BP_CommonUIInputActionDataBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Crafting.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Crafting.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/WBP_InGameHUD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/WBP_InGameHUD.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GGameplayTags.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GGameplayTags.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GItemRow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GItemRow.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.h" afterDir="false" />
     </list>
@@ -51,16 +48,20 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://13" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/AutomationUtils/MCPPublic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/BuildGraph/BuildGraph.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/BuildCMakeLib.Automation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/BuildTarget.Automation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/CheckBalancedMacros.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/Localisation.Automation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/MultiClientLauncher.Automation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/AutomationTool/Scripts/ReportItemizedExecutableCode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.BuildGraph/BgGraphDef.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.Core/MemoryMappedView.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.Core/SingleInstanceMutex.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.Core/ThreadPoolWorkQueue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.Core/UnrealEngineTypes.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.Horde/Compute/Native.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/Shared/EpicGames.MongoDB/TransactionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Programs/UnrealBuildTool/System/SingleInstanceMutex.cs" root0="FORCE_HIGHLIGHTING" />
@@ -70,6 +71,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -223,12 +225,14 @@
       <workItem from="1785665467181" duration="1876000" />
       <workItem from="1785672117469" duration="624000" />
       <workItem from="1785756437422" duration="5088000" />
+      <workItem from="1785844541049" duration="5170000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
@@ -259,9 +263,39 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp</url>
+          <line>18</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.cpp</url>
-          <line>45</line>
-          <option name="timeStamp" value="39" />
+          <line>72</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp</url>
+          <line>28</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp</url>
+          <line>9</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Gimmick/GOpenableActor.cpp</url>
+          <line>35</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.cpp</url>
+          <line>12</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.cpp</url>
+          <line>40</line>
+          <option name="timeStamp" value="54" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

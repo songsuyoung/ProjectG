@@ -39,6 +39,12 @@ void UGInventoryWidget::NativeDestruct()
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Item, this);
 }
 
+bool UGInventoryWidget::NativeOnHandleBackAction()
+{
+	DeactivateWidget();
+	return Super::NativeOnHandleBackAction();
+}
+
 void UGInventoryWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
 	FGItemMessage* ItemMessage = static_cast<FGItemMessage*>(Message);
@@ -59,6 +65,17 @@ void UGInventoryWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 
 void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 {
+	for (int32 i = 0; i < Entries.Num(); i++)
+	{
+		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[i]);
+		if (IsValid(Entry) && Entry->ItemID == ItemID)
+		{
+			Entry->Count = ItemCount;
+			TileView_Inventory->RequestRefresh();
+			return;
+		}
+	}
+
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	if (false == IsValid(DataManager))
 	{
@@ -99,14 +116,14 @@ void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
 			continue;
 		}
 
-		Entry->Count = ItemCount;
-
 		if (ItemCount <= 0)
 		{
-			TileView_Inventory->RemoveItem(Entries[i]);
+			Entries[i] = NewObject<UGItemEmptyEntry>(this);
+			TileView_Inventory->SetListItems(Entries);
 			return;
 		}
 
+		Entry->Count = ItemCount;
 		TileView_Inventory->RequestRefresh();
 		return;
 	}

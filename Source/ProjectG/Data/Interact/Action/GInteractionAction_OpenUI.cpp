@@ -6,4 +6,5 @@
 void UGInteractionAction_OpenUI::Execute(AActor* OwnerActor, AActor* TargetActor)
 {
 	GEVENT_BROADCAST_EMPTY(OwnerActor, EventTag_UI);
+	Finish();
 }

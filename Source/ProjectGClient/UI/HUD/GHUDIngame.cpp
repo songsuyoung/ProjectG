@@ -25,46 +25,16 @@ void UGHUDIngame::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
 	if (Tag == GGameplayTags::EventTag_UI_InventoryToggle)
 	{
-		ToggleInventory();
-	}
-	else if (Tag == GGameplayTags::EventTag_UI_CraftingToggle)
-	{
-		ToggleWorkbench();
-	}
-	
-}
-
-void UGHUDIngame::ToggleInventory()
-{
-	bCanShowInventory = !bCanShowInventory;
-
-	if (IsValid(InventoryWidget))
-	{
-		if (bCanShowInventory)
+		if (IsValid(InventoryWidget))
 		{
 			InventoryWidget->ActivateWidget();
 		}
-		else
-		{
-			InventoryWidget->DeactivateWidget();
-		}
 	}
-}
-
-void UGHUDIngame::ToggleWorkbench()
-{
-	bCanShowWorkbench = !bCanShowWorkbench;
-	
-	if (IsValid(CraftingWidget))
+	else if (Tag == GGameplayTags::EventTag_UI_CraftingToggle)
 	{
-		if (CraftingWidget)
+		if (IsValid(CraftingWidget))
 		{
 			CraftingWidget->ActivateWidget();
 		}
-		else
-		{
-			CraftingWidget->DeactivateWidget();
-		}
 	}
-	
 }

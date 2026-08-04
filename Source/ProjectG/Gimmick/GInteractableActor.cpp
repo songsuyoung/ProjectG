@@ -72,15 +72,8 @@ void AGInteractableActor::Interact(AActor* TargetActor)
 
 	InteractingCharacter = Character;
 
-	APlayerController* PC = Cast<APlayerController>(Character->GetController());
-	if (nullptr != PC)
-	{
-		PC->SetIgnoreMoveInput(true);
-	}
-
 	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateUObject(this, &ThisClass::OnInteractionCompleted);
 	InteractionActionComponent->Run(this, TargetActor, OnCompleted);
-	
 }
 
 void AGInteractableActor::OnInteractionCompleted()
@@ -89,11 +82,6 @@ void AGInteractableActor::OnInteractionCompleted()
 
 	if (InteractingCharacter.IsValid())
 	{
-		APlayerController* PC = Cast<APlayerController>(InteractingCharacter->GetController());
-		if (nullptr != PC)
-		{
-			PC->ResetIgnoreMoveInput();
-		}
 		InteractingCharacter = nullptr;
 	}
 }
