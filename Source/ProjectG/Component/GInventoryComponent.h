@@ -17,6 +17,7 @@ public:
 	void Acquire(FName PromptID);
 	void UseItem(FName ItemName, int32 Count);
 	bool CanUseItem(FName ItemName, int32 Count);
+	const TMap<FName, int32>& GetInventorySlots() const { return InventorySlots; }
 	
 protected:
 	

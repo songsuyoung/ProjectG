@@ -13,28 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/System/BP_CommonUIInputActionDataBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/System/BP_CommonUIInputActionDataBase.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Crafting.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Crafting.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/WBP_InGameHUD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/WBP_InGameHUD.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_OpenUI.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/GInteractionCondition_ItemRequirement.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/Base/GCommonActivatableWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GCraftingWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/HUD/GHUDIngame.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +205,7 @@
       <workItem from="1785665467181" duration="1876000" />
       <workItem from="1785672117469" duration="624000" />
       <workItem from="1785756437422" duration="5088000" />
-      <workItem from="1785844541049" duration="5170000" />
+      <workItem from="1785844541049" duration="5472000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,8 @@
 #include "UI/GInventoryWidget.h"
 
 #include "Base/GTileView.h"
+#include "Character/GCharacter.h"
+#include "Component/GInventoryComponent.h"
 #include "Data/GGameEnums.h"
 #include "Data/GGameMacro.h"
 #include "Data/GGameplayTags.h"
@@ -23,11 +25,25 @@ void UGInventoryWidget::NativeConstruct()
 
 	for (int32 i = 0; i < InitialSlotCount; i++)
 	{
-		UGItemEmptyEntry* EmptyEntry = NewObject<UGItemEmptyEntry>(this);
-		Entries.Add(EmptyEntry);
+		Entries.Add(NewObject<UGItemEmptyEntry>(this));
 	}
 
-	TileView_Inventory->SetListItems(Entries);
+	AGCharacter* Character = Cast<AGCharacter>(GetOwningPlayerPawn());
+	if (IsValid(Character))
+	{
+		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
+		if (IsValid(InventoryComponent))
+		{
+			for (const TPair<FName, int32>& Slot : InventoryComponent->GetInventorySlots())
+			{
+				AddInventoryUI(Slot.Key, Slot.Value);
+			}
+		}
+	}
+	else
+	{
+		TileView_Inventory->SetListItems(Entries);
+	}
 
 	// Event.Item 부모 태그로 등록 → Acquired/Removed 모두 수신
 	GEVENT_ADD(this, GGameplayTags::EventTag_Item, this);
@@ -104,6 +120,20 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 		TileView_Inventory->SetListItems(Entries);
 		return;
 	}
+
+	// 빈 슬롯 없음 → 3개 확장 후 첫 칸에 배치
+	for (int32 i = 0; i < 3; i++)
+	{
+		Entries.Add(NewObject<UGItemEmptyEntry>(this));
+	}
+
+	UGItemEntry* NewEntry = NewObject<UGItemEntry>(this);
+	NewEntry->ItemID = ItemID;
+	NewEntry->IconImage = ItemRow->IconImage;
+	NewEntry->Count = ItemCount;
+
+	Entries[Entries.Num() - 3] = NewEntry;
+	TileView_Inventory->SetListItems(Entries);
 }
 
 void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
