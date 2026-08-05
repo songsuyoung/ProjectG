@@ -34,7 +34,7 @@ protected:
 	TObjectPtr<UCameraComponent> FollowCamera;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Interaction, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UGInteractionComponent> InteractionComponent;
+  	TObjectPtr<UGInteractionComponent> InteractionComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGInventoryComponent> InventoryComponent;

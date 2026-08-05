@@ -20,20 +20,17 @@ public:
 	AGInteractableActor();
 
 	virtual FName GetID() const { return ID; }
-	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const { return Conditions; }
 	virtual int32 GetPriority() const override { return Priority; }
 	virtual float GetHoldDuration() const override { return HoldDuration; }
-	virtual EGInteractionState GetInteractionState(AActor* TargetActor) override;
-	virtual void OnInteractStarted(AActor* TargetActor) override;
-	virtual bool CanInteract(AActor* TargetActor) override;
-	virtual void Interact(AActor* TargetActor) override;
-	virtual void InternalInteract(AActor* TargetActor) override {};
+	virtual void InternalInteract(AActor* TargetActor) override {}
 
+	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const override { return Conditions; }
 	FTransform GetInteractPointTransform() const;
 
 protected:
 	virtual void BeginPlay() override;
-	void OnInteractionCompleted();
+	virtual FGInteractionSharedState& GetInteractionSharedState() override { return SharedState; }
+	virtual UGInteractionActionComponent* GetInteractionActionComponent() override { return InteractionActionComponent; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction|Data")
@@ -47,23 +44,16 @@ protected:
 
 	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
 	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
 	TObjectPtr<UMeshComponent> MeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction|Actions")
 	TObjectPtr<USceneComponent> InteractPoint;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UGInteractionActionComponent> InteractionActionComponent;
 
 protected:
-	UPROPERTY(Transient)
-	EGInteractionState InteractionState;
-
-	UPROPERTY(Transient)
-	float StartTimestamp;
-
-	UPROPERTY(Transient)
-	TWeakObjectPtr<AGCharacter> InteractingCharacter;
+	FGInteractionSharedState SharedState;
 };

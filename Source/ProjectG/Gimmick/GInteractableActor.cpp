@@ -8,92 +8,13 @@
 
 AGInteractableActor::AGInteractableActor()
 	: Super()
-	, InteractionState(EGInteractionState::Available)
 {
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMeshComponent"));
 	RootComponent = MeshComponent;
-	
+
 	InteractionActionComponent = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("InteractionActionComponent"));
 	InteractPoint = CreateDefaultSubobject<USceneComponent>(TEXT("InteractPoint"));
 	InteractPoint->SetupAttachment(GetRootComponent());
-}
-
-EGInteractionState AGInteractableActor::GetInteractionState(AActor* TargetActor)
-{
-	if (InteractionState == EGInteractionState::Unavailable)
-	{
-		return InteractionState;
-	}
-
-	for (int32 Index = 0; Index < Conditions.Num(); Index++)
-	{
-		if (false == Conditions[Index]->IsSatisfied(TargetActor))
-		{
-			InteractionState = EGInteractionState::Pending;
-			return InteractionState;
-		}
-	}
-
-	InteractionState = EGInteractionState::Available;
-	return InteractionState;
-}
-
-void AGInteractableActor::OnInteractStarted(AActor* TargetActor)
-{
-	UWorld* World = GetWorld();
-	check(World);
-
-	StartTimestamp = World->GetTimeSeconds();
-}
-
-bool AGInteractableActor::CanInteract(AActor* TargetActor)
-{
-	UWorld* World = GetWorld();
-	check(World);
-
-	float EndTimestamp = World->GetTimeSeconds();
-	float Duration = (EndTimestamp - StartTimestamp);
-
-	return Duration >= HoldDuration && GetInteractionState(TargetActor) == EGInteractionState::Available;
-}
-
-void AGInteractableActor::Interact(AActor* TargetActor)
-{
-	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
-	if (false == IsValid(Character))
-	{
-		return;
-	}
-
-	if (false == IsValid(InteractionActionComponent))
-	{
-		return;
-	}
-
-	InteractingCharacter = Character;
-
-	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateUObject(this, &ThisClass::OnInteractionCompleted);
-	InteractionActionComponent->Run(this, TargetActor, OnCompleted);
-}
-
-void AGInteractableActor::OnInteractionCompleted()
-{
-	InteractionState = EGInteractionState::Unavailable;
-
-	if (InteractingCharacter.IsValid())
-	{
-		InteractingCharacter = nullptr;
-	}
-}
-
-FTransform AGInteractableActor::GetInteractPointTransform() const
-{
-	if (false == IsValid(InteractPoint))
-	{
-		return GetActorTransform();
-	}
-
-	return InteractPoint->GetComponentTransform();
 }
 
 void AGInteractableActor::BeginPlay()
@@ -109,3 +30,12 @@ void AGInteractableActor::BeginPlay()
 	}
 }
 
+FTransform AGInteractableActor::GetInteractPointTransform() const
+{
+	if (false == IsValid(InteractPoint))
+	{
+		return GetActorTransform();
+	}
+
+	return InteractPoint->GetComponentTransform();
+}

@@ -34,9 +34,9 @@ void UGInventoryWidget::NativeConstruct()
 		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
 		if (IsValid(InventoryComponent))
 		{
-			for (const TPair<FName, int32>& Slot : InventoryComponent->GetInventorySlots())
+			for (const TPair<FName, int32>& InventorySlot : InventoryComponent->GetInventorySlots())
 			{
-				AddInventoryUI(Slot.Key, Slot.Value);
+				AddInventoryUI(InventorySlot.Key, InventorySlot.Value);
 			}
 		}
 	}

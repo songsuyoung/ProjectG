@@ -2,9 +2,20 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Data/GGameEnums.h"
 #include "GInteractable.generated.h"
 
-enum class EGInteractionState : uint8;
+class UGInteractionCondition;
+class UGInteractionActionComponent;
+class AGCharacter;
+
+struct FGInteractionSharedState
+{
+	EGInteractionState State = EGInteractionState::Available;
+	float StartTimestamp = 0.f;
+	TWeakObjectPtr<AGCharacter> InteractingCharacter;
+};
+
 UINTERFACE(MinimalAPI)
 class UGInteractable : public UInterface
 {
@@ -19,9 +30,14 @@ public:
 	virtual FName GetID() const = 0;
 	virtual int32 GetPriority() const = 0;
 	virtual float GetHoldDuration() const = 0;
-	virtual EGInteractionState GetInteractionState(AActor* TargetActor) = 0;
-	virtual void OnInteractStarted(AActor* TargetActor) = 0;
-	virtual bool CanInteract(AActor* TargetActor) = 0;
-	virtual void Interact(AActor* TargetActor) = 0;
+	virtual EGInteractionState GetInteractionState(AActor* TargetActor);
+	virtual void OnInteractStarted(AActor* TargetActor);
+	virtual bool CanInteract(AActor* TargetActor);
+	virtual void Interact(AActor* TargetActor);
 	virtual void InternalInteract(AActor* TargetActor) = 0;
+
+protected:
+	virtual FGInteractionSharedState& GetInteractionSharedState() = 0;
+	virtual const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const = 0;
+	virtual UGInteractionActionComponent* GetInteractionActionComponent() = 0;
 };
