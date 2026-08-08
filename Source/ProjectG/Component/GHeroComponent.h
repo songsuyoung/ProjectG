@@ -4,6 +4,9 @@
 #include "Components/ActorComponent.h"
 #include "GHeroComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FGOnInputConfirmed)
+DECLARE_MULTICAST_DELEGATE(FGOnInputCanceled)
+
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -14,7 +17,7 @@ class PROJECTG_API UGHeroComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UGHeroComponent();
 
 	void SetupInputComponent();

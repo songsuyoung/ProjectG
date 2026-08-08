@@ -13,6 +13,7 @@ USTRUCT()
 struct FGPoolContainer
 {
 	GENERATED_USTRUCT_BODY()
+
 public:
 
 	UPROPERTY(Transient)

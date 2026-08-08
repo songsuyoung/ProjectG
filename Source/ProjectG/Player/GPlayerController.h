@@ -11,7 +11,7 @@ UCLASS()
 class PROJECTG_API AGPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	AGPlayerController(const FObjectInitializer& ObjectInitializer);

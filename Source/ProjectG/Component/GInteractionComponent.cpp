@@ -93,7 +93,7 @@ void UGInteractionComponent::UpdateFocusTarget()
 
 		if (nullptr != Interactable)
 		{
-			FGInteract Message(Interactable->GetID());
+			FGInteract Message(Interactable->GetInteractionID());
 			GEVENT_BROADCAST(this, GGameplayTags::EventTag_Interact_Detect, Message);
 		}
 	}

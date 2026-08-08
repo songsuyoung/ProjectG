@@ -17,6 +17,7 @@ public class ProjectGClient : ModuleRules
             "InputCore",
             "ProjectG",
             "CommonUI",
+            "CommonInput",
             "GameplayTags"
         });
     }

@@ -17,5 +17,5 @@ bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor)
 		return false;
 	}
 
-	return InventoryComponent->CanAcquire(Interactable->GetID());
+	return InventoryComponent->CanAcquire(Interactable->GetInteractionID());
 }

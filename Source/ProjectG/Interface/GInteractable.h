@@ -27,7 +27,7 @@ class PROJECTG_API IGInteractable
 	GENERATED_BODY()
 
 public:
-	virtual FName GetID() const = 0;
+	virtual FName GetInteractionID() const = 0;
 	virtual int32 GetPriority() const = 0;
 	virtual float GetHoldDuration() const = 0;
 	virtual EGInteractionState GetInteractionState(AActor* TargetActor);
@@ -35,6 +35,7 @@ public:
 	virtual bool CanInteract(AActor* TargetActor);
 	virtual void Interact(AActor* TargetActor);
 	virtual void InternalInteract(AActor* TargetActor) = 0;
+	virtual bool IsRepeatable() const { return false; }
 
 protected:
 	virtual FGInteractionSharedState& GetInteractionSharedState() = 0;

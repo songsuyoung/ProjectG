@@ -7,6 +7,7 @@
 
 class UGInteractionCondition;
 class UGInteractionActionComponent;
+class UGDialogueComponent;
 
 UCLASS()
 class PROJECTG_API AGNPCCharacter : public AGBaseCharacter, public IGInteractable
@@ -16,10 +17,12 @@ class PROJECTG_API AGNPCCharacter : public AGBaseCharacter, public IGInteractabl
 public:
 	AGNPCCharacter();
 
-	virtual FName GetID() const override { return InteractionID; }
+	FName GetID() { return NPCID; }
+	virtual FName GetInteractionID() const override { return InteractionID; }
 	virtual int32 GetPriority() const override { return InteractionPriority; }
 	virtual float GetHoldDuration() const override { return HoldDuraction; }
 	virtual void InternalInteract(AActor* TargetActor) override;
+	virtual bool IsRepeatable() const override { return true; }
 
 	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const override { return Conditions; }
 
@@ -29,10 +32,13 @@ protected:
 	virtual UGInteractionActionComponent* GetInteractionActionComponent() override { return InteractionActionComponent; }
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Interaction|ID")
+	UPROPERTY(EditAnywhere, Category = "NPC")
+	FName NPCID;
+	
+	UPROPERTY(EditAnywhere, Category = "Interaction")
 	FName InteractionID;
 
-	UPROPERTY(EditAnywhere, Category = "Interaction|ID")
+	UPROPERTY(EditAnywhere, Category = "Interaction")
 	int32 InteractionPriority;
 
 	UPROPERTY(EditAnywhere, Category = "Interaction")
@@ -45,6 +51,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGInteractionActionComponent> InteractionActionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Dialogue, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGDialogueComponent> DialogueComponent;
 
 protected:
 	FGInteractionSharedState SharedState;

@@ -7,6 +7,7 @@
 class UGInteractionComponent;
 class UGInventoryComponent;
 class USpringArmComponent;
+class UGQuestComponent;
 class UCameraComponent;
 
 UCLASS()
@@ -23,6 +24,7 @@ public:
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE UGInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	FORCEINLINE UGInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+	FORCEINLINE UGQuestComponent* GetQuestComponent() const { return QuestComponent; }
 	
 	virtual void BeginPlay() override;
 protected:
@@ -38,6 +40,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGInventoryComponent> InventoryComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGQuestComponent> QuestComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "Temp")
 	int32 Level;

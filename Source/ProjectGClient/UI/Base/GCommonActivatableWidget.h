@@ -32,7 +32,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	EGWidgetInputMode InputConfig;
 
-	/** The desired mouse behavior when the game gets input. */
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	EMouseCaptureMode GameMouseCaptureMode;
 };

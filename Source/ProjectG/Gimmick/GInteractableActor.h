@@ -19,7 +19,7 @@ class PROJECTG_API AGInteractableActor : public AActor, public IGInteractable
 public:
 	AGInteractableActor();
 
-	virtual FName GetID() const { return ID; }
+	virtual FName GetInteractionID() const override { return ID; }
 	virtual int32 GetPriority() const override { return Priority; }
 	virtual float GetHoldDuration() const override { return HoldDuration; }
 	virtual void InternalInteract(AActor* TargetActor) override {}

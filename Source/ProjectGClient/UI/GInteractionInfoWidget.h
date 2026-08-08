@@ -37,4 +37,6 @@ private:
 	bool bIsHolding = false;
 	float HoldDuration = 0.f;
 	float HoldElapsed = 0.f;
+	bool bInDialogue = false;
+	FName LastDetectedID;
 };

@@ -16,7 +16,18 @@ enum class EGDataTableType : uint8
 {
 	InteractionPrompt,
 	Item,
+	Dialogue,
+	Quest,
+	NPC,
 	Max,
 };
 
 ENUM_RANGE_BY_COUNT(EGDataTableType, EGDataTableType::Max);
+
+UENUM(BlueprintType)
+enum class EGQuestState : uint8
+{
+	Available,
+	Active,
+	ReadyToComplete,
+};

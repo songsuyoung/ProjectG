@@ -71,7 +71,7 @@ void IGInteractable::Interact(AActor* TargetActor)
 	FSimpleDelegate OnCompleted = FSimpleDelegate::CreateWeakLambda(SelfActor, [this]()
 	{
 		FGInteractionSharedState& State = GetInteractionSharedState();
-		State.State = EGInteractionState::Unavailable;
+		State.State = IsRepeatable() ? EGInteractionState::Available : EGInteractionState::Unavailable;
 		State.InteractingCharacter = nullptr;
 	});
 

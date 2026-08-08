@@ -14,12 +14,14 @@ void UGInteractionInfoWidget::NativeConstruct()
 	Super::NativeConstruct();
 	// Event.Interact 부모 태그로 등록 → 하위 Detect/Undetect/Started/Ended 모두 수신
 	GEVENT_ADD(this, GGameplayTags::EventTag_Interact, this);
+	GEVENT_ADD(this, GGameplayTags::EventTag_Dialogue_Toggle, this);
 }
 
 void UGInteractionInfoWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Interact, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Dialogue_Toggle, this);
 }
 
 void UGInteractionInfoWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -39,7 +41,19 @@ void UGInteractionInfoWidget::NativeTick(const FGeometry& MyGeometry, float InDe
 
 void UGInteractionInfoWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
-	if (Tag == GGameplayTags::EventTag_Interact_Detect)
+	if (Tag == GGameplayTags::EventTag_Dialogue_Toggle)
+	{
+		bInDialogue = !bInDialogue;
+		if (bInDialogue)
+		{
+			SetVisibility(ESlateVisibility::Collapsed);
+		}
+		else if (!LastDetectedID.IsNone())
+		{
+			UpdateUI(LastDetectedID);
+		}
+	}
+	else if (Tag == GGameplayTags::EventTag_Interact_Detect)
 	{
 		FGInteract* MessageData = static_cast<FGInteract*>(Message);
 		if (nullptr != MessageData)
@@ -75,6 +89,7 @@ void UGInteractionInfoWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 
 void UGInteractionInfoWidget::UpdateUI(FName ID)
 {
+	LastDetectedID = ID;
 	SetVisibility(ESlateVisibility::HitTestInvisible);
 
 	UGDataManager* DataManager = UGDataManager::Get(this);
