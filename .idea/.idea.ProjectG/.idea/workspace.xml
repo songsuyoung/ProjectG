@@ -14,17 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInteractionActionComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_UseItem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GInteractableActor.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Interface/GInteractable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Interface/GInteractable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Interface/GInteractable.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Interface/GInteractable.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +30,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://33" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://2" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Developer/Localization/Private/PortableObjectFormatDOM.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Developer/OutputLog/Private/SOutputLog.h" root0="FORCE_HIGHLIGHTING" />
@@ -245,7 +237,8 @@
       <workItem from="1786172409752" duration="8050000" />
       <workItem from="1786181697533" duration="3157000" />
       <workItem from="1786235961250" duration="23029000" />
-      <workItem from="1786265788893" duration="10732000" />
+      <workItem from="1786265788893" duration="11034000" />
+      <workItem from="1786277981084" duration="1251000" />
     </task>
     <servers />
   </component>
@@ -331,6 +324,11 @@
           <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.cpp</url>
           <line>86</line>
           <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.cpp</url>
+          <line>108</line>
+          <option name="timeStamp" value="90" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

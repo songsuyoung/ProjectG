@@ -43,7 +43,7 @@ void UGQuestComponent::CheckQuest(const FName& NPCID)
 	check(DataManager);
 	
 	TArray<FName> FinishedQuests;
- 	for (FName ActiveQuestID : ActiveQuestIDs)
+   	for (FName ActiveQuestID : ActiveQuestIDs)
 	{
 		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, ActiveQuestID);
 		
@@ -84,7 +84,7 @@ void UGQuestComponent::CheckQuest(const FName& NPCID)
 
 FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 {
-	UGDataManager* DataManager = UGDataManager::Get(this);
+  	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
 	
 	FGDialogueEntry BestQuest;
@@ -106,7 +106,7 @@ FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 		}
 	}
 	
-	if (BestQuest.QuestID.IsNone())
+	if (false == BestQuest.QuestID.IsNone())
 	{
 		PendingQID = BestQuest.QuestID;
 		return BestQuest.DialogueID;

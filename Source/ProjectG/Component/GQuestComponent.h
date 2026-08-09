@@ -16,7 +16,7 @@ public:
 	FName QuestID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	EGQuestState State = EGQuestState::Available;
+	EGQuestState State = EGQuestState::None;
 };
 
 USTRUCT()
@@ -29,7 +29,7 @@ public:
 	FName QuestID;
 	
 	UPROPERTY(Transient)
-	EGQuestState State = EGQuestState::Available;
+	EGQuestState State = EGQuestState::None;
 		
 	UPROPERTY(Transient)
 	FName DialogueID;
