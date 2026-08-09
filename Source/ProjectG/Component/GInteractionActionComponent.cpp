@@ -1,5 +1,6 @@
 #include "GInteractionActionComponent.h"
 
+#include "Data/Condition/Interact/GInteractionCondition.h"
 #include "Data/Interact/Action/GInteractionAction.h"
 
 UGInteractionActionComponent::UGInteractionActionComponent(const FObjectInitializer& ObjectInitializer)
@@ -33,6 +34,22 @@ void UGInteractionActionComponent::TickComponent(float DeltaTime, enum ELevelTic
     if (ActiveIndex >= 0 && ActiveIndex < Actions.Num())
     {
         Actions[ActiveIndex]->Tick(DeltaTime);
+    }
+}
+
+void UGInteractionActionComponent::BeginPlay()
+{
+    Super::BeginPlay();
+    
+    IGInteractable* Interactable = Cast<IGInteractable>(GetOwner());
+    if (nullptr == Interactable)
+    {
+        return;
+    }
+    
+    for (UGInteractionCondition* Condition : Conditions)
+    {
+        Condition->Init(Interactable);
     }
 }
 

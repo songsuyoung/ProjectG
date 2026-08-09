@@ -13,13 +13,6 @@ void AGNPCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (UGCondition* Condition : Conditions)
-	{
-		if (UGInteractionCondition* InteractCondition = Cast<UGInteractionCondition>(Condition))
-		{
-			InteractCondition->Init(this);
-		}
-	}
 }
 
 void AGNPCCharacter::InternalInteract(AActor* TargetActor)

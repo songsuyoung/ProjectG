@@ -17,19 +17,6 @@ AGInteractableActor::AGInteractableActor()
 	InteractPoint->SetupAttachment(GetRootComponent());
 }
 
-void AGInteractableActor::BeginPlay()
-{
-	Super::BeginPlay();
-
-	for (UGCondition* Condition : Conditions)
-	{
-		if (UGInteractionCondition* InteractCondition = Cast<UGInteractionCondition>(Condition))
-		{
-			InteractCondition->Init(this);
-		}
-	}
-}
-
 FTransform AGInteractableActor::GetInteractPointTransform() const
 {
 	if (false == IsValid(InteractPoint))

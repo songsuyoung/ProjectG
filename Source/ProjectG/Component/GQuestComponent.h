@@ -19,20 +19,20 @@ public:
 	EGQuestState State = EGQuestState::Available;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct FGDialogueEntry
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Transient)
 	FName QuestID;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName DialogueID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Transient)
 	EGQuestState State = EGQuestState::Available;
+		
+	UPROPERTY(Transient)
+	FName DialogueID;
 };
 
 UCLASS(ClassGroup=Custom, meta=(BlueprintSpawnableComponent))

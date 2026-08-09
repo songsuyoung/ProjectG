@@ -36,9 +36,7 @@ public:
 	virtual void Interact(AActor* TargetActor);
 	virtual void InternalInteract(AActor* TargetActor) = 0;
 	virtual bool IsRepeatable() const { return false; }
-
+	virtual UGInteractionActionComponent* GetInteractionActionComponent() = 0;
 protected:
 	virtual FGInteractionSharedState& GetInteractionSharedState() = 0;
-	virtual const TArray<TObjectPtr<UGCondition>>& GetConditions() const = 0;
-	virtual UGInteractionActionComponent* GetInteractionActionComponent() = 0;
 };

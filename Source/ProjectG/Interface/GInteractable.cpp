@@ -2,7 +2,7 @@
 
 #include "Character/GCharacter.h"
 #include "Component/GInteractionActionComponent.h"
-#include "Data/Condition/GCondition.h"
+#include "Data/Condition/Interact/GInteractionCondition.h"
 
 EGInteractionState IGInteractable::GetInteractionState(AActor* TargetActor)
 {
@@ -12,8 +12,15 @@ EGInteractionState IGInteractable::GetInteractionState(AActor* TargetActor)
 	{
 		return SharedState.State;
 	}
+	
+	UGInteractionActionComponent* ActionComp = GetInteractionActionComponent();
+	
+	if (false == IsValid(ActionComp))
+	{
+		return EGInteractionState::None;
+	}
 
-	for (const TObjectPtr<UGCondition>& Condition : GetConditions())
+	for (const TObjectPtr<UGInteractionCondition>& Condition : ActionComp->GetConditions())
 	{
 		if (false == IsValid(Condition))
 		{

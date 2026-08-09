@@ -1,7 +1,9 @@
 #include "GInteractionAction_UseItem.h"
 
 #include "Character/GCharacter.h"
+#include "Component/GInteractionActionComponent.h"
 #include "Component/GInventoryComponent.h"
+#include "Data/Condition/Interact/GInteractionCondition.h"
 #include "Data/Condition/GCondition_ItemRequirement.h"
 #include "Gimmick/GInteractableActor.h"
 
@@ -21,12 +23,19 @@ void UGInteractionAction_UseItem::Execute(AActor* OwnerActor, AActor* TargetActo
         return;
     }
 
-    AGInteractableActor* Interactable = Cast<AGInteractableActor>(OwnerActor);
-    if (IsValid(Interactable))
+    IGInteractable* Interactable = Cast<IGInteractable>(OwnerActor);
+    if (nullptr != Interactable)
     {
-        for (UGCondition* Condition : Interactable->GetConditions())
+        UGInteractionActionComponent* IAC = Interactable->GetInteractionActionComponent();
+        
+        if (false == IsValid(IAC))
         {
-            UGCondition_ItemRequirement* ItemReq = Cast<UGCondition_ItemRequirement>(Condition);
+            return;
+        }
+        
+        for (const TObjectPtr<UGInteractionCondition>& Condition : IAC->GetConditions())
+        {
+            const UGCondition_ItemRequirement* const ItemReq = Cast<UGCondition_ItemRequirement>(Condition);
             if (IsValid(ItemReq))
             {
                 InventoryComponent->UseItem(ItemReq->GetItemID(), ItemReq->GetCount());

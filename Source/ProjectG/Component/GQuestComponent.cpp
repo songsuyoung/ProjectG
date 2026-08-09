@@ -87,33 +87,30 @@ FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
 	
-	TArray<FGDialogueEntry> NPCQuests;
+	FGDialogueEntry BestQuest;
 	
 	for (const FGQuestEntry& Entry : Quests)
 	{
 		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, Entry.QuestID);
 		if (nullptr != Row && Row->NPCID == NPCID)
 		{
-			FName* DID = Row->DialogueID.Find(Entry.State);
-			
-			if (DID != nullptr)
+			if (Entry.State > BestQuest.State)
 			{
-				NPCQuests.Add({Row->GetID(), *DID, Entry.State});
+				FName* DID = Row->DialogueID.Find(Entry.State);
+				
+				if (DID != nullptr)
+				{
+					BestQuest ={Entry.QuestID, Entry.State, *DID}; 
+				}
 			}
 		}
 	}
-
-	NPCQuests.Sort([](const FGDialogueEntry& A, const FGDialogueEntry& B)
-	{
-		return A.State > B.State;
-	});
 	
-	if (false == NPCQuests.IsEmpty())
+	if (BestQuest.QuestID.IsNone())
 	{
- 		PendingQID = NPCQuests[0].QuestID;
-		return NPCQuests[0].DialogueID;
+		PendingQID = BestQuest.QuestID;
+		return BestQuest.DialogueID;
 	}
-
 	return FName();
 }
 
@@ -244,26 +241,10 @@ bool UGQuestComponent::CompleteQuest(FName QuestID)
 
 FGQuestEntry* UGQuestComponent::FindEntry(FName QuestID)
 {
-	for (FGQuestEntry& Entry : Quests)
-	{
-		if (Entry.QuestID == QuestID)
-		{
-			return &Entry;
-		}
-	}
-
-	return nullptr;
+	return Quests.FindByPredicate([QuestID](const FGQuestEntry& E){ return E.QuestID == QuestID; });;
 }
 
 const FGQuestEntry* UGQuestComponent::FindEntry(FName QuestID) const
 {
-	for (const FGQuestEntry& Entry : Quests)
-	{
-		if (Entry.QuestID == QuestID)
-		{
-			return &Entry;
-		}
-	}
-
-	return nullptr;
+	return Quests.FindByPredicate([QuestID](const FGQuestEntry& E){ return E.QuestID == QuestID; });;
 }

@@ -4,8 +4,8 @@
 #include "UObject/NoExportTypes.h"
 #include "GInteractionActionComponent.generated.h"
 
+class UGInteractionCondition;
 class UGInteractionAction;
-
 UCLASS(Blueprintable)
 class PROJECTG_API UGInteractionActionComponent : public UActorComponent
 {
@@ -17,14 +17,18 @@ public:
     void Run(AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted);
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     bool IsRunning() const { return bIsRunning; }
-
-private:
+    const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() { return Conditions;}
+protected:
+    
+    virtual void BeginPlay() override;
     void RunNextAction();
 
 protected:
     UPROPERTY(EditAnywhere, Instanced, Category = "Interaction|Actions")
     TArray<TObjectPtr<UGInteractionAction>> Actions;
-
+    
+    UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
+    TArray<TObjectPtr<UGInteractionCondition>> Conditions;
 protected:
     UPROPERTY(Transient)
     TWeakObjectPtr<AActor> OwnerActorRef;

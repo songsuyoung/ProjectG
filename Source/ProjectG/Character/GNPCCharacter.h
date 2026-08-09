@@ -7,7 +7,6 @@
 
 class UGCondition;
 class UGInteractionActionComponent;
-class UGDialogueComponent;
 
 UCLASS()
 class PROJECTG_API AGNPCCharacter : public AGBaseCharacter, public IGInteractable
@@ -23,8 +22,6 @@ public:
 	virtual float GetHoldDuration() const override { return HoldDuraction; }
 	virtual void InternalInteract(AActor* TargetActor) override;
 	virtual bool IsRepeatable() const override { return true; }
-
-	const TArray<TObjectPtr<UGCondition>>& GetConditions() const override { return Conditions; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -43,9 +40,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float HoldDuraction;
-
-	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
-	TArray<TObjectPtr<UGCondition>> Conditions;
 
 protected:
 
