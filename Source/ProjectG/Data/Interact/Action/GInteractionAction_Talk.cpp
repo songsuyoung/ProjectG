@@ -1,66 +1,78 @@
 #include "Data/Interact/Action/GInteractionAction_Talk.h"
 
 #include "Character/GNPCCharacter.h"
-#include "Component/GDialogueComponent.h"
 #include "Component/GQuestComponent.h"
-#include "Interface/GInteractable.h"
+#include "Data/GNPCRow.h"
+#include "System/GDataManager.h"
+#include "System/GDialogueManager.h"
 
 void UGInteractionAction_Talk::Execute(AActor* OwnerActor, AActor* TargetActor)
 {
-	if (false == IsValid(TargetActor))
+	if (false == IsValid(OwnerActor) || false == IsValid(TargetActor))
 	{
 		Finish();
 		return;
 	}
 
-	UGDialogueComponent* Dialogue = OwnerActor->FindComponentByClass<UGDialogueComponent>();
+	QuestComponentRef = TargetActor->FindComponentByClass<UGQuestComponent>();
+	const AGNPCCharacter* NPCCharacter = Cast<AGNPCCharacter>(OwnerActor);
+	
+	if (false == QuestComponentRef.IsValid() || false == IsValid(NPCCharacter))
+	{
+		Finish();
+		return;
+	}
+	CachedNPCID = NPCCharacter->GetID();
+	QuestComponentRef->CheckQuest(CachedNPCID);
+	FName DID = QuestComponentRef->GetDialogueForNPC(CachedNPCID);
+	
+	UGDialogueManager* Dialogue = UGDialogueManager::Get(this);
 	if (false == IsValid(Dialogue))
 	{
 		Finish();
 		return;
 	}
-
-	FName QuestID = NAME_None;
-	FName QuestDialogueID = NAME_None;
-	bool bIsSuccessDialogue = false;
-
-	UGQuestComponent* QuestComp = TargetActor->FindComponentByClass<UGQuestComponent>();
-	AGNPCCharacter* NPCCharacter = Cast<AGNPCCharacter>(OwnerActor);
-
-	if (nullptr != QuestComp && nullptr != NPCCharacter)
+	
+	Dialogue->OnDialogueEnded.AddUObject(this, &ThisClass::OnDialogueFinished);
+	
+	if (DID.IsNone())
 	{
-		const FName NPCID = NPCCharacter->GetID();
-
-		// ReadyToComplete 우선 (성공 대사)
-		QuestDialogueID = QuestComp->GetSuccessDialogueForNPC(NPCID, QuestID);
-		if (false == QuestDialogueID.IsNone())
+		UGDataManager* DataManager = UGDataManager::Get(this);
+		FGNPCRow* NPCRow = DataManager->GetDataTableRow<FGNPCRow>(EGDataTableType::NPC, NPCCharacter->GetID());
+		
+		if (nullptr != NPCRow)
 		{
-			bIsSuccessDialogue = true;
-		}
-		else
-		{
-			// Available (제안 대사 + 선택지)
-			QuestDialogueID = QuestComp->GetPreDialogueForNPC(NPCID, QuestID);
+			DID = NPCRow->DefaultDialogueID;
 		}
 	}
+	
+	Dialogue->StartDialogue(DID);
+}
 
-	// 성공 대사 종료 시 CompleteQuest 호출
-	// AcceptQuest는 선택지 선택 시 EventTag_Quest_Accept 이벤트로 처리됨
-	Dialogue->OnDialogueEnded.BindWeakLambda(this, [this, QuestComp, QuestID, bIsSuccessDialogue]()
+void UGInteractionAction_Talk::Finish()
+{
+	Super::Finish();
+	
+	UGDialogueManager* Dialogue = UGDialogueManager::Get(this);
+	if (false == IsValid(Dialogue))
 	{
-		if (bIsSuccessDialogue && IsValid(QuestComp) && false == QuestID.IsNone())
-		{
-			QuestComp->CompleteQuest(QuestID);
-		}
 		Finish();
-	});
+		return;
+	}
+	Dialogue->OnDialogueEnded.RemoveAll(this);
+}
 
-	if (false == QuestDialogueID.IsNone())
+void UGInteractionAction_Talk::OnDialogueFinished(EGDialogueEndReason EndReason)
+{
+	if (EndReason == EGDialogueEndReason::Completed)
 	{
-		Dialogue->StartDialogue(QuestDialogueID);
+		if (QuestComponentRef.IsValid())
+		{
+			QuestComponentRef->OnNPCDialogueCompleted(CachedNPCID);
+		}
 	}
-	else
-	{
-		Dialogue->StartDialogue(TargetActor);
-	}
+
+	QuestComponentRef = nullptr;
+	CachedNPCID = NAME_None;
+	Finish();
 }

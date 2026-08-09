@@ -4,18 +4,24 @@
 #include "Data/GGameplayTags.h"
 #include "Data/GMessage.h"
 #include "Data/GQuestRow.h"
+#include "Data/Condition/GCondition.h"
 #include "System/GDataManager.h"
 #include "System/GEventManager.h"
+#include "Engine/DataTable.h"
 
 void UGQuestComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GEVENT_ADD(this, GGameplayTags::EventTag_Open_DataTable, this);
 	GEVENT_ADD(this, GGameplayTags::EventTag_Quest_Accept, this);
 }
 
 void UGQuestComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
+	
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Open_DataTable, this);
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Quest_Accept, this);
 }
 
@@ -23,73 +29,159 @@ void UGQuestComponent::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
 	if (Tag == GGameplayTags::EventTag_Quest_Accept)
 	{
-		FGQuestMessage* QuestMsg = static_cast<FGQuestMessage*>(Message);
-		if (nullptr != QuestMsg)
-		{
-			AcceptQuest(QuestMsg->QuestID);
-		}
+		AcceptQuest(PendingQID);
+		PendingQID = NAME_None;
+	}else if (Tag == GGameplayTags::EventTag_Open_DataTable)
+	{
+		InitQuest();
 	}
 }
 
-FName UGQuestComponent::GetSuccessDialogueForNPC(FName NPCID, FName& OutQuestID)
+void UGQuestComponent::CheckQuest(const FName& NPCID)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-
-	for (FGQuestEntry& Entry : Quests)
+	
+	TArray<FName> FinishedQuests;
+ 	for (FName ActiveQuestID : ActiveQuestIDs)
 	{
-		if (Entry.State != EGQuestState::ReadyToComplete)
+		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, ActiveQuestID);
+		
+		if (nullptr != Row)
 		{
-			continue;
+			if (Row->NPCID != NPCID)
+			{
+				continue;
+			}
+			
+			bool bIsSatisfied = true;
+			for (TSubclassOf<UGCondition> Condition : Row->Conditions)
+			{
+				UGCondition* CDOCondition = Condition->GetDefaultObject<UGCondition>();
+			
+				if (IsValid(CDOCondition))
+				{
+					if (false == CDOCondition->IsSatisfied(GetOwner()))
+					{
+						bIsSatisfied = false;
+						break;
+					}
+				}
+			}
+		
+			if (bIsSatisfied)
+			{
+				FinishedQuests.Add(ActiveQuestID);
+			}
 		}
-
-		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, Entry.QuestID);
-		if (nullptr == Row || Row->NPCID != NPCID)
-		{
-			continue;
-		}
-
-		OutQuestID = Entry.QuestID;
-		return Row->SuccessDialogueID;
 	}
-	OutQuestID = NAME_None;
-	return NAME_None;
+	
+	for (const FName& FinishedQuestID : FinishedQuests)
+	{
+		FinishObjective(FinishedQuestID);
+	}
 }
 
-FName UGQuestComponent::GetPreDialogueForNPC(FName NPCID, FName& OutQuestID)
+FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-
-	for (FGQuestEntry& Entry : Quests)
+	
+	TArray<FGDialogueEntry> NPCQuests;
+	
+	for (const FGQuestEntry& Entry : Quests)
 	{
-		if (Entry.State != EGQuestState::Available)
-		{
-			continue;
-		}
-
 		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, Entry.QuestID);
-		if (nullptr == Row || Row->NPCID != NPCID)
+		if (nullptr != Row && Row->NPCID == NPCID)
 		{
-			continue;
+			FName* DID = Row->DialogueID.Find(Entry.State);
+			
+			if (DID != nullptr)
+			{
+				NPCQuests.Add({Row->GetID(), *DID, Entry.State});
+			}
 		}
-
-		OutQuestID = Entry.QuestID;
-		return Row->PreDialogueID;
 	}
-	OutQuestID = NAME_None;
-	return NAME_None;
+
+	NPCQuests.Sort([](const FGDialogueEntry& A, const FGDialogueEntry& B)
+	{
+		return A.State > B.State;
+	});
+	
+	if (false == NPCQuests.IsEmpty())
+	{
+ 		PendingQID = NPCQuests[0].QuestID;
+		return NPCQuests[0].DialogueID;
+	}
+
+	return FName();
 }
 
-void UGQuestComponent::AcceptQuest(FName QuestID)
+EGQuestState UGQuestComponent::GetQuestState(FName QuestID) const
+{
+	const FGQuestEntry* Entry = FindEntry(QuestID);
+	return nullptr != Entry ? Entry->State : EGQuestState::None;
+}
+
+bool UGQuestComponent::CanAcceptQuest(FName QuestID)
+{
+	const EGQuestState State = GetQuestState(QuestID);
+	if (State != EGQuestState::None && State != EGQuestState::Available)
+	{
+		return false;
+	}
+
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	check(DataManager);
+	const FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, QuestID);
+	if (nullptr == Row)
+	{
+		return false;
+	}
+
+	return Row->PrerequisiteQID.IsNone() || GetQuestState(Row->PrerequisiteQID) == EGQuestState::Completed;
+}
+
+void UGQuestComponent::OnNPCDialogueCompleted(FName NPCID)
+{
+	UGDataManager* DataManager = UGDataManager::Get(GetOwner());      
+	
+	check(DataManager);
+	
+	for (FGQuestEntry& Entry : Quests)
+	{
+		if (Entry.State != EGQuestState::ReadyToComplete) continue;
+		FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, Entry.QuestID);
+		if (nullptr != Row && Row->NPCID == NPCID)
+		{
+			CompleteQuest(Entry.QuestID);
+			return;
+		}
+	}
+}
+
+bool UGQuestComponent::AcceptQuest(FName QuestID)
 {
 	FGQuestEntry* Entry = FindEntry(QuestID);
-	if (nullptr == Entry || Entry->State != EGQuestState::Available)
+	if (false == CanAcceptQuest(QuestID))
 	{
-		return;
+		return false;
 	}
 
-	Entry->State = EGQuestState::Active;
+	if (nullptr == Entry)
+	{
+		FGQuestEntry NewEntry;
+		NewEntry.QuestID = QuestID;
+		NewEntry.State = EGQuestState::Active;
+		Quests.Add(NewEntry);
+	}
+	else
+	{
+		Entry->State = EGQuestState::Active;
+	}
+
+	ActiveQuestIDs.AddUnique(QuestID);
+	return true;
 }
 
 void UGQuestComponent::FinishObjective(FName QuestID)
@@ -101,46 +193,77 @@ void UGQuestComponent::FinishObjective(FName QuestID)
 	}
 
 	Entry->State = EGQuestState::ReadyToComplete;
+	ActiveQuestIDs.Remove(QuestID);
 }
 
-void UGQuestComponent::CompleteQuest(FName QuestID)
+void UGQuestComponent::InitQuest()
+{
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	
+	check(DataManager);
+	
+	UDataTable* QuestTable = DataManager->GetDataTable(EGDataTableType::Quest);
+	if (IsValid(QuestTable))
+	{
+		TArray<FGQuestRow*> QuestRows;
+		
+		QuestTable->GetAllRows(TEXT(""), QuestRows);
+		
+		for (FGQuestRow* QuestRow : QuestRows)
+		{
+			if (false == CanAcceptQuest(QuestRow->GetID()))
+			{
+				continue;
+			}
+			
+			Quests.Add({QuestRow->GetID(), EGQuestState::Available});
+		}
+	}
+}
+
+bool UGQuestComponent::CompleteQuest(FName QuestID)
 {
 	FGQuestEntry* Entry = FindEntry(QuestID);
 	if (nullptr == Entry || Entry->State != EGQuestState::ReadyToComplete)
 	{
-		return;
+		return false;
 	}
-
+	
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-
-	FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, QuestID);
-	const FName NextQuestID = (nullptr != Row) ? Row->NextQuestID : NAME_None;
-
-	Quests.RemoveAll([&QuestID](const FGQuestEntry& E) { return E.QuestID == QuestID; });
-
-	if (false == NextQuestID.IsNone())
+	const FGQuestRow* Row = DataManager->GetDataTableRow<FGQuestRow>(EGDataTableType::Quest, QuestID);
+	if (nullptr == Row)
 	{
-		FGQuestEntry NewEntry;
-		NewEntry.QuestID = NextQuestID;
-		NewEntry.State = EGQuestState::Available;
-		Quests.Add(NewEntry);
+		return false;
 	}
-}
 
-void UGQuestComponent::InitQuests(const TArray<FName>& QuestIDs)
-{
-	Quests.Empty();
-	for (const FName& ID : QuestIDs)
-	{
-		FGQuestEntry Entry;
-		Entry.QuestID = ID;
-		Entry.State = EGQuestState::Available;
-		Quests.Add(Entry);
-	}
+	Quests.RemoveAll([QuestID](const FGQuestEntry& E) { return E.QuestID == QuestID; });
+	Quests.Add({Row->NextQID, EGQuestState::Available});
+	return true;
 }
 
 FGQuestEntry* UGQuestComponent::FindEntry(FName QuestID)
 {
-	return Quests.FindByPredicate([QuestID](const FGQuestEntry& E) { return E.QuestID == QuestID; });
+	for (FGQuestEntry& Entry : Quests)
+	{
+		if (Entry.QuestID == QuestID)
+		{
+			return &Entry;
+		}
+	}
+
+	return nullptr;
+}
+
+const FGQuestEntry* UGQuestComponent::FindEntry(FName QuestID) const
+{
+	for (const FGQuestEntry& Entry : Quests)
+	{
+		if (Entry.QuestID == QuestID)
+		{
+			return &Entry;
+		}
+	}
+
+	return nullptr;
 }

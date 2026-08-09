@@ -1,8 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Data/GGameEnums.h"
 #include "GInteractionAction.h"
 #include "GInteractionAction_Talk.generated.h"
+class UGQuestComponent;
 
 UCLASS(Blueprintable)
 class PROJECTG_API UGInteractionAction_Talk : public UGInteractionAction
@@ -11,4 +13,15 @@ class PROJECTG_API UGInteractionAction_Talk : public UGInteractionAction
 
 public:
 	virtual void Execute(AActor* OwnerActor, AActor* TargetActor) override;
+	virtual void Finish() override;
+protected:
+	void OnDialogueFinished(EGDialogueEndReason EndReason);
+	
+protected:
+	
+	UPROPERTY(Transient)
+	TWeakObjectPtr<UGQuestComponent> QuestComponentRef;
+	
+	UPROPERTY(Transient)
+	FName CachedNPCID;
 };

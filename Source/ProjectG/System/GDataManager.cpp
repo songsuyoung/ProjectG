@@ -4,12 +4,15 @@
 #include "Data/GDataAsset.h"
 
 // UE
+#include "GEventManager.h"
+#include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 
 
-UGDataManager* UGDataManager::Get(UObject* Object)
-{ 
+UGDataManager* UGDataManager::Get(const UObject* Object)
+{
     UWorld* World = Object->GetWorld();
 
     check(World);
@@ -31,6 +34,7 @@ void UGDataManager::Initialize()
 void UGDataManager::LoadDataAsset()
 {
     DataAsset = DataAssetClass.Get();
+    GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_Open_DataTable);
 }
 
 TArray<UDataTable*> UGDataManager::GetAllDataTable()

@@ -5,7 +5,7 @@
 #include "Interface/GInteractable.h"
 #include "GNPCCharacter.generated.h"
 
-class UGInteractionCondition;
+class UGCondition;
 class UGInteractionActionComponent;
 class UGDialogueComponent;
 
@@ -17,14 +17,14 @@ class PROJECTG_API AGNPCCharacter : public AGBaseCharacter, public IGInteractabl
 public:
 	AGNPCCharacter();
 
-	FName GetID() { return NPCID; }
+	FName GetID() const { return NPCID; }
 	virtual FName GetInteractionID() const override { return InteractionID; }
 	virtual int32 GetPriority() const override { return InteractionPriority; }
 	virtual float GetHoldDuration() const override { return HoldDuraction; }
 	virtual void InternalInteract(AActor* TargetActor) override;
 	virtual bool IsRepeatable() const override { return true; }
 
-	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const override { return Conditions; }
+	const TArray<TObjectPtr<UGCondition>>& GetConditions() const override { return Conditions; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -37,7 +37,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	FName InteractionID;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	int32 InteractionPriority;
 
@@ -45,15 +45,12 @@ protected:
 	float HoldDuraction;
 
 	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
-	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
+	TArray<TObjectPtr<UGCondition>> Conditions;
 
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGInteractionActionComponent> InteractionActionComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Dialogue, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UGDialogueComponent> DialogueComponent;
 
 protected:
 	FGInteractionSharedState SharedState;

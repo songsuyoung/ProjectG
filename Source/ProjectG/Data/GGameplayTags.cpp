@@ -7,7 +7,9 @@
 namespace GGameplayTags
 {
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Layout_HUD, "UI.Layout.HUD", "UI");
-
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Open_DataTable, "Event.Open.DataTable", "");
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Interact,          "Event.Interact",          "Interact events parent");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Interact_Detect,   "Event.Interact.Detect",   "Interactable detected");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Interact_Undetect, "Event.Interact.Undetect", "Interactable lost");
@@ -25,6 +27,7 @@ namespace GGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_Cancel,      "Event.Dialogue.Cancel",       "Cancel/end dialogue");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_SelectChoice,"Event.Dialogue.SelectChoice", "Player selected a dialogue choice");
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Quest, "Event.Quest", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Quest_Accept, "Event.Quest.Accept", "Player accepted a quest via dialogue choice");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_UI_InventoryToggle, "Event.UI.InventoryToggle", "Toggle inventory UI");

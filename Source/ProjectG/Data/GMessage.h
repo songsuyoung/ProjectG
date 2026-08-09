@@ -44,21 +44,13 @@ struct FGDialogueMessage : public FGMessage
 
 public:
 	FGDialogueMessage() { }
-	FGDialogueMessage(const FGDialogueRow& InRow) : Row(InRow) { }
+	FGDialogueMessage(const FName& NPCID, const FText& Body, const TArray<FGDialogueChoice>& Choices) : NPCID(NPCID), Body(Body), Choices(Choices) { }
 
-	FGDialogueRow Row;
-};
-
-USTRUCT()
-struct FGDialogueChoiceMessage : public FGMessage
-{
-	GENERATED_BODY()
-
-public:
-	FGDialogueChoiceMessage() {}
-	FGDialogueChoiceMessage(int32 InIndex) : ChoiceIndex(InIndex) {}
-
-	int32 ChoiceIndex = 0;
+	FName NPCID;
+	FText Body;
+	
+	UPROPERTY(Transient)
+	TArray<FGDialogueChoice> Choices;
 };
 
 USTRUCT()

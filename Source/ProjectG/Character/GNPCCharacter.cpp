@@ -1,25 +1,23 @@
 #include "Character/GNPCCharacter.h"
 
-#include "Component/GDialogueComponent.h"
 #include "Component/GInteractionActionComponent.h"
-#include "Data/Interact/GInteractionCondition.h"
+#include "Data/Condition/Interact/GInteractionCondition.h"
 
 AGNPCCharacter::AGNPCCharacter()
 	: Super()
 {
 	InteractionActionComponent = CreateDefaultSubobject<UGInteractionActionComponent>(TEXT("InteractionActionComponent"));
-	DialogueComponent = CreateDefaultSubobject<UGDialogueComponent>(TEXT("DialogueComponent"));
 }
 
 void AGNPCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (UGInteractionCondition* Condition : Conditions)
+	for (UGCondition* Condition : Conditions)
 	{
-		if (IsValid(Condition))
+		if (UGInteractionCondition* InteractCondition = Cast<UGInteractionCondition>(Condition))
 		{
-			Condition->Init(this);
+			InteractCondition->Init(this);
 		}
 	}
 }

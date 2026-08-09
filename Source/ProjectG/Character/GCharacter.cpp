@@ -25,12 +25,4 @@ AGCharacter::AGCharacter()
 void AGCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (IsValid(QuestComponent))
-	{
-		// 플레이어의 시작을 의미
-		QuestComponent->InitQuests({FName("0")});
-		QuestComponent->AcceptQuest(FName("0"));
-		QuestComponent->FinishObjective(FName("0"));
-	}
 }

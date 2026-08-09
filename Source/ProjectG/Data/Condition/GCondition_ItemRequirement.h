@@ -1,24 +1,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GInteractionCondition.h"
-#include "GInteractionCondition_ItemRequirement.generated.h"
+#include "GCondition.h"
+#include "GCondition_ItemRequirement.generated.h"
 
 USTRUCT(BlueprintType)
 struct FGItemRequirement
 {
 	GENERATED_BODY()
-	
+
 public:
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName ItemID;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Count;
 };
+
 UCLASS()
-class PROJECTG_API UGInteractionCondition_ItemRequirement : public UGInteractionCondition
+class PROJECTG_API UGCondition_ItemRequirement : public UGCondition
 {
 	GENERATED_BODY()
 

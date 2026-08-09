@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "GDialogueCondition.generated.h"
+#include "GCondition.generated.h"
 
-UCLASS(Abstract, EditInlineNew)
-class PROJECTG_API UGDialogueCondition : public UObject
+UCLASS(Blueprintable, EditInlineNew)
+class PROJECTG_API UGCondition : public UObject
 {
 	GENERATED_BODY()
 

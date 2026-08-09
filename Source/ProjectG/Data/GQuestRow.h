@@ -4,6 +4,9 @@
 #include "Engine/DataTable.h"
 #include "GQuestRow.generated.h"
 
+class UGCondition;
+enum class EGQuestState	: uint8;
+
 USTRUCT(BlueprintType)
 struct FGQuestRow : public FTableRowBase
 {
@@ -19,14 +22,18 @@ public:
 	FName NPCID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName PreDialogueID;
+	TArray<TSubclassOf<UGCondition>> Conditions;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName PrerequisiteQID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName SuccessDialogueID;
-
+	FName NextQID;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName NextQuestID;
+	TMap<EGQuestState, FName> DialogueID;
 
+	
 private:
 	FName ID;
 };

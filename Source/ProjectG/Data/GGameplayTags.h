@@ -10,6 +10,9 @@ namespace GGameplayTags
 
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(UITag_Layout_HUD);
 
+	// Event tags - Game
+	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Open_DataTable);
+	
 	// Event tags - Interact
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Interact);
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Interact_Detect);
@@ -31,6 +34,7 @@ namespace GGameplayTags
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Dialogue_SelectChoice);
 
 	// Event tags - Quest
+	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Quest);
 	PROJECTG_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EventTag_Quest_Accept);
 
 	// Event tags - UI

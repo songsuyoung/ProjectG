@@ -5,7 +5,7 @@
 #include "Data/GGameEnums.h"
 #include "GInteractable.generated.h"
 
-class UGInteractionCondition;
+class UGCondition;
 class UGInteractionActionComponent;
 class AGCharacter;
 
@@ -39,6 +39,6 @@ public:
 
 protected:
 	virtual FGInteractionSharedState& GetInteractionSharedState() = 0;
-	virtual const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const = 0;
+	virtual const TArray<TObjectPtr<UGCondition>>& GetConditions() const = 0;
 	virtual UGInteractionActionComponent* GetInteractionActionComponent() = 0;
 };

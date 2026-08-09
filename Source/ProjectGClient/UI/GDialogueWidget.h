@@ -8,20 +8,13 @@
 
 class UTextBlock;
 class UVerticalBox;
-class UGCommonButtonBase;
+class UGChoiceButton;
 struct FGDialogueChoice;
 
 UCLASS()
 class PROJECTGCLIENT_API UGDialogueWidget : public UGCommonActivatableWidget, public IGMessageReceiver
 {
 	GENERATED_BODY()
-
-public:
-	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
-
-	// Blueprint에서 선택지 버튼 클릭 시 호출
-	UFUNCTION(BlueprintCallable)
-	void SelectChoice(int32 Index);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -30,10 +23,11 @@ protected:
 	virtual void NativeOnDeactivated() override;
 	
 protected:
+	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
+
 	void OnBackPressed();
 	void OnApplyPressed();
-	
-	void OnClick_Choice(int32 Index);
+	void OnChoiceClicked(int32 Index);
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnChoicesUpdated(const TArray<FGDialogueChoice>& Choices);
@@ -47,6 +41,7 @@ protected:
 	
 	FUIActionBindingHandle BackHandle;
 	FUIActionBindingHandle ApplyHandle;
+	
 protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> TextBlock_Speaker;
@@ -60,5 +55,5 @@ protected:
 protected:
 	
 	UPROPERTY(Transient)
-	TArray<TObjectPtr<UGCommonButtonBase>> ChoiceButtons;
+	TArray<TObjectPtr<UGChoiceButton>> ChoiceButtons;
 };

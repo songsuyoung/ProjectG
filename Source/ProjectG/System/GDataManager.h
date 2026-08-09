@@ -14,7 +14,7 @@ class PROJECTG_API UGDataManager : public UObject
 
 public:
 
-	static UGDataManager* Get(UObject* Object);
+	static UGDataManager* Get(const UObject* Object);
 
 	void Initialize();
 public:

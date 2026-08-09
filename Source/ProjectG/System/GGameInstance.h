@@ -4,6 +4,7 @@
 #include "Engine/GameInstance.h"
 #include "GGameInstance.generated.h"
 
+class UGDialogueManager;
 class UGEventManager;
 class UGDataManager;
 class UGUIManagerBase;
@@ -19,6 +20,7 @@ public:
 	UGDataManager* GetDataManager() { return DataManager; }
 	UGUIManagerBase* GetUIManager() { return UIManager; }
 	UGEventManager* GetEventManager() { return EventManager; }
+	UGDialogueManager* GetDialogueManager() { return DialogueManager; }
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "AssetClass")
@@ -36,4 +38,7 @@ protected:
 	
 	UPROPERTY(Transient)
 	TObjectPtr<UGUIManagerBase> UIManager;
+	
+	UPROPERTY(Transient)
+	TObjectPtr<UGDialogueManager> DialogueManager;
 };

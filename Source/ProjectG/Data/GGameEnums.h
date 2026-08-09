@@ -27,7 +27,17 @@ ENUM_RANGE_BY_COUNT(EGDataTableType, EGDataTableType::Max);
 UENUM(BlueprintType)
 enum class EGQuestState : uint8
 {
+	None,
 	Available,
 	Active,
 	ReadyToComplete,
+	Completed,
+};
+
+UENUM(BlueprintType)
+enum class EGDialogueEndReason : uint8
+{
+	Completed,
+	Cancelled,
+	Invalid,
 };

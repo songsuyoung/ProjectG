@@ -5,7 +5,7 @@
 #include "Interface/GInteractable.h"
 #include "GInteractableActor.generated.h"
 
-class UGInteractionCondition;
+class UGCondition;
 class UGInteractionActionComponent;
 class USphereComponent;
 class UAnimMontage;
@@ -24,7 +24,7 @@ public:
 	virtual float GetHoldDuration() const override { return HoldDuration; }
 	virtual void InternalInteract(AActor* TargetActor) override {}
 
-	const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() const override { return Conditions; }
+	const TArray<TObjectPtr<UGCondition>>& GetConditions() const override { return Conditions; }
 	FTransform GetInteractPointTransform() const;
 
 protected:
@@ -43,7 +43,7 @@ protected:
 	float HoldDuration;
 
 	UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
-	TArray<TObjectPtr<UGInteractionCondition>> Conditions;
+	TArray<TObjectPtr<UGCondition>> Conditions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Mesh")
 	TObjectPtr<UMeshComponent> MeshComponent;

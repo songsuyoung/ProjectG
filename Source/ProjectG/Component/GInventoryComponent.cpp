@@ -66,6 +66,7 @@ void UGInventoryComponent::Acquire(FName PromptID)
 
 	FGItemMessage Message(AcquiredItemID, ItemValue);
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Acquired, Message);
+	GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_Quest);
 }
 
 void UGInventoryComponent::UseItem(FName ItemName, int32 Count)

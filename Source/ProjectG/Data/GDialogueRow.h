@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Engine/DataTable.h"
 #include "GDialogueRow.generated.h"
 
@@ -15,10 +16,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName NextID;
-
-	// 설정 시 이 선택지 선택 → AcceptQuest(QuestID) 호출
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName QuestID;
+	FGameplayTag ChoiceTag;
 };
 
 USTRUCT(BlueprintType)

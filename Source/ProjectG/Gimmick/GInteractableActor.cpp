@@ -3,7 +3,7 @@
 #include "Character/GCharacter.h"
 #include "Component/GInteractionActionComponent.h"
 #include "Data/GGameEnums.h"
-#include "Data/Interact/GInteractionCondition.h"
+#include "Data/Condition/Interact/GInteractionCondition.h"
 #include "GameFramework/PlayerController.h"
 
 AGInteractableActor::AGInteractableActor()
@@ -21,11 +21,11 @@ void AGInteractableActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (UGInteractionCondition* Condition : Conditions)
+	for (UGCondition* Condition : Conditions)
 	{
-		if (IsValid(Condition))
+		if (UGInteractionCondition* InteractCondition = Cast<UGInteractionCondition>(Condition))
 		{
-			Condition->Init(this);
+			InteractCondition->Init(this);
 		}
 	}
 }

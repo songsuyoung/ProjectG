@@ -1,4 +1,5 @@
-#include "Data/Interact/GInteractionCondition.h"
+#include "GInteractionCondition.h"
+#include "Interface/GInteractable.h"
 
 void UGInteractionCondition::Init(IGInteractable* Interact)
 {

@@ -1,9 +1,9 @@
-#include "Data/Interact/GInteractionCondition_CanAcquire.h"
+#include "GCondition_ItemRequirement.h"
 
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
 
-bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor)
+bool UGCondition_ItemRequirement::IsSatisfied(AActor* TargetActor)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 	if (false == IsValid(Character))
@@ -17,5 +17,5 @@ bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor)
 		return false;
 	}
 
-	return InventoryComponent->CanAcquire(Interactable->GetInteractionID());
+	return InventoryComponent->CanUseItem(Item.ItemID, Item.Count);
 }
