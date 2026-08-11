@@ -18,6 +18,8 @@ public:
 	
 	virtual void Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> RootWidgetClass) { };
 	UGCommonActivatableWidget* OpenWindow(UClass* WidgeClass, FGameplayTag LayerTag) { return OpenWindowInternalImpl(WidgeClass, LayerTag); }
+	void CloseWindow(UGCommonActivatableWidget* Widget) { CloseWindowInternalImpl(Widget); }
 protected:
 	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag) { return nullptr; };
+	virtual void CloseWindowInternalImpl(UGCommonActivatableWidget* Widget) {};
 };

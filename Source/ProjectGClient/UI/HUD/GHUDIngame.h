@@ -10,6 +10,7 @@
 class UGInventoryWidget;
 class UGCraftingWidget;
 class UGDialogueWidget;
+class UGInteractionInfoWidget;
 UCLASS()
 class PROJECTGCLIENT_API UGHUDIngame : public UGCommonActivatableWidget, public IGMessageReceiver
 {
@@ -34,8 +35,11 @@ protected:
 
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UGCraftingWidget> CraftingWidget;
-	
+
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UGDialogueWidget> DialogueWidget;
+
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UGInteractionInfoWidget> InteractionInfoWidget;
 	
 };

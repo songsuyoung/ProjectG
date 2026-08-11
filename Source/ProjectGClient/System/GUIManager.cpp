@@ -22,11 +22,19 @@ void UGUIManager::Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> Ro
 UGCommonActivatableWidget* UGUIManager::OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag)
 {
 	UGCommonActivatableWidget* CommonActivatableWidget = nullptr;
-	
+
 	if (IsValid(RootWidget))
 	{
 		CommonActivatableWidget = RootWidget->GetOrCreateInstance(WidgetClass, LayerTag);
 	}
 
 	return CommonActivatableWidget;
+}
+
+void UGUIManager::CloseWindowInternalImpl(UGCommonActivatableWidget* Widget)
+{
+	if (IsValid(RootWidget))
+	{
+		RootWidget->ReturnToPool(Widget);
+	}
 }

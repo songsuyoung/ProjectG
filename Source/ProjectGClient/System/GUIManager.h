@@ -21,7 +21,8 @@ public:
 	virtual void Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> RootWidgetClass) override;
 
 protected:
-	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag) override;;
+	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag) override;
+	virtual void CloseWindowInternalImpl(UGCommonActivatableWidget* Widget) override;
 	
 protected:
 	

@@ -5,6 +5,7 @@
 #include "GInteractionAction.h"
 #include "GInteractionAction_Talk.generated.h"
 class UGQuestComponent;
+class AGCharacter;
 
 UCLASS(Blueprintable)
 class PROJECTG_API UGInteractionAction_Talk : public UGInteractionAction
@@ -22,7 +23,13 @@ protected:
 	
 	UPROPERTY(Transient)
 	TWeakObjectPtr<UGQuestComponent> QuestComponentRef;
-	
+
+	UPROPERTY(Transient)
+	TWeakObjectPtr<AGCharacter> CharacterRef;
+
 	UPROPERTY(Transient)
 	FName CachedNPCID;
+
+	UPROPERTY(Transient)
+	FName CachedDialogueID;
 };

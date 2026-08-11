@@ -25,7 +25,10 @@ public:
 	FORCEINLINE UGInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	FORCEINLINE UGInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 	FORCEINLINE UGQuestComponent* GetQuestComponent() const { return QuestComponent; }
-	
+
+	void AddCompletedDialogue(FName DialogueID) { CompletedDialogueIDs.Add(DialogueID); }
+	bool HasCompletedDialogue(FName DialogueID) const { return CompletedDialogueIDs.Contains(DialogueID); }
+
 	virtual void BeginPlay() override;
 protected:
 
@@ -46,4 +49,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Temp")
 	int32 Level;
+
+	UPROPERTY()
+	TSet<FName> CompletedDialogueIDs;
 };

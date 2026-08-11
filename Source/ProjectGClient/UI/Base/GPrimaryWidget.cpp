@@ -43,12 +43,10 @@ UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(UClass* 
 
 		if (LastIndex >= 0)
 		{
-			//0보다 크면 마지막껄 꺼낸다.
 			ReturnWidget = Pool->Container[LastIndex];
 			Pool->Container.RemoveSingleSwap(ReturnWidget);
+			(*WidgetStack)->AddWidgetInstance(*ReturnWidget);
 		}
-	
-		(*WidgetStack)->AddWidgetInstance(*ReturnWidget);
 	}
 
 	if (ReturnWidget == nullptr)
@@ -73,3 +71,25 @@ UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(UClass* 
 	return ReturnWidget;
 }
 
+void UGPrimaryWidget::ReturnToPool(UGCommonActivatableWidget* Widget)
+{
+	if (false == IsValid(Widget))
+	{
+		return;
+	}
+	
+	for (auto& Pair : LayerMap)
+	{
+		if (IsValid(Pair.Value) && Pair.Value->GetActiveWidget() == Widget)
+		{
+			Pair.Value->RemoveWidget(*Widget);
+			break;
+		}
+	}
+
+	if (Widget->IsPoolable())
+	{
+		FGPoolContainer& Pool = PoolingContainer.FindOrAdd(Widget->GetClass()->GetFName());
+		Pool.Container.Add(Widget);
+	}
+}

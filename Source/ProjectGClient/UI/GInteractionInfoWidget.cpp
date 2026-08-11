@@ -48,10 +48,6 @@ void UGInteractionInfoWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 		{
 			SetVisibility(ESlateVisibility::Collapsed);
 		}
-		else if (!LastDetectedID.IsNone())
-		{
-			UpdateUI(LastDetectedID);
-		}
 	}
 	else if (Tag == GGameplayTags::EventTag_Interact_Detect)
 	{

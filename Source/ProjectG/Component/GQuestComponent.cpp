@@ -105,12 +105,8 @@ FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 		}
 	}
 	
-	if (false == BestQuest.QuestID.IsNone())
-	{
-		PendingQID = BestQuest.QuestID;
-		return BestQuest.DialogueID;
-	}
-	return FName();
+	PendingQID = BestQuest.QuestID;
+	return BestQuest.DialogueID;
 }
 
 EGQuestState UGQuestComponent::GetQuestState(FName QuestID) const
@@ -212,7 +208,10 @@ void UGQuestComponent::InitQuest()
 				continue;
 			}
 			
-			Quests.Add({QuestRow->GetID(), EGQuestState::Available});
+			if (nullptr == FindEntry(QuestRow->GetID()))
+			{
+				Quests.Add({QuestRow->GetID(), EGQuestState::Available});
+			}
 		}
 	}
 }
@@ -234,7 +233,12 @@ bool UGQuestComponent::CompleteQuest(FName QuestID)
 	}
 
 	Quests.RemoveAll([QuestID](const FGQuestEntry& E) { return E.QuestID == QuestID; });
-	Quests.Add({Row->NextQID, EGQuestState::Available});
+
+	if (false == Row->NextQID.IsNone())
+	{
+		Quests.Add({Row->NextQID, EGQuestState::Available});
+	}
+
 	return true;
 }
 

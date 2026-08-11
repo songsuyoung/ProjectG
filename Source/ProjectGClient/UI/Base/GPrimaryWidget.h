@@ -30,6 +30,7 @@ public:
 
 public:
 	virtual UGCommonActivatableWidget* GetOrCreateInstance(UClass* Class, const FGameplayTag& LayerTag);
+	void ReturnToPool(UGCommonActivatableWidget* Widget);
 
 protected:
 

@@ -34,4 +34,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	EMouseCaptureMode GameMouseCaptureMode;
+
+public:
+	bool IsPoolable() const { return bPoolable; }
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	bool bPoolable = false;
 };

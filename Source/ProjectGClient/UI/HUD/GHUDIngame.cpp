@@ -6,6 +6,7 @@
 #include "UI/GCraftingWidget.h"
 #include "UI/GDialogueWidget.h"
 #include "UI/GInventoryWidget.h"
+#include "UI/GInteractionInfoWidget.h"
 
 void UGHUDIngame::NativeConstruct()
 {
@@ -25,6 +26,11 @@ void UGHUDIngame::NativeDestruct()
 
 void UGHUDIngame::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
+	if (IsValid(InteractionInfoWidget))
+	{
+		InteractionInfoWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
 	if (Tag == GGameplayTags::EventTag_UI_InventoryToggle)
 	{
 		if (IsValid(InventoryWidget))
