@@ -20,8 +20,7 @@ void UGInteractionActionComponent::Run(AActor* InOwnerActor, AActor* InTargetAct
     RunNextAction();
 }
 
-void UGInteractionActionComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
-    FActorComponentTickFunction* ThisTickFunction)
+void UGInteractionActionComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -34,22 +33,6 @@ void UGInteractionActionComponent::TickComponent(float DeltaTime, enum ELevelTic
     if (ActiveIndex >= 0 && ActiveIndex < Actions.Num())
     {
         Actions[ActiveIndex]->Tick(DeltaTime);
-    }
-}
-
-void UGInteractionActionComponent::BeginPlay()
-{
-    Super::BeginPlay();
-    
-    IGInteractable* Interactable = Cast<IGInteractable>(GetOwner());
-    if (nullptr == Interactable)
-    {
-        return;
-    }
-    
-    for (UGInteractionCondition* Condition : Conditions)
-    {
-        Condition->Init(Interactable);
     }
 }
 

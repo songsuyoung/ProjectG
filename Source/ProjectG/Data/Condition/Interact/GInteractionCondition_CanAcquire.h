@@ -10,5 +10,8 @@ class PROJECTG_API UGInteractionCondition_CanAcquire : public UGInteractionCondi
 	GENERATED_BODY()
 
 public:
-	virtual bool IsSatisfied(AActor* TargetActor) override;
+	virtual bool IsSatisfied(AActor* TargetActor, FGConditionRow* Condition) override;
+
+protected:
+	bool IsSatisfied(AActor* TargetActor, FName ItemID);
 };

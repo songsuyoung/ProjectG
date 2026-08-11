@@ -2,8 +2,9 @@
 
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
+#include "Data/GConditionRow.h"
 
-bool UGCondition_ItemRequirement::IsSatisfied(AActor* TargetActor)
+bool UGCondition_ItemRequirement::IsSatisfied(AActor* TargetActor, FName ItemID, int32 ItemCount)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 	if (false == IsValid(Character))
@@ -17,5 +18,10 @@ bool UGCondition_ItemRequirement::IsSatisfied(AActor* TargetActor)
 		return false;
 	}
 
-	return InventoryComponent->CanUseItem(Item.ItemID, Item.Count);
+	return InventoryComponent->CanUseItem(ItemID, ItemCount);
+}
+
+bool UGCondition_ItemRequirement::IsSatisfied(AActor* TargetActor, FGConditionRow* Condition)
+{
+	return IsSatisfied(TargetActor, Condition->IDParam, Condition->IntParam);
 }

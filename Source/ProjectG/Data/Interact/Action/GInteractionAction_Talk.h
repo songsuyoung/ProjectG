@@ -17,6 +17,7 @@ public:
 protected:
 	void OnDialogueFinished(EGDialogueEndReason EndReason);
 	
+	FName CheckNextDialogueID(FName NPCID, AActor* TargetActor);
 protected:
 	
 	UPROPERTY(Transient)

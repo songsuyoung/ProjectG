@@ -19,6 +19,7 @@ enum class EGDataTableType : uint8
 	Dialogue,
 	Quest,
 	NPC,
+	Condition,
 	Max,
 };
 
@@ -40,4 +41,15 @@ enum class EGDialogueEndReason : uint8
 	Completed,
 	Cancelled,
 	Invalid,
+};
+
+
+UENUM(BlueprintType)
+enum class EGConditionType : uint8
+{
+	LevelComp,
+	ItemComp,
+	MapVisited,
+	QuestState,
+	KillCount,
 };

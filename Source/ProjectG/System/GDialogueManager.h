@@ -19,7 +19,7 @@ public:
 	bool NextDialogue();
 	void EndDialogue(EGDialogueEndReason EndReason);
 	void SelectChoice(const FGDialogueChoice& Choice);
-	
+
 	FGOnDialogueEnded OnDialogueEnded;
 protected:
 

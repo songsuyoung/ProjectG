@@ -41,6 +41,9 @@ public:
 	// 선택지 없을 때 다음 노드
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName NextID;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<FName> ConditionIDs;
 
 	// 선택지 있으면 NextID 무시
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

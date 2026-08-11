@@ -8,6 +8,7 @@
 #include "System/GDataManager.h"
 #include "System/GEventManager.h"
 #include "Engine/DataTable.h"
+#include "System/GConditionManager.h"
 
 void UGQuestComponent::BeginPlay()
 {
@@ -55,17 +56,15 @@ void UGQuestComponent::CheckQuest(const FName& NPCID)
 			}
 			
 			bool bIsSatisfied = true;
-			for (TSubclassOf<UGCondition> Condition : Row->Conditions)
+			UGConditionManager* ConditionManager = UGConditionManager::Get(this);
+			check(ConditionManager);
+				
+			for (const FName& Condition : Row->Conditions)
 			{
-				UGCondition* CDOCondition = Condition->GetDefaultObject<UGCondition>();
-			
-				if (IsValid(CDOCondition))
+				if (false == ConditionManager->IsSatisfied(Condition, GetOwner()))
 				{
-					if (false == CDOCondition->IsSatisfied(GetOwner()))
-					{
-						bIsSatisfied = false;
-						break;
-					}
+					bIsSatisfied = false;
+					break;
 				}
 			}
 		
@@ -84,7 +83,7 @@ void UGQuestComponent::CheckQuest(const FName& NPCID)
 
 FName UGQuestComponent::GetDialogueForNPC(FName NPCID)
 {
-  	UGDataManager* DataManager = UGDataManager::Get(this);
+   	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
 	
 	FGDialogueEntry BestQuest;

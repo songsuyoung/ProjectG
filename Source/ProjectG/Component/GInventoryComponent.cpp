@@ -13,19 +13,12 @@ UGInventoryComponent::UGInventoryComponent()
 
 }
 
-bool UGInventoryComponent::CanAcquire(FName InteractionID)
+bool UGInventoryComponent::CanAcquire(FName ItemID)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-
-	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, InteractionID);
 	
-	if (nullptr == InteractionPromptRow)
-	{
-		return false;
-	}
-	
-	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, InteractionPromptRow->ItemID);
+	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, ItemID);
 
 	if (nullptr == ItemRow)
 	{

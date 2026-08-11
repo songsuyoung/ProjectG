@@ -10,9 +10,9 @@ class PROJECTG_API UGCondition_Level : public UGCondition
 	GENERATED_BODY()
 
 public:
-	virtual bool IsSatisfied(AActor* TargetActor) override;
-
+	virtual bool IsSatisfied(AActor* TargetActor, FGConditionRow* Condition) override;
+	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition | Level")
-	int32 Level;
+	bool IsSatisfied(AActor* TargetActor, int32 Level);
+	
 };

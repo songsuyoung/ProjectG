@@ -17,18 +17,17 @@ public:
     void Run(AActor* InOwnerActor, AActor* InTargetActor, FSimpleDelegate InOnCompleted);
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     bool IsRunning() const { return bIsRunning; }
-    const TArray<TObjectPtr<UGInteractionCondition>>& GetConditions() { return Conditions;}
+    const TArray<FName>& GetConditions() { return ConditionIDs;}
 protected:
     
-    virtual void BeginPlay() override;
     void RunNextAction();
 
 protected:
     UPROPERTY(EditAnywhere, Instanced, Category = "Interaction|Actions")
     TArray<TObjectPtr<UGInteractionAction>> Actions;
     
-    UPROPERTY(EditAnywhere, Instanced, Category = "Interaction")
-    TArray<TObjectPtr<UGInteractionCondition>> Conditions;
+    UPROPERTY(EditAnywhere, Category = "Interaction")
+    TArray<FName> ConditionIDs;;
 protected:
     UPROPERTY(Transient)
     TWeakObjectPtr<AActor> OwnerActorRef;

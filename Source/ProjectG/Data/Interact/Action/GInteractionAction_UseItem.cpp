@@ -3,9 +3,9 @@
 #include "Character/GCharacter.h"
 #include "Component/GInteractionActionComponent.h"
 #include "Component/GInventoryComponent.h"
-#include "Data/Condition/Interact/GInteractionCondition.h"
-#include "Data/Condition/GCondition_ItemRequirement.h"
+#include "Data/GConditionRow.h"
 #include "Gimmick/GInteractableActor.h"
+#include "System/GDataManager.h"
 
 void UGInteractionAction_UseItem::Execute(AActor* OwnerActor, AActor* TargetActor)
 {
@@ -33,12 +33,16 @@ void UGInteractionAction_UseItem::Execute(AActor* OwnerActor, AActor* TargetActo
             return;
         }
         
-        for (const TObjectPtr<UGInteractionCondition>& Condition : IAC->GetConditions())
+        UGDataManager* DataManager = UGDataManager::Get(this);
+        check(DataManager);
+        
+        for (const FName& ConditionID : IAC->GetConditions())
         {
-            const UGCondition_ItemRequirement* const ItemReq = Cast<UGCondition_ItemRequirement>(Condition);
-            if (IsValid(ItemReq))
+            FGConditionRow* ConditionRow = DataManager->GetDataTableRow<FGConditionRow>(EGDataTableType::Condition, ConditionID);
+            
+            if (nullptr != ConditionRow)
             {
-                InventoryComponent->UseItem(ItemReq->GetItemID(), ItemReq->GetCount());
+                InventoryComponent->UseItem(ConditionRow->IDParam, ConditionRow->IntParam);
             }
         }
     }

@@ -23,12 +23,9 @@ class PROJECTG_API UGCondition_ItemRequirement : public UGCondition
 	GENERATED_BODY()
 
 public:
-	virtual bool IsSatisfied(AActor* TargetActor) override;
-
-	FName GetItemID() const { return Item.ItemID; }
-	int32 GetCount() const { return Item.Count; }
+	virtual bool IsSatisfied(AActor* TargetActor, FGConditionRow* Condition) override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-	FGItemRequirement Item;
+	bool IsSatisfied(AActor* TargetActor, FName ItemID, int32 ItemCount);
+	
 };

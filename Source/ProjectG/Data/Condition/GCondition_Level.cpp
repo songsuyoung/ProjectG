@@ -1,8 +1,9 @@
 #include "GCondition_Level.h"
 
 #include "Character/GCharacter.h"
+#include "Data/GConditionRow.h"
 
-bool UGCondition_Level::IsSatisfied(AActor* TargetActor)
+bool UGCondition_Level::IsSatisfied(AActor* TargetActor, int32 Level)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 
@@ -12,4 +13,9 @@ bool UGCondition_Level::IsSatisfied(AActor* TargetActor)
 	}
 
 	return false;
+}
+
+bool UGCondition_Level::IsSatisfied(AActor* TargetActor, FGConditionRow* Condition)
+{
+	return IsSatisfied(TargetActor, Condition->IntParam);
 }

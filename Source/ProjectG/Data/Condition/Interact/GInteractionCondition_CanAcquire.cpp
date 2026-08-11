@@ -2,8 +2,14 @@
 
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
+#include "Data/GConditionRow.h"
 
-bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor)
+bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor, FGConditionRow* Condition)
+{
+	return IsSatisfied(TargetActor, Condition->IDParam);
+}
+
+bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor, FName ItemID)
 {
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 	if (false == IsValid(Character))
@@ -17,5 +23,5 @@ bool UGInteractionCondition_CanAcquire::IsSatisfied(AActor* TargetActor)
 		return false;
 	}
 
-	return InventoryComponent->CanAcquire(Interactable->GetInteractionID());
+	return InventoryComponent->CanAcquire(ItemID);
 }

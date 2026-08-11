@@ -2,7 +2,7 @@
 
 #include "Character/GCharacter.h"
 #include "Component/GInteractionActionComponent.h"
-#include "Data/Condition/Interact/GInteractionCondition.h"
+#include "System/GConditionManager.h"
 
 EGInteractionState IGInteractable::GetInteractionState(AActor* TargetActor)
 {
@@ -20,20 +20,17 @@ EGInteractionState IGInteractable::GetInteractionState(AActor* TargetActor)
 		return EGInteractionState::None;
 	}
 
-	for (const TObjectPtr<UGInteractionCondition>& Condition : ActionComp->GetConditions())
+	UGConditionManager* ConditionManager = UGConditionManager::Get(TargetActor);
+	check(ConditionManager);
+	for (const FName& ConditionID : ActionComp->GetConditions())
 	{
-		if (false == IsValid(Condition))
-		{
-			continue;
-		}
-
-		if (false == Condition->IsSatisfied(TargetActor))
-		{
+		if (false == ConditionManager->IsSatisfied(ConditionID, TargetActor))
+		{	
 			SharedState.State = EGInteractionState::Pending;
 			return SharedState.State;
 		}
 	}
-
+	
 	SharedState.State = EGInteractionState::Available;
 	return SharedState.State;
 }

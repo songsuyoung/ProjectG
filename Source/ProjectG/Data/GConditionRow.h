@@ -1,14 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Data/GGameEnums.h"
+#include "GameplayTagContainer.h"
 #include "Engine/DataTable.h"
-#include "GQuestRow.generated.h"
-
-class UGCondition;
-enum class EGQuestState	: uint8;
+#include "GConditionRow.generated.h"
 
 USTRUCT(BlueprintType)
-struct FGQuestRow : public FTableRowBase
+struct FGConditionRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -17,23 +16,16 @@ public:
 	virtual void OnDataTableChanged(const UDataTable* InDataTable, const FName InRowName);
 
 	FName GetID() const { return ID; }
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName NPCID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FName> Conditions;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName PrerequisiteQID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName NextQID;
+	EGConditionType ConditionType;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<EGQuestState, FName> DialogueID;
-
+	FName IDParam;  // 맵ID, 아이템ID 등
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 IntParam;   // 레벨, 아이템 수량 등
+
 private:
 	FName ID;
 };
