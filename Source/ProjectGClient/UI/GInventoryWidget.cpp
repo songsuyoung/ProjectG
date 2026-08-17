@@ -12,6 +12,12 @@
 #include "System/GEventManager.h"
 #include "UI/GInventoryEntry.h"
 
+UGInventoryWidget::UGInventoryWidget(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+	, InitialSlotCount(25)
+{
+}
+
 void UGInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -115,7 +121,6 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 		NewEntry->ItemID = ItemID;
 		NewEntry->IconImage = ItemRow->IconImage;
 		NewEntry->Count = ItemCount;
-
 		Entries[i] = NewEntry;
 		TileView_Inventory->SetListItems(Entries);
 		return;
@@ -131,7 +136,6 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 	NewEntry->ItemID = ItemID;
 	NewEntry->IconImage = ItemRow->IconImage;
 	NewEntry->Count = ItemCount;
-
 	Entries[Entries.Num() - 3] = NewEntry;
 	TileView_Inventory->SetListItems(Entries);
 }

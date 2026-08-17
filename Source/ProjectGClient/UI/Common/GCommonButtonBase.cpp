@@ -2,6 +2,23 @@
 
 #include "Components/TextBlock.h"
 
+void UGCommonButtonBase::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+	
+	if (IsDesignTime())
+	{
+		SetText(Label);
+	}
+}
+
+void UGCommonButtonBase::NativeConstruct()
+{
+	Super::NativeConstruct();
+	
+	SetText(Label);
+}
+
 void UGCommonButtonBase::SetText(const FString& Str)
 {
 	FText Text = FText::FromString(Str);

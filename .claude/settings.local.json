@@ -21,7 +21,10 @@
       "Bash(bash \"C:/Users/PC/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.3/skills/subagent-driven-development/scripts/review-package\" \"d8266d4\" \"HEAD\")",
       "Bash(bash \"C:/Users/PC/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.3/skills/subagent-driven-development/scripts/review-package\" \"9dfc12b\" \"HEAD\")",
       "mcp__claude_ai_Notion__notion-create-pages",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(python -c \"import pptx; print\\('pptx ok'\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python -c \"import pptx; print\\('ok'\\)\")"
     ]
   }
 }

@@ -20,6 +20,7 @@ enum class EGDataTableType : uint8
 	Quest,
 	NPC,
 	Condition,
+	Workbench,
 	Max,
 };
 

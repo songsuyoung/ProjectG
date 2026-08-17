@@ -33,6 +33,9 @@ protected:
     UPROPERTY(Transient)
     TWeakObjectPtr<ACharacter> CharacterRef;
 
-    FVector TargetLocation = FVector::ZeroVector;
-    FRotator TargetRotation = FRotator::ZeroRotator;
+    UPROPERTY(Transient)
+    FVector TargetLocation;
+    
+    UPROPERTY(Transient)
+    FRotator TargetRotation;
 };

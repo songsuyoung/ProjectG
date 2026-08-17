@@ -34,8 +34,12 @@ protected:
 
     UPROPERTY(Transient)
     TWeakObjectPtr<AActor> TargetActorRef;
-
-    FSimpleDelegate OnAllCompleted;
+    
+    UPROPERTY(Transient)
     int32 CurrentIndex = 0;
+    
+    UPROPERTY(Transient)
     bool bIsRunning = false;
+    
+    FSimpleDelegate OnAllCompleted;
 };

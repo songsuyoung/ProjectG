@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CommonButtonBase.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/StreamableManager.h"
@@ -20,6 +21,8 @@ class UGItemEntry : public UGItemEmptyEntry
 	GENERATED_BODY()
 
 public:
+	UGItemEntry();
+
 	UPROPERTY(Transient)
 	FName ItemID;
 
@@ -27,7 +30,13 @@ public:
 	TSoftObjectPtr<UTexture2D> IconImage;
 
 	UPROPERTY(Transient)
-	int32 Count = 0;
+	FText ItemName;
+
+	UPROPERTY(Transient)
+	int32 Count;
+
+	UPROPERTY(Transient)
+	uint8 bLocked : 1;
 };
 
 UCLASS()
@@ -37,16 +46,17 @@ class PROJECTGCLIENT_API UGInventoryEntry : public UUserWidget, public IUserObje
 
 protected:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	void OnIconLoaded();
 
 protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UImage> Image_Icon;
-	
+
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> TextBlock_Count;
-
-private:
-	void OnIconLoaded();
-
+	
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UImage> Image_Lock;
+	
 	TSharedPtr<FStreamableHandle> StreamableHandle;
 };

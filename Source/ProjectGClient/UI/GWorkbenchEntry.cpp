@@ -1,54 +1,43 @@
-#include "UI/GInventoryEntry.h"
+#include "GWorkbenchEntry.h"
 
 #include "Components/Image.h"
-
-UGItemEntry::UGItemEntry()
-	: Count(0)
-	, bLocked(0)
-{
-}
-
 #include "Components/TextBlock.h"
+#include "Data/GItemRow.h"
 #include "Engine/AssetManager.h"
-#include "Engine/Texture2D.h"
+#include "System/GDataManager.h"
 
-void UGInventoryEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
+void UGWorkbenchEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-	UGItemEntry* ItemEntry = Cast<UGItemEntry>(ListItemObject);
-
-	if (false == IsValid(Image_Icon))
+	UGItemEntry* ItemEntry = static_cast<UGItemEntry*>(ListItemObject);
+	
+	if (false == IsValid(ItemEntry))
 	{
-		return;
-	}
-
-	if (false == IsValid(ItemEntry) || false == IsValid(TextBlock_Count) || ItemEntry->IconImage.IsNull())
-	{
-		Image_Icon->SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 	
-	if (IsValid(Image_Lock))
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	
+	check(DataManager);
+	
+	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, ItemEntry->ItemID);
+	
+	if (nullptr == ItemRow)
 	{
-		if (ItemEntry->bLocked)
-		{
-			Image_Lock->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-		}
-		else
-		{
-			Image_Lock->SetVisibility(ESlateVisibility::Collapsed);
-		}
+		return;
 	}
-
-	FString Str = FString::Printf(TEXT("%d"), ItemEntry->Count);
-	TextBlock_Count->SetText(FText::FromString(Str));
-
+	if (IsValid(TextBlock_Name))
+	{
+		TextBlock_Name->SetText(ItemRow->Desc);
+	}
+	
 	if (ItemEntry->IconImage.IsValid())
 	{
 		Image_Icon->SetBrushFromTexture(ItemEntry->IconImage.Get());
 		Image_Icon->SetVisibility(ESlateVisibility::Visible);
+	
 		return;
 	}
-
+	
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 	StreamableHandle = StreamableManager.RequestAsyncLoad(
 		ItemEntry->IconImage.ToSoftObjectPath(),
@@ -56,7 +45,7 @@ void UGInventoryEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 	);
 }
 
-void UGInventoryEntry::OnIconLoaded()
+void UGWorkbenchEntry::OnIconLoaded()
 {
 	if (false == IsValid(Image_Icon))
 	{

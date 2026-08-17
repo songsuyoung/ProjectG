@@ -190,6 +190,7 @@ void UGQuestComponent::FinishObjective(FName QuestID)
 
 void UGQuestComponent::InitQuest()
 {
+	// SaveData가 없을 때 
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	
 	check(DataManager);
@@ -214,6 +215,8 @@ void UGQuestComponent::InitQuest()
 			}
 		}
 	}
+	
+	// SaveData가 있다면, Quests 에서 Active 상태인 퀘스트 ID를 ActiveQuestIDs 보관
 }
 
 bool UGQuestComponent::CompleteQuest(FName QuestID)
@@ -231,14 +234,13 @@ bool UGQuestComponent::CompleteQuest(FName QuestID)
 	{
 		return false;
 	}
-
-	Quests.RemoveAll([QuestID](const FGQuestEntry& E) { return E.QuestID == QuestID; });
-
+	
 	if (false == Row->NextQID.IsNone())
 	{
 		Quests.Add({Row->NextQID, EGQuestState::Available});
 	}
 
+	Entry->State = EGQuestState::Completed;
 	return true;
 }
 

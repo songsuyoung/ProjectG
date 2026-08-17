@@ -16,6 +16,8 @@ public:
 	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
 
 protected:
+	UGInventoryWidget(const FObjectInitializer& ObjectInitializer);
+
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual bool NativeOnHandleBackAction() override;
@@ -25,7 +27,7 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Inventory|Settings")
-	int32 InitialSlotCount = 25;
+	int32 InitialSlotCount;
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<UObject>> Entries;

@@ -34,19 +34,12 @@ bool UGInventoryComponent::CanAcquire(FName ItemID)
 	return *ItemCount < ItemRow->MaxCount;
 }
 
-void UGInventoryComponent::Acquire(FName PromptID)
+void UGInventoryComponent::Acquire(FName ItemID)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
-
-	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, PromptID);
 	
-	if (nullptr == InteractionPromptRow)
-	{
-		return;
-	}
-	
-	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, InteractionPromptRow->ItemID);
+	FGItemRow* ItemRow = DataManager->GetDataTableRow<FGItemRow>(EGDataTableType::Item, ItemID);
 
 	if (nullptr == ItemRow)
 	{
@@ -71,8 +64,15 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 		// 아이템 사용 불가능 함.
 		return;
 	}
+	int UseItemCount = *ItemCount - Count;
 	
-	*ItemCount = (Count - 1) > 0? *ItemCount - 1 : 0;
+	if (UseItemCount < 0)
+	{
+		// 실패 
+		return;
+	}
+	
+	*ItemCount = UseItemCount > 0? UseItemCount : 0;
 
 	FGItemMessage Message(ItemName, *ItemCount);
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Removed, Message);
