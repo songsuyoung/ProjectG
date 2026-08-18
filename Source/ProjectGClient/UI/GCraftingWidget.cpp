@@ -7,6 +7,8 @@
 #include "Data/GItemRow.h"
 #include "Data/GWorkbenchRow.h"
 #include "System/GDataManager.h"
+#include "System/GUIManager.h"
+#include "UI/Base/GPrimaryWidget.h"
 
 UGCraftingWidget::UGCraftingWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -121,6 +123,18 @@ void UGCraftingWidget::NativeConstruct()
 	}
 }
 
+void UGCraftingWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+	
+	if (IsValid(Button_Maker))
+	{
+		Button_Maker->OnClicked().RemoveAll(this);
+	}
+	
+	InventoryComponent = nullptr;
+}
+
 void UGCraftingWidget::OnWorkbenchItemSelected(UObject* Item)
 {
 	if (false == IsValid(TileView_Ingredients))
@@ -178,13 +192,13 @@ void UGCraftingWidget::OnWorkbenchItemSelected(UObject* Item)
 	CurrentItem = ItemEntry->ItemID;
 }
 
-void UGCraftingWidget::NativeDestruct()
-{
-	Super::NativeDestruct();
-}
-
 bool UGCraftingWidget::NativeOnHandleBackAction()
 {
-	DeactivateWidget();
+	if (UGUIManager* UIManager = UGUIManager::Get(this))
+	{
+		UIManager->CloseWindow(this);
+		return true;
+	}
+	
 	return Super::NativeOnHandleBackAction();
 }

@@ -1,10 +1,15 @@
 ﻿#include "GInteractionAction_OpenUI.h"
 
-#include "Data/GGameMacro.h"
-#include "System/GEventManager.h"
+#include "Data/GGameplayTags.h"
+#include "System/GUIManagerBase.h"
 
 void UGInteractionAction_OpenUI::Execute(AActor* OwnerActor, AActor* TargetActor)
 {
-	GEVENT_BROADCAST_EMPTY(OwnerActor, EventTag_UI);
+	UGUIManagerBase* UIManager = UGUIManagerBase::Get(this);
+	
+	check(UIManager);
+	
+	UIManager->OpenWindow(EventTag_UI, GGameplayTags::UITag_Layout_Popup);
+
 	Finish();
 }

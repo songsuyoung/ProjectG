@@ -17,9 +17,10 @@ public:
 	static UGUIManagerBase* Get(UObject* Context);
 	
 	virtual void Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> RootWidgetClass) { };
-	UGCommonActivatableWidget* OpenWindow(UClass* WidgeClass, FGameplayTag LayerTag) { return OpenWindowInternalImpl(WidgeClass, LayerTag); }
+	UGCommonActivatableWidget* OpenWindow(FGameplayTag WindowTag, FGameplayTag LayerTag) { return OpenWindowInternalImpl(WindowTag, LayerTag); }
 	void CloseWindow(UGCommonActivatableWidget* Widget) { CloseWindowInternalImpl(Widget); }
 protected:
-	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag) { return nullptr; };
+	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(FGameplayTag WindowTag, FGameplayTag LayerTag) { return nullptr; };
+	virtual void CloseWindowInternalImpl(FGameplayTag WindowTag) {};
 	virtual void CloseWindowInternalImpl(UGCommonActivatableWidget* Widget) {};
 };

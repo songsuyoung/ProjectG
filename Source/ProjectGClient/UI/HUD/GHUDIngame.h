@@ -3,43 +3,17 @@
 #include "CoreMinimal.h"
 #include "System/GUIManagerBase.h"
 #include "Data/GGameplayTags.h"
-#include "Interface/GMessageReceiver.h"
 #include "UI/Base/GCommonActivatableWidget.h"
 #include "GHUDIngame.generated.h"
 
-class UGInventoryWidget;
-class UGCraftingWidget;
-class UGDialogueWidget;
-class UGInteractionInfoWidget;
 UCLASS()
-class PROJECTGCLIENT_API UGHUDIngame : public UGCommonActivatableWidget, public IGMessageReceiver
+class PROJECTGCLIENT_API UGHUDIngame : public UGCommonActivatableWidget
 {
 	GENERATED_BODY()
 
 public:
-	static UGHUDIngame* OpenWindow(UGUIManagerBase* UIManager, UClass* Class)
+	static UGHUDIngame* OpenWindow(UGUIManagerBase* UIManager)
 	{
-		return Cast<UGHUDIngame>(UIManager->OpenWindow(Class, GGameplayTags::UITag_Layout_HUD));
+		return Cast<UGHUDIngame>(UIManager->OpenWindow(GGameplayTags::UITag_Window_HUD, GGameplayTags::UITag_Layout_HUD));
 	}
-	
-	virtual void NativeConstruct() override;
-	virtual void NativeDestruct() override;
-protected:
-
-	virtual void OnMessage(FGameplayTag Tag, FGMessage* Message = nullptr) override;
-
-protected:
-	
-	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UGInventoryWidget> InventoryWidget;
-
-	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UGCraftingWidget> CraftingWidget;
-
-	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UGDialogueWidget> DialogueWidget;
-
-	UPROPERTY(meta = (BindWidgetOptional))
-	TObjectPtr<UGInteractionInfoWidget> InteractionInfoWidget;
-	
 };

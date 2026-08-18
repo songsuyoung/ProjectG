@@ -10,6 +10,7 @@
 #include "Data/GMessage.h"
 #include "System/GDataManager.h"
 #include "System/GEventManager.h"
+#include "System/GUIManager.h"
 #include "UI/GInventoryEntry.h"
 
 UGInventoryWidget::UGInventoryWidget(const FObjectInitializer& ObjectInitializer)
@@ -29,7 +30,7 @@ void UGInventoryWidget::NativeConstruct()
 
 	Entries.Reset();
 
-	for (int32 i = 0; i < InitialSlotCount; i++)
+	for (int32 Index = 0; Index < InitialSlotCount; Index++)
 	{
 		Entries.Add(NewObject<UGItemEmptyEntry>(this));
 	}
@@ -58,12 +59,25 @@ void UGInventoryWidget::NativeConstruct()
 void UGInventoryWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
+	
+	if (false == IsValid(TileView_Inventory))
+	{
+		return;
+	}
+	
+	TileView_Inventory->ClearListItems();
+	
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Item, this);
 }
 
 bool UGInventoryWidget::NativeOnHandleBackAction()
 {
-	DeactivateWidget();
+	if (UGUIManager* UIManager = UGUIManager::Get(this))
+	{
+		UIManager->CloseWindow(this);
+		return true;
+	}
+
 	return Super::NativeOnHandleBackAction();
 }
 
@@ -87,9 +101,14 @@ void UGInventoryWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 
 void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 {
-	for (int32 i = 0; i < Entries.Num(); i++)
+	if (ItemCount <= 0)
 	{
-		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[i]);
+		return;
+	}
+	
+	for (int32 Index = 0; Index < Entries.Num(); Index++)
+	{
+		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[Index]);
 		if (IsValid(Entry) && Entry->ItemID == ItemID)
 		{
 			Entry->Count = ItemCount;
@@ -110,9 +129,9 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 		return;
 	}
 
-	for (int32 i = 0; i < Entries.Num(); i++)
+	for (int32 Index = 0; Index < Entries.Num(); Index++)
 	{
-		if (Entries[i]->GetClass() != UGItemEmptyEntry::StaticClass())
+		if (Entries[Index]->GetClass() != UGItemEmptyEntry::StaticClass())
 		{
 			continue;
 		}
@@ -121,13 +140,13 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 		NewEntry->ItemID = ItemID;
 		NewEntry->IconImage = ItemRow->IconImage;
 		NewEntry->Count = ItemCount;
-		Entries[i] = NewEntry;
+		Entries[Index] = NewEntry;
 		TileView_Inventory->SetListItems(Entries);
 		return;
 	}
 
 	// 빈 슬롯 없음 → 3개 확장 후 첫 칸에 배치
-	for (int32 i = 0; i < 3; i++)
+	for (int32 Index = 0; Index < 3; Index++)
 	{
 		Entries.Add(NewObject<UGItemEmptyEntry>(this));
 	}
@@ -142,9 +161,9 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 
 void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
 {
-	for (int32 i = 0; i < Entries.Num(); i++)
+	for (int32 Index = 0; Index < Entries.Num(); Index++)
 	{
-		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[i]);
+		UGItemEntry* Entry = Cast<UGItemEntry>(Entries[Index]);
 		if (false == IsValid(Entry) || Entry->ItemID != ItemID)
 		{
 			continue;
@@ -152,7 +171,7 @@ void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
 
 		if (ItemCount <= 0)
 		{
-			Entries[i] = NewObject<UGItemEmptyEntry>(this);
+			Entries[Index] = NewObject<UGItemEmptyEntry>(this);
 			TileView_Inventory->SetListItems(Entries);
 			return;
 		}

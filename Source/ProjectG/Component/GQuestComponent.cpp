@@ -15,7 +15,7 @@ void UGQuestComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	GEVENT_ADD(this, GGameplayTags::EventTag_Open_DataTable, this);
-	GEVENT_ADD(this, GGameplayTags::EventTag_Quest_Accept, this);
+	GEVENT_ADD(this, GGameplayTags::EventTag_Dialogue_SelectChoice, this);
 }
 
 void UGQuestComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -23,16 +23,25 @@ void UGQuestComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 	
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Open_DataTable, this);
-	GEVENT_REMOVE(this, GGameplayTags::EventTag_Quest_Accept, this);
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Dialogue_SelectChoice, this);
 }
 
 void UGQuestComponent::OnMessage(FGameplayTag Tag, FGMessage* Message)
 {
-	if (Tag == GGameplayTags::EventTag_Quest_Accept)
+	FGChoiceMessage* ChoiceMsg = static_cast<FGChoiceMessage*>(Message);
+	
+	if (nullptr != ChoiceMsg)
 	{
-		AcceptQuest(PendingQID);
-		PendingQID = NAME_None;
-	}else if (Tag == GGameplayTags::EventTag_Open_DataTable)
+		if (ChoiceMsg->ChoiceTag == GGameplayTags::EventTag_Quest_Accept)
+		{
+			AcceptQuest(PendingQID);
+			PendingQID = NAME_None;
+		}
+		
+		return;
+	}
+	
+	if (Tag == GGameplayTags::EventTag_Open_DataTable)
 	{
 		InitQuest();
 	}

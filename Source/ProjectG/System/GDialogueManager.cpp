@@ -52,13 +52,16 @@ void UGDialogueManager::ShowNode(FName NodeID)
 	
 	CurrentNodeID = NodeID;
 	CachedNextID = Node->NextID;
-	
-	FGDialogueMessage Msg({Node->NPCID, Node->Body, Node->Choices});
+	bool bIsNext = (Node->NextID != NAME_None);
+	FGDialogueMessage Msg({Node->NPCID, Node->Body, Node->Choices, bIsNext });
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Dialogue_Node, Msg);
 }
 
 void UGDialogueManager::SelectChoice(const FGDialogueChoice& Choice)
 {
+	FGChoiceMessage Msg(Choice.ChoiceTag);
+	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Dialogue_SelectChoice, Msg);
+
 	if (false == Choice.NextID.IsNone())
 	{
 		ShowNode(Choice.NextID);
@@ -67,8 +70,6 @@ void UGDialogueManager::SelectChoice(const FGDialogueChoice& Choice)
 	{
 		EndDialogue(EGDialogueEndReason::Completed);
 	}
-	
-	GEVENT_BROADCAST_EMPTY(this, Choice.ChoiceTag);
 }
 
 void UGDialogueManager::EndDialogue(EGDialogueEndReason EndReason)

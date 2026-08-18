@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CommonActivatableWidget.h"
+#include "UI/Base/GPrimaryWidget.h"
 #include "GCommonActivatableWidget.generated.h"
 
 struct FUIInputConfig;
@@ -20,6 +21,9 @@ class PROJECTGCLIENT_API UGCommonActivatableWidget : public UCommonActivatableWi
 {
 	GENERATED_BODY()
 	
+public:
+	
+	virtual void Init(UGPrimaryWidget* Root);
 protected:
 	
 	UGCommonActivatableWidget(const FObjectInitializer& ObjectInitializer);
@@ -41,4 +45,10 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	bool bPoolable = false;
+	
+protected:
+	UPROPERTY(Transient)
+	TWeakObjectPtr<UGPrimaryWidget> PrimaryWidget;
+	
+	friend class UGPrimaryWidget;
 };

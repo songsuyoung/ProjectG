@@ -9,6 +9,7 @@
 #include "Data/GGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "System/GEventManager.h"
+#include "System/GUIManagerBase.h"
 
 UGHeroComponent::UGHeroComponent()
 {
@@ -117,7 +118,9 @@ void UGHeroComponent::OnInteractEnded()
 
 void UGHeroComponent::OnInventoryToggle()
 {
-	GEVENT_BROADCAST_EMPTY(this, GGameplayTags::EventTag_UI_InventoryToggle);
+	UGUIManagerBase* UIManager = UGUIManagerBase::Get(this);
+	
+	check(UIManager);
+	
+	UIManager->OpenWindow(GGameplayTags::UITag_Window_Inventory, GGameplayTags::UITag_Layout_Popup);
 }
-
-

@@ -21,7 +21,7 @@ public:
 protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UTextBlock> TextBlock_Text;
-	
+
 protected:
 	
 	UPROPERTY(EditAnywhere, Category = "UI|Text")

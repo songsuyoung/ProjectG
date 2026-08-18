@@ -1,5 +1,8 @@
 #include "GUIManager.h"
 
+#include "Data/GGameplayTags.h"
+#include "System/GEventManager.h"
+#include "UI/Base/GCommonActivatableWidget.h"
 #include "UI/GHUDBase.h"
 
 UGUIManager* UGUIManager::Get(UObject* Context)
@@ -19,13 +22,13 @@ void UGUIManager::Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> Ro
 	HUD = HUDBase;
 }
 
-UGCommonActivatableWidget* UGUIManager::OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag)
+UGCommonActivatableWidget* UGUIManager::OpenWindowInternalImpl(FGameplayTag WindowTag, FGameplayTag LayerTag)
 {
 	UGCommonActivatableWidget* CommonActivatableWidget = nullptr;
 
 	if (IsValid(RootWidget))
 	{
-		CommonActivatableWidget = RootWidget->GetOrCreateInstance(WidgetClass, LayerTag);
+		CommonActivatableWidget = RootWidget->GetOrCreateInstance(WindowTag, LayerTag);
 	}
 
 	return CommonActivatableWidget;

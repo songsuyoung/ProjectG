@@ -8,7 +8,6 @@ UGUIManagerBase* UGUIManagerBase::Get(UObject* Context)
 	
 	check(World);
 	
-	
 	UGGameInstance* GameInstance = Cast<UGGameInstance>(World->GetGameInstance());
 	
 	check(GameInstance);

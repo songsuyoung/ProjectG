@@ -4,10 +4,15 @@
 #include "Character/GNPCCharacter.h"
 #include "Component/GQuestComponent.h"
 #include "Data/GDialogueRow.h"
+#include "Data/GGameMacro.h"
+#include "Data/GGameplayTags.h"
+#include "Data/GMessage.h"
 #include "Data/GNPCRow.h"
 #include "System/GDataManager.h"
 #include "System/GConditionManager.h"
 #include "System/GDialogueManager.h"
+#include "System/GEventManager.h"
+#include "System/GUIManagerBase.h"
 
 void UGInteractionAction_Talk::Execute(AActor* OwnerActor, AActor* TargetActor)
 {
@@ -20,61 +25,62 @@ void UGInteractionAction_Talk::Execute(AActor* OwnerActor, AActor* TargetActor)
 	QuestComponentRef = TargetActor->FindComponentByClass<UGQuestComponent>();
 	CharacterRef = Cast<AGCharacter>(TargetActor);
 	const AGNPCCharacter* NPCCharacter = Cast<AGNPCCharacter>(OwnerActor);
-	
+
 	if (false == QuestComponentRef.IsValid() || false == CharacterRef.IsValid() || false == IsValid(NPCCharacter))
 	{
 		Finish();
 		return;
 	}
-	
-	// 현재 가능한 퀘스트가 있는가 먼저 확인필요
+
 	CachedNPCID = NPCCharacter->GetID();
-	QuestComponentRef->CheckQuest(CachedNPCID);
-	FName DID = QuestComponentRef->GetDialogueForNPC(CachedNPCID);
-	
+
 	UGDialogueManager* Dialogue = UGDialogueManager::Get(this);
 	if (false == IsValid(Dialogue))
 	{
 		Finish();
 		return;
 	}
-	
+
 	Dialogue->OnDialogueEnded.AddUObject(this, &ThisClass::OnDialogueFinished);
-	
-	// 없다면,
-	if (DID.IsNone())
-	{
-		// 대화의 Condition조건을 만족하는 대화가 있는가 찾아본다.
-		DID = CheckNextDialogueID(CachedNPCID, TargetActor);
+	GEVENT_ADD(this, GGameplayTags::EventTag_Dialogue_SelectChoice, this);
 
-		if (DID.IsNone())
-		{
-			// 다음 할 수 있는 대화도 없다면, 기본 대화를 실시한다.
-			UGDataManager* DataManager = UGDataManager::Get(this);
-			FGNPCRow* NPCRow = DataManager->GetDataTableRow<FGNPCRow>(EGDataTableType::NPC, NPCCharacter->GetID());
+	CachedDialogueID = ResolveDialogueID(CachedNPCID, TargetActor);
 
-			if (nullptr != NPCRow)
-			{
-				DID = NPCRow->DefaultDialogueID;
-			}
-		}
-	}
+	UGUIManagerBase* UIManager = UGUIManagerBase::Get(this);
+	check(UIManager);
+	UIManager->OpenWindow(GGameplayTags::UITag_Window_Dialogue, GGameplayTags::UITag_Layout_Popup);
 
-	CachedDialogueID = DID;
-	Dialogue->StartDialogue(DID);
+	Dialogue->StartDialogue(CachedDialogueID);
 }
 
 void UGInteractionAction_Talk::Finish()
 {
 	Super::Finish();
-	
+
 	UGDialogueManager* Dialogue = UGDialogueManager::Get(this);
 	if (false == IsValid(Dialogue))
 	{
 		return;
 	}
 
+	GEVENT_REMOVE(this, GGameplayTags::EventTag_Dialogue_SelectChoice, this);
 	Dialogue->OnDialogueEnded.RemoveAll(this);
+}
+
+void UGInteractionAction_Talk::OnMessage(FGameplayTag Tag, FGMessage* Message)
+{
+	if (nullptr == Message)
+	{
+		return;
+	}
+
+	FGChoiceMessage* ChoiceMsg = static_cast<FGChoiceMessage*>(Message);
+	if (ChoiceMsg->ChoiceTag.MatchesTag(GGameplayTags::UITag_Window))
+	{
+		UGUIManagerBase* UIManager = UGUIManagerBase::Get(this);
+		check(UIManager);
+		UIManager->OpenWindow(ChoiceMsg->ChoiceTag, GGameplayTags::UITag_Layout_Popup);
+	}
 }
 
 void UGInteractionAction_Talk::OnDialogueFinished(EGDialogueEndReason EndReason)
@@ -90,6 +96,7 @@ void UGInteractionAction_Talk::OnDialogueFinished(EGDialogueEndReason EndReason)
 		{
 			CharacterRef->AddCompletedDialogue(CachedDialogueID);
 		}
+
 	}
 
 	QuestComponentRef = nullptr;
@@ -97,6 +104,34 @@ void UGInteractionAction_Talk::OnDialogueFinished(EGDialogueEndReason EndReason)
 	CachedNPCID = NAME_None;
 	CachedDialogueID = NAME_None;
 	Finish();
+}
+
+FName UGInteractionAction_Talk::ResolveDialogueID(FName NPCID, AActor* TargetActor)
+{
+	// 1. 퀘스트에서 지정된 대화
+	QuestComponentRef->CheckQuest(NPCID);
+	FName DID = QuestComponentRef->GetDialogueForNPC(NPCID);
+	if (false == DID.IsNone())
+	{
+		return DID;
+	}
+
+	// 2. Condition 조건을 만족하는 대화
+	DID = CheckNextDialogueID(NPCID, TargetActor);
+	if (false == DID.IsNone())
+	{
+		return DID;
+	}
+
+	// 3. NPC 기본 대화
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	FGNPCRow* NPCRow = DataManager->GetDataTableRow<FGNPCRow>(EGDataTableType::NPC, NPCID);
+	if (nullptr != NPCRow)
+	{
+		return NPCRow->DefaultDialogueID;
+	}
+
+	return FName();
 }
 
 FName UGInteractionAction_Talk::CheckNextDialogueID(FName NPCID, AActor* TargetActor)

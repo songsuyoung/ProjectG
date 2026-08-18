@@ -12,10 +12,10 @@ class PROJECTGCLIENT_API UGUIWindowLoadMethod : public UGUIWindowLoadMethodBase
 	
 public:
 	
-	virtual UClass* LoadAssetClass_Implementation(UClass* Class) override;
+	virtual UClass* LoadAssetClass_Implementation(FGameplayTag WindowTag) override;
 	
 protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Window | UI")
-	TMap<FName, TSoftClassPtr<UGCommonActivatableWidget>> WindowMap;
+	TMap<FGameplayTag, TSoftClassPtr<UGCommonActivatableWidget>> WindowMap;
 };

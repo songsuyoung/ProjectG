@@ -9,6 +9,7 @@
 class UTextBlock;
 class UVerticalBox;
 class UGChoiceButton;
+class UCommonButtonBase;
 struct FGDialogueChoice;
 
 UCLASS()
@@ -19,7 +20,6 @@ class PROJECTGCLIENT_API UGDialogueWidget : public UGCommonActivatableWidget, pu
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
-	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 	
 protected:
@@ -28,6 +28,7 @@ protected:
 	void OnBackPressed();
 	void OnApplyPressed();
 	void OnChoiceClicked(int32 Index);
+	void UpdateNextExitButtons(bool bShowNext);
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnChoicesUpdated(const TArray<FGDialogueChoice>& Choices);
@@ -51,6 +52,12 @@ protected:
 
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UVerticalBox> VBox_Choice;
+	
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UCommonButtonBase> Button_Next;
+	
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UCommonButtonBase> Button_Exit;
 	
 protected:
 	

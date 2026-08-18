@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GUIWindowLoadMethodBase.generated.h"
 
 class UClass;
@@ -13,7 +14,7 @@ class PROJECTG_API UGUIWindowLoadMethodBase : public UObject
 public:
 
 	UFUNCTION(BlueprintNativeEvent)
-	UClass* LoadAssetClass(UClass* Class);
+	UClass* LoadAssetClass(FGameplayTag WindowTag);
 	
-	virtual UClass* LoadAssetClass_Implementation(UClass* Class) { return nullptr; }
+	virtual UClass* LoadAssetClass_Implementation(FGameplayTag WindowTag) { return nullptr; }
 };

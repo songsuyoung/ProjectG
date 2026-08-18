@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "Interface/GMessageReceiver.h"
 #include "System/GUIManagerBase.h"
 #include "UI/Base/GPrimaryWidget.h"
 #include "GUIManager.generated.h"
@@ -9,6 +10,7 @@
 class UGCommonActivatableWidget;
 class AGHUDBase;
 class UGPrimaryWidget;
+class UGEventManager;
 
 UCLASS()
 class PROJECTGCLIENT_API UGUIManager : public UGUIManagerBase
@@ -19,9 +21,8 @@ public:
 	static UGUIManager* Get(UObject* Context);
 	
 	virtual void Initialize(AGHUDBase* HUDBase, TSubclassOf<UGPrimaryWidget> RootWidgetClass) override;
-
 protected:
-	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(UClass* WidgetClass, FGameplayTag LayerTag) override;
+	virtual UGCommonActivatableWidget* OpenWindowInternalImpl(FGameplayTag WindowTag, FGameplayTag LayerTag) override;
 	virtual void CloseWindowInternalImpl(UGCommonActivatableWidget* Widget) override;
 	
 protected:
@@ -31,5 +32,4 @@ protected:
 	
 	UPROPERTY(Transient)
 	TObjectPtr<AGHUDBase> HUD;
-
 };

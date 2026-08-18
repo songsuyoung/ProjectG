@@ -1,13 +1,15 @@
 #include "GUIWindowLoadMethod.h"
 
-UClass* UGUIWindowLoadMethod::LoadAssetClass_Implementation(UClass* Class)
+#include "Data/GGameplayTags.h"
+
+UClass* UGUIWindowLoadMethod::LoadAssetClass_Implementation(FGameplayTag WindowTag)
 {
-	if (false == IsValid(Class))
+	if (false == WindowTag.IsValid())
 	{
 		return nullptr;
 	}
 	
-	TSoftClassPtr<UGCommonActivatableWidget>* SearchResult = WindowMap.Find(Class->GetFName());
+	TSoftClassPtr<UGCommonActivatableWidget>* SearchResult = WindowMap.Find(WindowTag);
 
 	if (nullptr == SearchResult)
 	{

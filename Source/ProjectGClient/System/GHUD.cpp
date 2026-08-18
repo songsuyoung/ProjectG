@@ -13,5 +13,5 @@ void AGHUD::Init()
 	
 	UIManager->Initialize(this, RootWidgetClass);
 	
-	UGHUDIngame::OpenWindow(UIManager, UGHUDIngame::StaticClass());
+	UGHUDIngame::OpenWindow(UIManager);
 }

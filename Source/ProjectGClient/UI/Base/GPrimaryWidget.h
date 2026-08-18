@@ -29,12 +29,12 @@ public:
 	virtual void NativeConstruct() override;
 
 public:
-	virtual UGCommonActivatableWidget* GetOrCreateInstance(UClass* Class, const FGameplayTag& LayerTag);
+	virtual UGCommonActivatableWidget* GetOrCreateInstance(const FGameplayTag& WindowTag, const FGameplayTag& LayerTag);
 	void ReturnToPool(UGCommonActivatableWidget* Widget);
 
 protected:
 
-	UGCommonActivatableWidget* GetOrCreateInstanceInternal(UClass* Class, const FGameplayTag& LayerTag);
+	UGCommonActivatableWidget* GetOrCreateInstanceInternal(const FGameplayTag& WindowTag, const FGameplayTag& LayerTag);
 
 protected:
 

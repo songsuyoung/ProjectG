@@ -1,5 +1,6 @@
 #include "GPrimaryWidget.h"
 
+#include "Components/OverlaySlot.h"
 #include "UI/Base/GCommonActivatableWidgetStack.h"
 #include "System/GUIWindowLoadMethod.h"
 
@@ -20,12 +21,12 @@ void UGPrimaryWidget::NativeConstruct()
 	}
 }
 
-UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstance(UClass* Class, const FGameplayTag& LayerTag)
+UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstance(const FGameplayTag& WindowTag, const FGameplayTag& LayerTag)
 {
-	return GetOrCreateInstanceInternal(Class, LayerTag);
+	return GetOrCreateInstanceInternal(WindowTag, LayerTag);
 }
 
-UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(UClass* Class, const FGameplayTag& LayerTag)
+UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(const FGameplayTag& WindowTag, const FGameplayTag& LayerTag)
 {
 	TObjectPtr<UCommonActivatableWidgetStack>* WidgetStack = LayerMap.Find(LayerTag);
 
@@ -34,8 +35,21 @@ UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(UClass* 
 		return nullptr;
 	}
 	UGCommonActivatableWidget* ReturnWidget = nullptr;
+	UGUIWindowLoadMethod* WindowLoadMethodCDO = WindowLoadMethodClass->GetDefaultObject<UGUIWindowLoadMethod>();
 
-	FGPoolContainer* Pool = PoolingContainer.Find(Class->GetFName());
+	if (false == IsValid(WindowLoadMethodCDO))
+	{
+		return nullptr;
+	}
+
+	TSubclassOf<UGCommonActivatableWidget> ActivatableWidgetClass = WindowLoadMethodCDO->LoadAssetClass(WindowTag);
+
+	if (false == IsValid(ActivatableWidgetClass))
+	{
+		return nullptr;
+	}
+
+	FGPoolContainer* Pool = PoolingContainer.Find(ActivatableWidgetClass->GetFName());
 
 	if (nullptr != Pool)
 	{
@@ -49,23 +63,14 @@ UGCommonActivatableWidget* UGPrimaryWidget::GetOrCreateInstanceInternal(UClass* 
 		}
 	}
 
-	if (ReturnWidget == nullptr)
+	if (false == IsValid(ReturnWidget))
 	{
-		UGUIWindowLoadMethod* WindowLoadMethodCDO = WindowLoadMethodClass->GetDefaultObject<UGUIWindowLoadMethod>();
-
-		if (false == IsValid(WindowLoadMethodCDO))
-		{
-			return nullptr;
-		}
-
-		TSubclassOf<UGCommonActivatableWidget> ActivatableWidgetClass = WindowLoadMethodCDO->LoadAssetClass(Class);
-
-		if (false == IsValid(ActivatableWidgetClass))
-		{
-			return nullptr;
-		}
-
 		ReturnWidget = Cast<UGCommonActivatableWidget>((*WidgetStack)->AddWidget(ActivatableWidgetClass));
+	}
+	
+	if (IsValid(ReturnWidget))
+	{
+		ReturnWidget->Init(this);
 	}
 	
 	return ReturnWidget;

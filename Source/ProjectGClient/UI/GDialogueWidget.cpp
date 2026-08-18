@@ -4,14 +4,16 @@
 #include "Components/HorizontalBox.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "CommonActionWidget.h"
+
 #include "Data/GGameMacro.h"
 #include "Data/GGameplayTags.h"
 #include "Data/GMessage.h"
 #include "Data/GNPCRow.h"
-#include "Input/CommonUIInputTypes.h"
 #include "System/GDataManager.h"
 #include "System/GDialogueManager.h"
 #include "System/GEventManager.h"
+#include "System/GUIManagerBase.h"
 
 void UGDialogueWidget::NativeConstruct()
 {
@@ -37,32 +39,56 @@ void UGDialogueWidget::NativeConstruct()
 		}
 	}
 	
+	if (IsValid(Button_Next))
+	{
+		Button_Next->OnClicked().AddUObject(this, &ThisClass::OnApplyPressed);
+	}
+	
+	if (IsValid(Button_Exit))
+	{
+		Button_Exit->OnClicked().AddUObject(this, &ThisClass::OnBackPressed);
+	}
 }
 
 void UGDialogueWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
+	
+	for (UGChoiceButton* CommonButtonBase : ChoiceButtons)
+	{
+		if (IsValid(CommonButtonBase))
+		{
+			CommonButtonBase->OnClicked().RemoveAll(this);
+		}
+	}
+	
+	ChoiceButtons.Empty();
+	
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Dialogue_Node, this);
-}
-
-void UGDialogueWidget::NativeOnActivated()
-{
-	Super::NativeOnActivated();
-	// 활성화 
-	BackHandle = RegisterUIActionBinding(FBindUIActionArgs(BackInputActionData, true, FSimpleDelegate::CreateUObject(this, &ThisClass::OnBackPressed)));
-	ApplyHandle = RegisterUIActionBinding(FBindUIActionArgs(ApplyInputActionData, true, FSimpleDelegate::CreateUObject(this, &ThisClass::OnApplyPressed)));
+	
+	if (IsValid(Button_Next))
+	{
+		Button_Next->OnClicked().RemoveAll(this);
+	}
+	
+	if (IsValid(Button_Exit))
+	{
+		Button_Exit->OnClicked().RemoveAll(this);
+	}
 }
 
 void UGDialogueWidget::NativeOnDeactivated()
 {
 	Super::NativeOnDeactivated();
-	if (ApplyHandle.IsValid())
+	
+	if (IsValid(Button_Next))
 	{
-		ApplyHandle.Unregister();
+		Button_Next->SetVisibility(ESlateVisibility::Collapsed);
 	}
-	if (BackHandle.IsValid())
+
+	if (IsValid(Button_Exit))
 	{
-		BackHandle.Unregister();
+		Button_Exit->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 
@@ -73,6 +99,12 @@ void UGDialogueWidget::OnBackPressed()
 	check(DialogueManager);
 	
 	DialogueManager->EndDialogue(EGDialogueEndReason::Completed);
+	
+	UGUIManagerBase* UIManager = UGUIManagerBase::Get(this);
+
+	check(UIManager);
+
+	UIManager->CloseWindow(this);
 }
 
 void UGDialogueWidget::OnApplyPressed()
@@ -83,10 +115,7 @@ void UGDialogueWidget::OnApplyPressed()
 	
 	if (false == DialogueManager->NextDialogue())
 	{
-		if (ApplyHandle.IsValid())
-		{
-			ApplyHandle.Unregister();
-		}
+		UpdateNextExitButtons(false);
 	}
 }
 
@@ -102,6 +131,19 @@ void UGDialogueWidget::OnChoiceClicked(int32 Index)
 	check(DialogueManager);
 	
 	DialogueManager->SelectChoice(ChoiceButtons[Index]->GetData());
+}
+
+void UGDialogueWidget::UpdateNextExitButtons(bool bShowNext)
+{
+	if (IsValid(Button_Next))
+	{
+		Button_Next->SetVisibility(bShowNext ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	}
+
+	if (IsValid(Button_Exit))
+	{
+		Button_Exit->SetVisibility(bShowNext ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
+	}
 }
 
 void UGDialogueWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
@@ -144,4 +186,8 @@ void UGDialogueWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 		ChoiceButtons[Index]->Init(DialogueMsg->Choices[Index]);
 	}
 
+	if (DialogueMsg->Choices.IsEmpty())
+	{
+		UpdateNextExitButtons(DialogueMsg->bIsNext);
+	}
 }

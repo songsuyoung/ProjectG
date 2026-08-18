@@ -7,6 +7,12 @@
 namespace GGameplayTags
 {
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Layout_HUD, "UI.Layout.HUD", "UI");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Layout_Popup, "UI.Layout.Popup", "UI");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Window, "UI.Window", "UI window parent");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Window_HUD, "UI.Window.HUD", "UI window");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Window_Inventory, "UI.Window.Inventory", "UI window");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UITag_Window_Dialogue, "UI.Window.Dialogue", "UI window");
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Open_DataTable, "Event.Open.DataTable", "");
 	
@@ -20,18 +26,12 @@ namespace GGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Item_Acquired,"Event.Item.Acquired","Item added to inventory");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Item_Removed, "Event.Item.Removed", "Item removed from inventory");
 
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue,         "Event.Dialogue",         "Dialogue events parent");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_Toggle, "Event.Dialogue.Toggle", "Toggle dialogue widget");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_Node,   "Event.Dialogue.Node",   "Dialogue node updated");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_Advance,      "Event.Dialogue.Advance",      "Advance to next dialogue node");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_Cancel,      "Event.Dialogue.Cancel",       "Cancel/end dialogue");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Dialogue_SelectChoice,"Event.Dialogue.SelectChoice", "Player selected a dialogue choice");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Quest, "Event.Quest", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Quest_Accept, "Event.Quest.Accept", "Player accepted a quest via dialogue choice");
 
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_UI_InventoryToggle, "Event.UI.InventoryToggle", "Toggle inventory UI");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_UI_CraftingToggle, "Event.UI.CraftingWidgetToggle", "Toggle Crafting UI");
-	
 }
 

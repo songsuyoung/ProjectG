@@ -44,10 +44,11 @@ struct FGDialogueMessage : public FGMessage
 
 public:
 	FGDialogueMessage() { }
-	FGDialogueMessage(const FName& NPCID, const FText& Body, const TArray<FGDialogueChoice>& Choices) : NPCID(NPCID), Body(Body), Choices(Choices) { }
+	FGDialogueMessage(const FName& NPCID, const FText& Body, const TArray<FGDialogueChoice>& Choices, bool bIsNext) : NPCID(NPCID), Body(Body), Choices(Choices), bIsNext(bIsNext) { }
 
 	FName NPCID;
 	FText Body;
+	uint8 bIsNext : 1;
 	
 	UPROPERTY(Transient)
 	TArray<FGDialogueChoice> Choices;
@@ -63,6 +64,18 @@ public:
 	FGQuestMessage(FName InQuestID) : QuestID(InQuestID) {}
 
 	FName QuestID;
+};
+
+USTRUCT()
+struct FGChoiceMessage : public FGMessage
+{
+	GENERATED_BODY()
+
+public:
+	FGChoiceMessage() { }
+	FGChoiceMessage(const FGameplayTag& InChoiceTag) : ChoiceTag(InChoiceTag) { }
+
+	FGameplayTag ChoiceTag;
 };
 
 USTRUCT()
