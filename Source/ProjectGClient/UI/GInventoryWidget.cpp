@@ -52,6 +52,8 @@ void UGInventoryWidget::NativeConstruct()
 		TileView_Inventory->SetListItems(Entries);
 	}
 
+	TileView_Inventory->OnItemClicked().AddUObject(this, &ThisClass::OnItemClicked);
+	
 	// Event.Item 부모 태그로 등록 → Acquired/Removed 모두 수신
 	GEVENT_ADD(this, GGameplayTags::EventTag_Item, this);
 }
@@ -179,5 +181,29 @@ void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
 		Entry->Count = ItemCount;
 		TileView_Inventory->RequestRefresh();
 		return;
+	}
+}
+
+void UGInventoryWidget::OnItemClicked(UObject* ItemObject)
+{
+	if (false == IsValid(TileView_Inventory) || false == IsValid(WBP_Options))
+	{
+		return;
+	}
+	
+	UGInventoryEntry* EntryWidget = TileView_Inventory->GetEntryWidgetFromItem<UGInventoryEntry>(ItemObject);
+	
+	if (IsValid(EntryWidget))
+	{
+		// EntryWidget의 Geometry 값을 가져옴
+		FVector2D MousePos;                                                                                                                                                  
+		GetOwningPlayer()->GetMousePosition(MousePos.X, MousePos.Y);                                                                                                                                                                          
+
+		FGeometry ParentGeometry = GetCachedGeometry();
+		FVector2D LocalPos = ParentGeometry.AbsoluteToLocal(MousePos);
+
+		WBP_Options->SetRenderTranslation(LocalPos);
+
+		WBP_Options->SetVisibility(ESlateVisibility::Visible);
 	}
 }

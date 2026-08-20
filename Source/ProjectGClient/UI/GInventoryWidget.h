@@ -25,6 +25,7 @@ protected:
 	void AddInventoryUI(FName ItemID, int32 ItemCount);
 	void UseInventoryUI(FName ItemID, int32 ItemCount);
 
+	void OnItemClicked(UObject* Object);
 protected:
 	UPROPERTY(EditAnywhere, Category = "Inventory|Settings")
 	int32 InitialSlotCount;
@@ -34,4 +35,7 @@ protected:
 
 	UPROPERTY(meta = (BindWidgetOptional))
 	TObjectPtr<UGTileView> TileView_Inventory;
+	
+	UPROPERTY(meta = (BindWidgetOptional))
+	TObjectPtr<UUserWidget> WBP_Options;
 };
