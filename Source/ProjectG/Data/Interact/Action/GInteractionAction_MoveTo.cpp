@@ -26,6 +26,8 @@ void UGInteractionAction_MoveTo::Execute(AActor* OwnerActor, AActor* TargetActor
     FVector DirectionToOwner = (OwnerActor->GetActorLocation() - TargetLocation).GetSafeNormal();
     TargetRotation = DirectionToOwner.Rotation();
     TargetRotation.Roll = TargetRotation.Pitch = 0.0f;
+
+    CharacterRef->GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 void UGInteractionAction_MoveTo::Tick(float DeltaTime)
@@ -40,13 +42,9 @@ void UGInteractionAction_MoveTo::Tick(float DeltaTime)
     FVector NewLocation = FMath::VInterpTo(CurrentLocation, TargetLocation, DeltaTime, MoveInterpSpeed);
     CharacterRef->SetActorLocation(NewLocation);
 
-    AController* Controller = CharacterRef->GetController();
-    if (IsValid(Controller))
-    {
-        FRotator CurrentRotation = Controller->GetControlRotation();
-        FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaTime, RotationInterpSpeed);
-        Controller->SetControlRotation(NewRotation);
-    }
+    FRotator CurrentRotation = CharacterRef->GetActorRotation();
+    FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaTime, RotationInterpSpeed);
+    CharacterRef->SetActorRotation(NewRotation);
 
     float DistanceXY = FVector::DistXY(CurrentLocation, TargetLocation);
     if (DistanceXY <= ArrivalThreshold)
@@ -57,5 +55,9 @@ void UGInteractionAction_MoveTo::Tick(float DeltaTime)
 
 void UGInteractionAction_MoveTo::Finish()
 {
+    if (CharacterRef.IsValid())
+    {
+        CharacterRef->GetCharacterMovement()->bOrientRotationToMovement = true;
+    }
     Super::Finish();
 }

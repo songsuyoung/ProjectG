@@ -23,26 +23,10 @@ public:
 	AGOpenableActor();
 
 	virtual void BeginPlay() override;
-	virtual void InternalInteract(AActor* TargetActor) override;
+	USceneComponent* GetHingePivotComponent() { return HingePivotComponent; }
+	UMeshComponent* GetOpenableMeshComponent() { return OpeningMeshComponent; }
 
 protected:
-
-	UFUNCTION()
-	void OnTimelineUpdate(float Value);
-
-protected:
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Openable|Settings")
-	float OpenAngle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Openable|Settings")
-	EGOpenAxis OpenAxis;
-
-	UPROPERTY(EditAnywhere, Category = "Openable")
-	TObjectPtr<UCurveFloat> OpenCurve;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timeline")
-	TObjectPtr<UTimelineComponent> TimelineComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pivot")
 	TObjectPtr<USceneComponent> HingePivotComponent;
