@@ -1,5 +1,7 @@
 #include "Component/GQuestComponent.h"
 
+#include "GInventoryComponent.h"
+#include "Character/GCharacter.h"
 #include "Data/GGameMacro.h"
 #include "Data/GGameplayTags.h"
 #include "Data/GMessage.h"
@@ -24,6 +26,37 @@ void UGQuestComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Open_DataTable, this);
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Dialogue_SelectChoice, this);
+}
+
+void UGQuestComponent::InitQuest()
+{
+	// SaveData가 없을 때 
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	
+	check(DataManager);
+	
+	UDataTable* QuestTable = DataManager->GetDataTable(EGDataTableType::Quest);
+	if (IsValid(QuestTable))
+	{
+		TArray<FGQuestRow*> QuestRows;
+		
+		QuestTable->GetAllRows(TEXT(""), QuestRows);
+		
+		for (FGQuestRow* QuestRow : QuestRows)
+		{
+			if (false == CanAcceptQuest(QuestRow->GetID()))
+			{
+				continue;
+			}
+			
+			if (nullptr == FindEntry(QuestRow->GetID()))
+			{
+				Quests.Add({QuestRow->GetID(), EGQuestState::Available});
+			}
+		}
+	}
+	
+	// SaveData가 있다면, Quests 에서 Active 상태인 퀘스트 ID를 ActiveQuestIDs 보관
 }
 
 void UGQuestComponent::OnMessage(FGameplayTag Tag, FGMessage* Message)
@@ -197,37 +230,6 @@ void UGQuestComponent::FinishObjective(FName QuestID)
 	ActiveQuestIDs.Remove(QuestID);
 }
 
-void UGQuestComponent::InitQuest()
-{
-	// SaveData가 없을 때 
-	UGDataManager* DataManager = UGDataManager::Get(this);
-	
-	check(DataManager);
-	
-	UDataTable* QuestTable = DataManager->GetDataTable(EGDataTableType::Quest);
-	if (IsValid(QuestTable))
-	{
-		TArray<FGQuestRow*> QuestRows;
-		
-		QuestTable->GetAllRows(TEXT(""), QuestRows);
-		
-		for (FGQuestRow* QuestRow : QuestRows)
-		{
-			if (false == CanAcceptQuest(QuestRow->GetID()))
-			{
-				continue;
-			}
-			
-			if (nullptr == FindEntry(QuestRow->GetID()))
-			{
-				Quests.Add({QuestRow->GetID(), EGQuestState::Available});
-			}
-		}
-	}
-	
-	// SaveData가 있다면, Quests 에서 Active 상태인 퀘스트 ID를 ActiveQuestIDs 보관
-}
-
 bool UGQuestComponent::CompleteQuest(FName QuestID)
 {
 	FGQuestEntry* Entry = FindEntry(QuestID);
@@ -249,6 +251,23 @@ bool UGQuestComponent::CompleteQuest(FName QuestID)
 		Quests.Add({Row->NextQID, EGQuestState::Available});
 	}
 
+	AGCharacter* Character = Cast<AGCharacter>(GetOwner());
+	if (IsValid(Character))
+	{
+		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
+		
+		if (IsValid(InventoryComponent))
+		{
+			for (const auto& RewardItem : Row->RewardItems)
+			{
+				if (InventoryComponent->CanAcquire(RewardItem.Key, RewardItem.Value))
+				{
+					InventoryComponent->Acquire(RewardItem.Key, RewardItem.Value);
+				}
+			}
+		}
+	}
+	
 	Entry->State = EGQuestState::Completed;
 	return true;
 }

@@ -33,6 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<EGQuestState, FName> DialogueID;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<FName, int32> RewardItems;
 	
 private:
 	FName ID;

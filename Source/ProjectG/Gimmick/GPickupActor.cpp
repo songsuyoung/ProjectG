@@ -10,6 +10,35 @@ AGPickupActor::AGPickupActor()
 {
 }
 
+bool AGPickupActor::CanInteract(AActor* TargetActor)
+{
+	bool bResult = Super::CanInteract(TargetActor);
+	
+	UGDataManager* DataManager = UGDataManager::Get(this);
+	check(DataManager);
+
+	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, ID);
+	
+	if (nullptr == InteractionPromptRow)
+	{
+		return false;
+	}
+	
+	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
+
+	if (IsValid(Character))
+	{
+		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
+
+		if (IsValid(InventoryComponent))
+		{
+			return bResult && InventoryComponent->CanAcquire(InteractionPromptRow->ItemID);
+		}
+	}
+	
+	return bResult;
+}
+
 void AGPickupActor::InternalInteract(AActor* TargetActor)
 {
 	Super::InternalInteract(TargetActor);

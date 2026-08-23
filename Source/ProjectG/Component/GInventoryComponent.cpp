@@ -14,7 +14,7 @@ UGInventoryComponent::UGInventoryComponent()
 
 }
 
-bool UGInventoryComponent::CanAcquire(FName ItemID)
+bool UGInventoryComponent::CanAcquire(FName ItemID, int32 Count)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
@@ -25,17 +25,12 @@ bool UGInventoryComponent::CanAcquire(FName ItemID)
 	{
 		return false;
 	}
-	int32* ItemCount = InventorySlots.Find(ItemRow->GetID());
+	int32 ItemCount = GetItemCount(ItemRow->GetID()) + Count;
 	
-	if (ItemCount == nullptr)
-	{
-		return true; 
-	}
-	
-	return *ItemCount < ItemRow->MaxCount;
+	return ItemCount <= ItemRow->MaxCount;
 }
 
-void UGInventoryComponent::Acquire(FName ItemID)
+void UGInventoryComponent::Acquire(FName ItemID, int32 Count)
 {
 	UGDataManager* DataManager = UGDataManager::Get(this);
 	check(DataManager);
@@ -49,7 +44,7 @@ void UGInventoryComponent::Acquire(FName ItemID)
 	
 	FName AcquiredItemID = ItemRow->GetID();
 	auto& ItemValue = InventorySlots.FindOrAdd(AcquiredItemID);
-	ItemValue += 1;
+	ItemValue += Count;
 
 	FGItemMessage Message(AcquiredItemID, ItemValue);
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Acquired, Message);

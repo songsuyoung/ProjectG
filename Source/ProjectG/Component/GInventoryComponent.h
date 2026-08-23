@@ -13,8 +13,8 @@ class PROJECTG_API UGInventoryComponent : public UActorComponent
 public:	
 	UGInventoryComponent();
 
-	bool CanAcquire(FName ItemID);
-	void Acquire(FName PromptID);
+	bool CanAcquire(FName ItemID, int32 Count = 1);
+	void Acquire(FName PromptID, int32 Count = 1);
 	void UseItem(FName ItemName, int32 Count);
 	bool CanUseItem(FName ItemName, int32 Count);
 	int32 GetItemCount(FName ItemName);
