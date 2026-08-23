@@ -4,6 +4,7 @@
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "Gimmick/GInteractableActor.h"
+#include "Gimmick/GPickupActor.h"
 #include "System/GDataManager.h"
 
 void UGInteractionAction_Spawn::Execute(AActor* OwnerActor, AActor* TargetActor)
@@ -48,7 +49,16 @@ void UGInteractionAction_Spawn::OnClassLoaded(TSoftClassPtr<AGInteractableActor>
 	FTransform SpawnTransform = OwnerActorRef->GetActorTransform();
 	SpawnTransform.AddToTranslation(FVector(0.f, 0.f, SpawnZOffset));
 
-	World->SpawnActor<AGInteractableActor>(ActorClass, SpawnTransform);
-
+	AGInteractableActor* InteractableActor = World->SpawnActorDeferred<AGInteractableActor>(ActorClass, SpawnTransform);
+	
+	AGPickupActor* PickupActor = Cast<AGPickupActor>(InteractableActor);
+	
+	if (IsValid(PickupActor))
+	{
+		PickupActor->SetID(SpawnID);
+	}
+	
+	InteractableActor->FinishSpawning(SpawnTransform);
+	
 	Finish();
 }

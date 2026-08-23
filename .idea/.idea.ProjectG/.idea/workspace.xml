@@ -14,9 +14,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_InteractionPromp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_InteractionPromp.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GInteractionPromptRow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GInteractionPromptRow.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_Spawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_Spawn.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +29,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://16" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://18" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Media/ImgMedia/Source/ImgMedia/Private/Scheduler/IImgMediaScheduler.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActionWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -292,7 +290,7 @@
       <workItem from="1787062952094" duration="21000" />
       <workItem from="1787228212416" duration="3650000" />
       <workItem from="1787364860285" duration="613000" />
-      <workItem from="1787442664830" duration="7625000" />
+      <workItem from="1787442664830" duration="8068000" />
     </task>
     <servers />
   </component>

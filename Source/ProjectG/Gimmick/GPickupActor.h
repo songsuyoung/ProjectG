@@ -12,6 +12,7 @@ class PROJECTG_API AGPickupActor : public AGInteractableActor
 public:
 	AGPickupActor();
 
+	void SetID(FName NewID) { ItemID = NewID; }
 protected:
 	virtual bool CanInteract(AActor* TargetActor) override;
 	virtual void InternalInteract(AActor* TargetActor) override;
