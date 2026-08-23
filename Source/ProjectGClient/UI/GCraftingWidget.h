@@ -60,7 +60,7 @@ protected:
 protected:
 	
 	UPROPERTY(Transient)
-	FName CurrentItem;
+	TWeakObjectPtr<UObject> SelectedItem;
 	
 	UPROPERTY(Transient)
 	TWeakObjectPtr<UGInventoryComponent> InventoryComponent;

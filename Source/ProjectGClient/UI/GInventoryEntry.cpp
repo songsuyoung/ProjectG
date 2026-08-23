@@ -38,9 +38,18 @@ void UGInventoryEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 			Image_Lock->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
-
+	
 	FString Str = FString::Printf(TEXT("%d"), ItemEntry->Count);
 	TextBlock_Count->SetText(FText::FromString(Str));
+	
+	if (ItemEntry->Count <= 0)
+	{
+		TextBlock_Count->SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else
+	{
+		TextBlock_Count->SetVisibility(ESlateVisibility::HitTestInvisible);
+	}
 
 	if (ItemEntry->IconImage.IsValid())
 	{

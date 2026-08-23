@@ -72,40 +72,6 @@ void UGCraftingWidget::Init()
 	TileView_Workbench->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnWorkbenchItemSelected);
 }
 
-void UGCraftingWidget::OnClicked()
-{
-	if (false == InventoryComponent.IsValid())
-	{
-		return;
-	}
-	
-	// CurrentItem에 대해 InventoryComponent 전달. 
-	// 사용가능 여부 확인후 사용
-	// 그리고 새로운 Item 전달 
-	FGWorkbenchIngredientEntry* Entry = WorkbenchIngredientEntry.Find(CurrentItem);
-	if (nullptr == Entry)
-	{
-		return;
-	}
-	
-	for (const FGWorkbenchIngredient& Ingredient : Entry->Ingredients)
-	{
-		bool bCanMake = InventoryComponent->CanUseItem(Ingredient.ItemID, Ingredient.Count);
-		
-		if (false == bCanMake)
-		{
-			return;
-		}
-	}
-	
-	for (const FGWorkbenchIngredient& Ingredient : Entry->Ingredients)
-	{
-		InventoryComponent->UseItem(Ingredient.ItemID, Ingredient.Count);
-	}
-	
-	InventoryComponent->Acquire(CurrentItem);
-}
-
 void UGCraftingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -132,7 +98,58 @@ void UGCraftingWidget::NativeDestruct()
 		Button_Maker->OnClicked().RemoveAll(this);
 	}
 	
+	if (IsValid(TileView_Ingredients))
+	{
+		TileView_Ingredients->ClearListItems();
+	}
+	
 	InventoryComponent = nullptr;
+}
+
+void UGCraftingWidget::OnClicked()
+{
+	if (false == InventoryComponent.IsValid())
+	{
+		return;
+	}
+	
+	if (false == SelectedItem.IsValid())
+	{
+		return;
+	}
+	
+	UGItemEntry* ItemEntry = Cast<UGItemEntry>(SelectedItem);
+	if (false == IsValid(ItemEntry))
+	{
+		return;
+	}
+	
+	// CurrentItem에 대해 InventoryComponent 전달. 
+	// 사용가능 여부 확인후 사용
+	// 그리고 새로운 Item 전달 
+	FGWorkbenchIngredientEntry* Entry = WorkbenchIngredientEntry.Find(ItemEntry->ItemID);
+	if (nullptr == Entry)
+	{
+		return;
+	}
+	
+	for (const FGWorkbenchIngredient& Ingredient : Entry->Ingredients)
+	{
+		bool bCanMake = InventoryComponent->CanUseItem(Ingredient.ItemID, Ingredient.Count);
+		
+		if (false == bCanMake)
+		{
+			return;
+		}
+	}
+	
+	for (const FGWorkbenchIngredient& Ingredient : Entry->Ingredients)
+	{
+		InventoryComponent->UseItem(Ingredient.ItemID, Ingredient.Count);
+	}
+	
+	InventoryComponent->Acquire(ItemEntry->ItemID);
+	OnWorkbenchItemSelected(SelectedItem.Get());
 }
 
 void UGCraftingWidget::OnWorkbenchItemSelected(UObject* Item)
@@ -177,7 +194,7 @@ void UGCraftingWidget::OnWorkbenchItemSelected(UObject* Item)
 		UGItemEntry* IngredientEntry = NewObject<UGItemEntry>(this);
 		IngredientEntry->ItemID = Ingredient.ItemID;
 		IngredientEntry->IconImage = ItemRow->IconImage;
-		IngredientEntry->Count = Ingredient.Count;
+		IngredientEntry->Count = Ingredient.Count - InventoryComponent->GetItemCount(Ingredient.ItemID);
 		IngredientEntry->bLocked = (false == InventoryComponent->CanUseItem(Ingredient.ItemID, Ingredient.Count));
 
 		TileView_Ingredients->AddItem(IngredientEntry);
@@ -189,7 +206,7 @@ void UGCraftingWidget::OnWorkbenchItemSelected(UObject* Item)
 		TileView_Ingredients->AddItem(NewObject<UGItemEmptyEntry>(this));
 	}
 	
-	CurrentItem = ItemEntry->ItemID;
+	SelectedItem = ItemEntry;
 }
 
 bool UGCraftingWidget::NativeOnHandleBackAction()

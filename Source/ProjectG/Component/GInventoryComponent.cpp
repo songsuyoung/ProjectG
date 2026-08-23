@@ -89,15 +89,28 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 
 bool UGInventoryComponent::CanUseItem(FName ItemName, int32 Count)
 {
-	int32* ItemCount = InventorySlots.Find(ItemName);
+	int32 ItemCount = GetItemCount(ItemName);
 	
-	if (ItemCount == nullptr)
+	if (ItemCount <= 0)
 	{
 		// 아이템 사용 불가능 함.
 		return false;
 	}
 	
-	return *ItemCount >= Count;
+	return ItemCount >= Count;
+}
+
+int32 UGInventoryComponent::GetItemCount(FName ItemName)
+{
+	int32* ItemCount = InventorySlots.Find(ItemName);
+	
+	if (ItemCount == nullptr)
+	{
+		// 아이템 사용 불가능 함.
+		return 0;
+	}
+	
+	return *ItemCount;
 }
 
 TArray<FString> UGInventoryComponent::GetInventoryLog()
