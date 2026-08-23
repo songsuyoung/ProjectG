@@ -1,5 +1,6 @@
 #include "Component/GInventoryComponent.h"
 
+#include "Character/GCharacter.h"
 #include "Data/GGameMacro.h"
 #include "Data/GGameplayTags.h"
 #include "Data/GInteractionPromptRow.h"
@@ -73,7 +74,15 @@ void UGInventoryComponent::UseItem(FName ItemName, int32 Count)
 	}
 	
 	*ItemCount = UseItemCount > 0? UseItemCount : 0;
-
+	
+	/////// 임시 용도 /////////////
+	AGCharacter* Character = Cast<AGCharacter>(GetOwner());
+	
+	if (IsValid(Character))
+	{
+		Character->BP_UseItem(ItemName, Count);
+	}
+	////////////////////////////
 	FGItemMessage Message(ItemName, *ItemCount);
 	GEVENT_BROADCAST(this, GGameplayTags::EventTag_Item_Removed, Message);
 }
@@ -89,4 +98,18 @@ bool UGInventoryComponent::CanUseItem(FName ItemName, int32 Count)
 	}
 	
 	return *ItemCount >= Count;
+}
+
+TArray<FString> UGInventoryComponent::GetInventoryLog()
+{
+	TArray<FString> Logs;
+	
+	for (const auto& Item : InventorySlots)
+	{
+		FString Log = FString::Printf(TEXT("ItemID: %s ItemCount: %d"), *(Item.Key.ToString()), Item.Value);
+	
+		Logs.Add(Log);
+	}
+	
+	return Logs;
 }

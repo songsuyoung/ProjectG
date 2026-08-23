@@ -5,6 +5,8 @@
 
 class UTexture2D;
 class AGInteractableActor;
+enum class EGItemType : uint8;
+
 USTRUCT(BlueprintType)
 struct FGItemRow : public FTableRowBase
 {
@@ -25,6 +27,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int MaxCount;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EGItemType Type;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSoftObjectPtr<UTexture2D> IconImage;

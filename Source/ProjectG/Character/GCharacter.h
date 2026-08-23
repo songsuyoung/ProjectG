@@ -30,6 +30,10 @@ public:
 	bool HasCompletedDialogue(FName DialogueID) const { return CompletedDialogueIDs.Contains(DialogueID); }
 
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Inventory")
+	void BP_UseItem(FName ItemName, int32 Count);
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

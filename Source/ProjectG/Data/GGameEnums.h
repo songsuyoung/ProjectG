@@ -54,3 +54,10 @@ enum class EGConditionType : uint8
 	QuestState,
 	KillCount,
 };
+
+UENUM(BlueprintType)
+enum class EGItemType : uint8
+{
+	Material,
+	Consumable,
+};

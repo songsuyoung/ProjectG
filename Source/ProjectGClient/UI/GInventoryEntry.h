@@ -7,6 +7,7 @@
 #include "Engine/StreamableManager.h"
 #include "GInventoryEntry.generated.h"
 
+enum class EGItemType : uint8;
 class UImage;
 class UTextBlock;
 UCLASS()
@@ -35,6 +36,9 @@ public:
 	UPROPERTY(Transient)
 	int32 Count;
 
+	UPROPERTY(Transient)
+	EGItemType ItemType;
+	
 	UPROPERTY(Transient)
 	uint8 bLocked : 1;
 };

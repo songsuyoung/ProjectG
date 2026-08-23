@@ -18,6 +18,10 @@ public:
 	void UseItem(FName ItemName, int32 Count);
 	bool CanUseItem(FName ItemName, int32 Count);
 	const TMap<FName, int32>& GetInventorySlots() const { return InventorySlots; }
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	TArray<FString> GetInventoryLog();
 	
 protected:
 	

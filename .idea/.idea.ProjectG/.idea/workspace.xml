@@ -13,11 +13,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryOptions.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryOptions.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Condition.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Condition.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Character/BPCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Character/BPCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Item.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Data/DataTable/DT_Item.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/TestMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Custom/WBP_ItemEntryWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Custom/WBP_ItemEntryWidget.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Custom/WBP_Option.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Custom/WBP_Option.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/UMG/InGame/Popup/WBP_Inventory.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectG.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Character/GCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Character/GCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Component/GInventoryComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GGameEnums.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GGameEnums.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/GItemRow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/GItemRow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryEntry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryEntry.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.h" afterDir="false" />
     </list>
@@ -33,7 +43,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://7" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Media/ImgMedia/Source/ImgMedia/Private/Scheduler/IImgMediaScheduler.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActionWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -91,6 +101,7 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Experimental/Chaos/Public/Chaos/XPBDCorotatedConstraints.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/RenderCore/Public/RenderResource.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Private/Components/PanelWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Private/Components/Widget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Blueprint/IUserObjectListEntry.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidgetPool.h" root0="FORCE_HIGHLIGHTING" />
@@ -291,7 +302,9 @@
       <workItem from="1787057454443" duration="1507000" />
       <workItem from="1787059927424" duration="533000" />
       <workItem from="1787062952094" duration="21000" />
-      <workItem from="1787228212416" duration="3562000" />
+      <workItem from="1787228212416" duration="3650000" />
+      <workItem from="1787364860285" duration="613000" />
+      <workItem from="1787442664830" duration="3399000" />
     </task>
     <servers />
   </component>
@@ -446,11 +459,6 @@
           <url>file://$PROJECT_DIR$/Source/ProjectG/Component/GQuestComponent.cpp</url>
           <line>94</line>
           <option name="timeStamp" value="136" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/ProjectGClient/UI/GInventoryWidget.cpp</url>
-          <line>193</line>
-          <option name="timeStamp" value="138" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

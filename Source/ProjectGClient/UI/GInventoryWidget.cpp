@@ -1,5 +1,6 @@
 #include "UI/GInventoryWidget.h"
 
+#include "GInventoryOptions.h"
 #include "Base/GTileView.h"
 #include "Character/GCharacter.h"
 #include "Component/GInventoryComponent.h"
@@ -38,10 +39,10 @@ void UGInventoryWidget::NativeConstruct()
 	AGCharacter* Character = Cast<AGCharacter>(GetOwningPlayerPawn());
 	if (IsValid(Character))
 	{
-		UGInventoryComponent* InventoryComponent = Character->GetInventoryComponent();
-		if (IsValid(InventoryComponent))
+		OwnerInventoryComponent = Character->GetInventoryComponent();
+		if (OwnerInventoryComponent.IsValid())
 		{
-			for (const TPair<FName, int32>& InventorySlot : InventoryComponent->GetInventorySlots())
+			for (const TPair<FName, int32>& InventorySlot : OwnerInventoryComponent->GetInventorySlots())
 			{
 				AddInventoryUI(InventorySlot.Key, InventorySlot.Value);
 			}
@@ -56,6 +57,11 @@ void UGInventoryWidget::NativeConstruct()
 	
 	// Event.Item 부모 태그로 등록 → Acquired/Removed 모두 수신
 	GEVENT_ADD(this, GGameplayTags::EventTag_Item, this);
+	
+	if (IsValid(InventoryOptions))
+	{
+		InventoryOptions->OnClickedOption.BindUObject(this, &ThisClass::OnOptionClicked);
+	}
 }
 
 void UGInventoryWidget::NativeDestruct()
@@ -68,6 +74,12 @@ void UGInventoryWidget::NativeDestruct()
 	}
 	
 	TileView_Inventory->ClearListItems();
+	
+	if (IsValid(InventoryOptions))
+	{
+		InventoryOptions->OnClickedOption.Unbind();
+		InventoryOptions->SetVisibility(ESlateVisibility::Collapsed);
+	}
 	
 	GEVENT_REMOVE(this, GGameplayTags::EventTag_Item, this);
 }
@@ -99,6 +111,17 @@ void UGInventoryWidget::OnMessage(FGameplayTag Tag, FGMessage* Message)
 	{
 		UseInventoryUI(ItemMessage->ItemID, ItemMessage->ItemCount);
 	}
+}
+
+UGItemEntry* UGInventoryWidget::CreateItemEntry(FName ItemID, const FGItemRow* ItemRow, int32 ItemCount)
+{
+	UGItemEntry* NewEntry = NewObject<UGItemEntry>(this);
+	NewEntry->ItemID = ItemID;
+	NewEntry->IconImage = ItemRow->IconImage;
+	NewEntry->Count = ItemCount;
+	NewEntry->ItemType = ItemRow->Type;
+	
+	return NewEntry;
 }
 
 void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
@@ -137,12 +160,8 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 		{
 			continue;
 		}
-
-		UGItemEntry* NewEntry = NewObject<UGItemEntry>(this);
-		NewEntry->ItemID = ItemID;
-		NewEntry->IconImage = ItemRow->IconImage;
-		NewEntry->Count = ItemCount;
-		Entries[Index] = NewEntry;
+		
+		Entries[Index] = CreateItemEntry(ItemID, ItemRow, ItemCount);
 		TileView_Inventory->SetListItems(Entries);
 		return;
 	}
@@ -152,12 +171,8 @@ void UGInventoryWidget::AddInventoryUI(FName ItemID, int32 ItemCount)
 	{
 		Entries.Add(NewObject<UGItemEmptyEntry>(this));
 	}
-
-	UGItemEntry* NewEntry = NewObject<UGItemEntry>(this);
-	NewEntry->ItemID = ItemID;
-	NewEntry->IconImage = ItemRow->IconImage;
-	NewEntry->Count = ItemCount;
-	Entries[Entries.Num() - 3] = NewEntry;
+	
+	Entries[Entries.Num() - 3] = CreateItemEntry(ItemID, ItemRow, ItemCount);;
 	TileView_Inventory->SetListItems(Entries);
 }
 
@@ -186,9 +201,20 @@ void UGInventoryWidget::UseInventoryUI(FName ItemID, int32 ItemCount)
 
 void UGInventoryWidget::OnItemClicked(UObject* ItemObject)
 {
-	if (false == IsValid(TileView_Inventory) || false == IsValid(WBP_Options))
+	if (false == IsValid(TileView_Inventory) || false == IsValid(InventoryOptions))
 	{
 		return;
+	}
+	
+	UGItemEntry* ItemEntry = Cast<UGItemEntry>(ItemObject);
+	if (IsValid(ItemEntry))
+	{
+		if (EGItemType::Material == ItemEntry->ItemType)
+		{
+			InventoryOptions->SetVisibility(ESlateVisibility::Collapsed);
+			// 사용하지 못함. 재화용도임.
+			return;
+		}
 	}
 	
 	UGInventoryEntry* EntryWidget = TileView_Inventory->GetEntryWidgetFromItem<UGInventoryEntry>(ItemObject);
@@ -202,8 +228,34 @@ void UGInventoryWidget::OnItemClicked(UObject* ItemObject)
 		FGeometry ParentGeometry = GetCachedGeometry();
 		FVector2D LocalPos = ParentGeometry.AbsoluteToLocal(MousePos);
 
-		WBP_Options->SetRenderTranslation(LocalPos);
+		InventoryOptions->SetRenderTranslation(LocalPos);
 
-		WBP_Options->SetVisibility(ESlateVisibility::Visible);
+		InventoryOptions->SetVisibility(ESlateVisibility::Visible);
+	}
+	
+	SelectedObject = ItemObject;
+}
+
+void UGInventoryWidget::OnOptionClicked(EGOptionType OptionType)
+{
+	if (false == OwnerInventoryComponent.IsValid())
+	{
+		return;
+	}
+	
+	UGItemEntry* ItemEntry = Cast<UGItemEntry>(SelectedObject);
+	
+	if (false == IsValid(ItemEntry))
+	{
+		return;	
+	}
+	
+	switch (OptionType)
+	{
+	case EGOptionType::Use:	
+		OwnerInventoryComponent->UseItem(ItemEntry->ItemID, ItemEntry->Count);
+		break;
+	case EGOptionType::Keep:
+		break;
 	}
 }
