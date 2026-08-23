@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
-#include "GBaseAnimInstance.generated.h"
+#include "GBaseAnimInstance.h"
+#include "GAnimInstance.generated.h"
 
 UCLASS()
-class PROJECTG_API UGBaseAnimInstance : public UAnimInstance
+class PROJECTG_API UGAnimInstance : public UGBaseAnimInstance
 {
 	GENERATED_BODY()
 	

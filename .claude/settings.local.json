@@ -25,7 +25,9 @@
       "Bash(python -c \"import pptx; print\\('pptx ok'\\)\")",
       "Bash(pip install:*)",
       "Bash(python -c \"import pptx; print\\('ok'\\)\")",
-      "Bash(grep -E \"\\\\.\\(h|cpp\\)$\")"
+      "Bash(grep -E \"\\\\.\\(h|cpp\\)$\")",
+      "mcp__claude_ai_Notion__notion-list-recent-pages",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

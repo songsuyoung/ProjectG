@@ -13,9 +13,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ba00bf1-3ce0-495d-85ee-109436eefa8b" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_Spawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Data/Interact/Action/GInteractionAction_Spawn.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Gimmick/GPickupActor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Character/BPCharacter.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Data/Timeline/C_DoorCurve.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Chest.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Chest.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/Gimmick/BP_Door.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BP/System/BP_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BP/System/BP_GameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/TestMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Animation/GAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Animation/GAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ProjectG/Animation/GAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ProjectG/Animation/GAnimInstance.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +36,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://18" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://27" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Media/ImgMedia/Source/ImgMedia/Private/Scheduler/IImgMediaScheduler.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActionWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Private/CommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -77,10 +84,12 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Private/Misc/EventPool.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Containers/Array.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Containers/UnrealString.h.inl" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Templates/RefCounting.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/UObject/WeakObjectPtrTemplates.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/Templates/SubclassOf.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Animation/AnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Components/ActorComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Components/BoxComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Public/MarkActorRenderStateDirtyTask.h" root0="FORCE_HIGHLIGHTING" />
@@ -93,6 +102,8 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidgetPool.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Components/ListView.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Components/ListViewBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ProjectG/Animation/GBaseAnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ProjectG/Animation/GBaseAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ProjectG/Character/GNPCCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ProjectG/System/GDialogueManager.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -290,7 +301,7 @@
       <workItem from="1787062952094" duration="21000" />
       <workItem from="1787228212416" duration="3650000" />
       <workItem from="1787364860285" duration="613000" />
-      <workItem from="1787442664830" duration="8068000" />
+      <workItem from="1787442664830" duration="16792000" />
     </task>
     <servers />
   </component>
