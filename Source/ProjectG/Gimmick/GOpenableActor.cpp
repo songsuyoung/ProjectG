@@ -11,9 +11,3 @@ AGOpenableActor::AGOpenableActor()
 	OpeningMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OpeningMeshComponent"));
 	OpeningMeshComponent->SetupAttachment(HingePivotComponent);
 }
-
-void AGOpenableActor::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}

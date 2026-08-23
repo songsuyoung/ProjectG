@@ -22,7 +22,6 @@ class PROJECTG_API AGOpenableActor : public AGInteractableActor
 public:
 	AGOpenableActor();
 
-	virtual void BeginPlay() override;
 	USceneComponent* GetHingePivotComponent() { return HingePivotComponent; }
 	UMeshComponent* GetOpenableMeshComponent() { return OpeningMeshComponent; }
 
