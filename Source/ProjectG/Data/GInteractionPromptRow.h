@@ -18,9 +18,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText PromptText;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FName ItemID;
-	
 private:
 	
 	FName ID;

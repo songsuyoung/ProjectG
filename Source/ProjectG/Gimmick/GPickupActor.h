@@ -15,4 +15,9 @@ public:
 protected:
 	virtual bool CanInteract(AActor* TargetActor) override;
 	virtual void InternalInteract(AActor* TargetActor) override;
+	
+protected:
+	
+	UPROPERTY(EditAnywhere, Category = "Item")
+	FName ItemID;
 };

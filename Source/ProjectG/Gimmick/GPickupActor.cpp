@@ -14,16 +14,6 @@ bool AGPickupActor::CanInteract(AActor* TargetActor)
 {
 	bool bResult = Super::CanInteract(TargetActor);
 	
-	UGDataManager* DataManager = UGDataManager::Get(this);
-	check(DataManager);
-
-	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, ID);
-	
-	if (nullptr == InteractionPromptRow)
-	{
-		return false;
-	}
-	
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 
 	if (IsValid(Character))
@@ -32,7 +22,7 @@ bool AGPickupActor::CanInteract(AActor* TargetActor)
 
 		if (IsValid(InventoryComponent))
 		{
-			return bResult && InventoryComponent->CanAcquire(InteractionPromptRow->ItemID);
+			return bResult && InventoryComponent->CanAcquire(ItemID);
 		}
 	}
 	
@@ -42,16 +32,6 @@ bool AGPickupActor::CanInteract(AActor* TargetActor)
 void AGPickupActor::InternalInteract(AActor* TargetActor)
 {
 	Super::InternalInteract(TargetActor);
-
-	UGDataManager* DataManager = UGDataManager::Get(this);
-	check(DataManager);
-
-	FGInteractionPromptRow* InteractionPromptRow = DataManager->GetDataTableRow<FGInteractionPromptRow>(EGDataTableType::InteractionPrompt, ID);
-	
-	if (nullptr == InteractionPromptRow)
-	{
-		return;
-	}
 	
 	AGCharacter* Character = Cast<AGCharacter>(TargetActor);
 
@@ -61,7 +41,7 @@ void AGPickupActor::InternalInteract(AActor* TargetActor)
 
 		if (IsValid(InventoryComponent))
 		{
-			InventoryComponent->Acquire(InteractionPromptRow->ItemID);
+			InventoryComponent->Acquire(ItemID);
 		}
 	}
 
